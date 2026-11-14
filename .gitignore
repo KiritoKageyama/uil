@@ -1,0 +1,21 @@
+﻿
+# added by gitter
+node_modules/
+.venv/
+venv/
+__pycache__/
+build/
+dist/
+.gradle/
+.idea/
+.env
+.env.*
+!.env.example
+*.gguf
+*.pem
+*.jks
+*.keystore
+.mcp.json
+.cursor/mcp.json
+**/.claude/settings.local.json
+results/

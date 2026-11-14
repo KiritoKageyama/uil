@@ -1,0 +1,551 @@
+﻿fit: 412-2493
+416: on_stage: Callable[[dict], None] | None = None,
+423: on_stage: Optional callback invoked once per completed stage
+452: # When target_accuracy is set, keep the same train/val split and
+453: # co-evolution loop running until hit or max_stages (safety cap).
+470: # Validation split. EXPERIMENTAL (held-out principle gate): when
+471: # enabled, first carve a never-touched held-out set (used only to
+472: # judge whether principles generalize, never for training/selection),
+473: # then split the remainder into train/val exactly as before.
+484: # M0.1 (v22 blueprint ┬º4.1): build cv_folds-1 extra resampled
+485: # splits from the same pool (never the held-out set). The primary
+486: # split above still drives action selection and model artifacts;
+487: # the winner's score is averaged across all splits so regret and
+488: # everything mined from it measure generalization, not one split.
+489: # cv_folds=1 restores legacy single-split behavior.
+491: # Auto-scale CV cost by dataset size. k-fold regret re-scores the
+492: # winner on every extra split, so cv_folds=3 TRIPLES per-stage eval
+493: # cost -- impractical at scale (covertype 100k x 7-class OvR x PSO
+494: # ran >40 min CPU with cv_folds=3). Large datasets already get low-
+495: # variance estimates from sheer sample count, so one split suffices;
+496: # small datasets keep the full k-fold for a stable generalization
+497: # signal. Opt out with cfg.auto_cv_scale = False.
+508: # A rotating within-stage split needs at least one FIXED fold to
+509: # compare stages against, or "best so far" becomes "luckiest draw".
+523: # Too few samples per class to stratify another split;
+524: # fall back to unstratified rather than dying.
+531: # ΓöÇΓöÇ Step 0 (v22 ┬º2ΓÇô┬º3): fingerprint ΓåÆ normalize ΓåÆ route ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+539: # Situation-adaptive knobs (System Refinement Category D / evidence
+540: # probes). Opt-in via cfg.situation_adaptive; never touches Category-A
+541: # safety rails. Logged for HITL transparency.
+545: search_mode=str(getattr(self.cfg, "search_mode", "classic")),
+570: # ΓöÇΓöÇ Rotating validation split (cfg.rotate_val_split) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+571: # The split above is drawn ONCE and every action of every stage is
+572: # then scored against it -- ~6 candidates x N stages maximized over
+573: # one 20% slice. On small data that slice is tiny (sonar val ~35
+574: # rows, one row = 2.9%), and "keep the best of 60 tries against one
+575: # answer key" is exactly how the +0.03-0.06 optimism gap CLAUDE.md
+576: # calls unavoidable gets manufactured. Architecture Race measured
+577: # the same thing from the other side: corr(delta, val-gap swing) =
+578: # -0.977.
+579: #
+580: # Fix: rotate the WITHIN-STAGE split (drawn from seed + stage, so
+581: # replay stays byte-identical) and judge ACROSS stages on the fixed
+582: # extra folds, which are the same for every stage and therefore
+583: # comparable. Splits are stored as row INDICES, not row copies --
+584: # 56 KB rather than 44 MB per split on MNIST, and safe to hand to
+585: # workers.
+586: #
+587: # Normalization is deliberately still fit ONCE on the initial
+588: # X_train (routing, fingerprint and predict() all depend on a single
+589: # transform). Rows that later rotate into a validation fold did
+590: # inform that transform, which is a small, bounded leak -- far
+591: # smaller than the selection bias it replaces.
+610: # Category-E telemetry (audit Part E). `RoutingMemory` already records
+611: # fingerprint -> strategy -> outcome, so WHICH route won is known.
+612: # What was missing is evidence about the CUTOFFS themselves
+613: # (FORMULA_R2_MATH = 0.90, LINEAR_ACC_STRUCTURED = 0.92): they cite
+614: # real cross-seed numbers but from a handful of benchmarks, so the
+615: # open question is whether datasets ever land NEAR them. Logging the
+616: # probe values answers it: if every dataset sits far from a cutoff,
+617: # its exact value is irrelevant and it can stay fixed; if datasets
+618: # cluster at the boundary, the cutoff is load-bearing and deserves
+619: # to be learned. `bound` marks which side of the cutoff we fell on.
+642: self.network.set_dataset_context(self.dataset_name)
+644: # M3: apply routed classifier + mint routing_rule cell (unless disabled)
+659: # Parallel workers must spawn the ROUTED adapter type. The
+660: # caller's factory builds the PRE-route classifier, whose
+661: # models the routed adapter cannot predict with (e.g. a
+662: # SymbolicFormula dict-model fed to XGBoostAdapter.predict).
+678: self.library.record_routing_rule(
+686: # E6: interaction-aware rule basis ΓÇö OFF BY DEFAULT. The intent was
+687: # to auto-enable the E5 rule family when the fingerprint's non-linear
+688: # probe beats its linear probe (interaction-dense data). But a
+689: # rigorous 3-seed cross-seed sweep (2026-07-18) showed the auto-
+690: # trigger causes NET REGRESSIONS: ionosphere (gap ~0.06) dropped
+691: # 0.916ΓåÆ0.868 because rules + the weaker L1 overfit near-linear data,
+692: # and sonar (gap ~0.07) ΓÇö which the rules DO help in isolation
+693: # (0.748ΓåÆ0.786) ΓÇö got no benefit through the full optimizer (0.722,
+694: # worse than boosting's 0.746). No clean gap threshold separates
+695: # "helps" from "hurts". So the auto-enable is opt-in only; the rule
+696: # basis (E5) remains a proven, manually-enableable capability, and
+697: # interaction_gap stays on the fingerprint as a diagnostic signal.
+698: # Set cfg.auto_rule_basis = True to re-enable (raise the gate above
+699: # ~0.08 first, and prefer it on larger datasets where the optimizer
+700: # overhead doesn't dominate).
+720: # Bug #25: connect the cognitive layer to the learner. Its ONLY
+721: # channel is the search's feature weights, which sparse_linear
+722: # currently ignores (basis reads unweighted X; standardization
+723: # cancels column scaling) ΓÇö measured ablation delta 0.0000. When
+724: # cfg.connect_cognition is on AND any cognitive subsystem is
+725: # active, tell the adapter to fold those weights into the L1
+726: # penalty so they can actually move the fit. Default OFF until
+727: # cross-seed validated (see the E6 lesson).
+738: # Research step 4 ΓÇö DreamCoder-style utility-gated formula admission.
+739: # Opt-in; default OFF pending Gate 2 / existence-audit CONNECTED.
+746: # Research step 5 ΓÇö EBM cyclic fit over the composed basis.
+747: # Opt-in; default OFF until Gate 2. Only affects sparse_linear path.
+753: # Research step 8 ΓÇö KAN-style truncated-power basis family.
+754: # Opt-in; default OFF until Gate 2. Only affects sparse_linear path.
+767: self.network._version_store = self._version_store
+769: # Load the active LCA-inspired GoalCell (2026-07-18). None when no
+770: # operator/LLM has set one ΓÇö consumers become no-ops in that case,
+771: # so runs without a goal are byte-identical to pre-GoalCell.
+782: # Category-A telemetry: thread the optimizer's scoped GuardTelemetry
+783: # into engines/adapters (no module singleton ΓÇö that reintroduces #30b).
+795: # Scale workload to ~75% of machine CPU/RAM/GPU headroom
+825: # Compute base guidance via Mutual Information
+828: # Initialize search strategy
+843: # V20: Register classifier's controllable params with search
+849: # Check dataset memory ΓÇö start with prior stress if dataset was hard
+854: # V20: Initialize formula library with seed formulas
+856: self.formula_library.seed_formulas(seed_formulas)
+859: self.library,
+860: self.network,
+868: # V20+.3: Bootstrap network from existing principles
+870: self.library.get_principles(dataset_name=self.dataset_name)
+878: self.network.import_from_principles(existing_principles)
+880: # V20+.3: Track activation history for relationship discovery.
+881: # (stage, activated_nodes) tuples -- matched to journal entries by
+882: # stage number in discover_relationships(), not list position.
+885: # V20+.8: Query episodic attention for warm-start
+903: self.network.set_dataset_context(self.dataset_name)
+904: # Load-time guard: short runs never reach the stage%15 graph prune,
+905: # so the shared working graph can arrive here far past its cap
+906: # (observed 49k edges) and make every traverse pathologically slow.
+907: # Prune once up front; everything goes to the archive, nothing lost.
+909: # Observe-only (audit Part E): does the graph ever actually arrive
+910: # oversized? Records the edge count seen at load and whether the
+911: # bug-#18 ceiling bound. `max` on this guard answers "how large does
+912: # the working graph really get" ΓÇö the evidence for whether 6000 is
+913: # the right trigger or the graph is always tiny in normal runs.
+920: self.network.prune_working_graph(
+930: # Bug #26: the champion's accuracy is a RECORD, not a GATE.
+931: # It used to be loaded straight into self._best_accuracy, which
+932: # is also the condition for saving this stage's model. A lucky
+933: # previous run therefore locked the current one out: every stage
+934: # did full work and was discarded, and fit() returned either
+935: # last run's model (when the champion serialized one) or stage
+936: # 1's (via the need_model fallback below) -- neither of which is
+937: # "the best model". Worse, the bar was measured on a DIFFERENT
+938: # random split, so "can't beat 0.958" often just meant "the old
+939: # split was easier". Keep it beside the run instead: this run
+940: # builds its own best from nothing, and the two are compared
+941: # once at the end (see the champion save at the bottom of fit).
+983: # V20+.18: same optional hook, extended to the classifier --
+984: # only SymbolicFormulaAdapter implements it (warm-starts its
+985: # formula selection from a similar past dataset's regime).
+986: # (episodic set_episodic_hint above; exploration hint merges champion)
+988: # V20+.11: Compute feature correlation matrix
+992: # Per-stage mining summary for webui decision trace
+997: on_stage,
+1024: # ΓöÇΓöÇ Co-evolution loop ΓöÇΓöÇ
+1027: for stage in range(max_stages):
+1028: # Cooperative stop/pause (webui/ control panel). A stop
+1029: # issued while paused must not wait out the full pause --
+1030: # re-check stop_event on every wake instead of one blocking
+1031: # wait() call.
+1043: # Rotate this stage's answer key (cfg.rotate_val_split). Nothing
+1044: # can grind against a split it only sees once.
+1050: # 1. Build state vector (pure numbers)
+1055: # 2. Get overrides from discovered principles
+1056: # V20+.1: Tier-aware retrieval ΓÇö filters by quarantine for this dataset
+1057: # V20+.16: ablation gate -- "principles OFF" must mean the
+1058: # executor never sees any, not just that none get mined.
+1060: self.library.get_principles(dataset_name=self.dataset_name)
+1063: # Part 16: Propagate co-activation attention from last stage's
+1064: # triggered principles. Each principle that fired last stage
+1065: # may have successful co-activation partners ΓÇö temporarily boost
+1066: # their effective confidence so the executor is more likely to
+1067: # trigger them this stage. Uses a copy to avoid mutating the
+1068: # library's in-memory state (bonuses are stage-local).
+1080: # V20+.12: carry the previous stage's winning action/config
+1081: # alongside state, so 'action.*'/'config.*' conditions --
+1082: # mined by the Miner just as often as 'state.*' ones -- can
+1083: # actually match (see execution_context.py).
+1092: # V20+.3/V20+.9: Traverse network with causal gate attention.
+1093: # V20+.16: ablation gate -- skip traversal entirely so a
+1094: # disabled network contributes zero overrides/activations.
+1100: # Merge: principle overrides take priority, network fills gaps
+1104: # V20+.10: Feed network overrides to search
+1118: # Track activated nodes for relationship discovery
+1123: # 3. Search proposes actions (hybrid: PSO foundation + reasoning)
+1128: # Part 15: Update maturity and get action allocation
+1144: # Category-D telemetry (audit Part E): log the marginal
+1145: # distribution of each maturity-blend sub-score, same rationale
+1146: # as the stress blend ΓÇö a sub-score stuck at a constant (e.g.
+1147: # network_score at 0 on a fresh graph, or formula_score capped)
+1148: # makes its weight dead in the PSO-detachment decision. NaN
+1149: # skill_score (no principle outcomes yet) is skipped by observe.
+1157: # Reasoning-driven actions (from principle-guided search)
+1160: reasoning_actions = self.search.propose_actions(
+1164: # PSO/foundation exploration actions
+1172: # Merge: reasoning first, then PSO fills remaining slots
+1175: # ΓöÇΓöÇ Architecture race (cfg.search_mode == "race") ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+1176: # Replace the surrogate-optimized candidate set with one that
+1177: # varies ARCHITECTURE (axes the learner cannot pick for
+1178: # itself) plus the closed-form cutoff frontier. The winner is
+1179: # then decided by real held-out accuracy in _race_actions(),
+1180: # not by the separable surrogate the swarm was maximizing.
+1181: # The cognitive layer still speaks: its `overrides` shape the
+1182: # incumbent arm, which is arm 0 and always survives to the
+1183: # final rung, so cognition proposes and measurement disposes.
+1190: # Interaction-gap gate (E7's named next fix, converts the
+1191: # one race regression). The judge fix made the race net
+1192: # +0.0080 but it still LOST ionosphere -0.047: near-linear
+1193: # data where the interaction-hungry basis families
+1194: # (use_rule_basis / use_neural_basis) look better on the
+1195: # internal folds and overfit the true test -- the exact E6
+1196: # finding. When the fingerprint says interactions are weak,
+1197: # don't even RACE those axes; the race then varies only
+1198: # cutoffs + L1 strength + stumps, and the incumbent
+1199: # sparse_linear wins ionosphere as it should. High-gap data
+1200: # (sonar) keeps them. Opt-in default ON *within race mode*
+1201: # -- race itself is opt-in, so this only ever fires when the
+1202: # user already chose the race; it strictly narrows a search
+1203: # that was overfitting, so it does not need its own gate to
+1204: # be safe, but its ACCURACY effect is measured before the
+1205: # race as a whole is defaulted on (still opt-in).
+1225: # Fallback: use base guidance directly
+1232: # V20.3: Select a formula for the custom objective. Stress-
+1233: # governed like every other exploration knob here: a calm run
+1234: # keeps the classifier's default loss, only a stressed run
+1235: # spends effort trying the library's best alternative.
+1237: # webui/ snapshot fields -- only bound below when a formula
+1238: # is actually selected this stage, so default to None here.
+1255: # V20+.14: structural numeric proxies for which
+1256: # formula was active -- the Miner can't use the
+1257: # raw formula_id (it's a string, and a fresh one
+1258: # every mutation), but depth/node_count are real
+1259: # numbers it CAN mine against, e.g. "deep formulas
+1260: # correlate with regret." Without this, swapping
+1261: # the objective is a hidden variable the Miner
+1262: # can't explain outcomes by.
+1273: # V20+.5: Causal Intervention ΓÇö turn one pending hypothesis
+1274: # into a real control/treatment comparison this stage by
+1275: # reusing an action slot already being spent this stage, so
+1276: # testing causality costs zero extra retrains. Only ever
+1277: # intervenes on variables UIL actually controls (never
+1278: # state.* ΓÇö see _set_intervention_value).
+1281: # Only hypotheses with a controllable factor enter the EIG
+1282: # pool (derived.* products decompose to their config./
+1283: # action.penalty factor; state.* never qualifies), and the
+1284: # factor must be a knob THIS classifier exposes ΓÇö otherwise
+1285: # apply_config would silently no-op and record a fake
+1286: # "no effect" trial.
+1306: # Derived-variable plan: scale the factor's live value.
+1328: # 4. Apply overrides and evaluate each action
+1332: # The config actually in effect when best_action was fit --
+1333: # NOT necessarily best_action["classifier_config"]: PSO
+1334: # actions (search/hybrid_foundation.py) never set that key at
+1335: # all, so when one wins, the classifier was still running
+1336: # under whatever an EARLIER candidate's apply_config() left
+1337: # it at (or last stage's, if no candidate this stage set
+1338: # one). That ambient/inherited config is the ground truth of
+1339: # what produced the recorded outcome, not an empty dict.
+1349: action_results = self._race_actions(
+1372: # Causal comparison stays on the primary split: control
+1373: # and treatment both reach full fidelity, so this is a
+1374: # same-split, same-fidelity comparison by construction.
+1377: # Winner selection is centralized in one helper (Category-C
+1378: # discipline): plain argmax on select_score by default -- the
+1379: # judge fix's multi-split mean, falling back to the primary
+1380: # score, byte-identical to the prior inline loop -- plus the
+1381: # opt-in race incumbent-margin. select_score is absent on the
+1382: # classic path and at cv_folds == 1, so this stays unchanged
+1383: # there.
+1397: # Re-apply the winning action's effective config. The scoring
+1398: # loop above calls apply_config() for EVERY candidate in turn
+1399: # (so each can be fit_weighted()'d under its own config) --
+1400: # without this, the classifier's live config is left at
+1401: # whichever candidate was scored LAST, not the one that
+1402: # actually won. Everything downstream that reads
+1403: # get_current_config() (journal recording at step 9,
+1404: # investigation's current_cfg below, and therefore every
+1405: # "config.*" rule the Miner later learns from) depends on
+1406: # this reflecting best_action, not a loser.
+1422: # V20+.5: Evaluate the causal intervention, if both control
+1423: # and treatment actions actually completed this stage. Uses
+1424: # self._best_accuracy from BEFORE this stage's update below,
+1425: # matching the "best proven" anchor used everywhere else.
+1431: self.causal_engine.evaluate_intervention(
+1441: self.library.apply_causal_adjustment(
+1446: # M0.1 (v22 blueprint ┬º4.1): re-score the WINNING action on the
+1447: # extra resampled splits and replace its score with the
+1448: # multi-split mean. Everything downstream of this point --
+1449: # best-overall update, rolling maturity accuracies, stress,
+1450: # regret, the journal entry the miner learns from, and
+1451: # principle helped/hurt credit -- now measures multi-split
+1452: # generalization instead of one fixed validation split.
+1453: # (Selection among this stage's candidates: the classic path
+1454: # still selects on the primary split; RACE finalists are
+1455: # selected on the multi-split mean -- the E7 judge fix, see
+1456: # _race_actions. The causal control/treatment comparison stays
+1457: # single-split-internal by design in both modes.)
+1458: # With a ROTATING within-stage split the primary score is not
+1459: # comparable across stages (stage 3 may simply have drawn easier
+1460: # rows), so "best stage so far" must be judged on the FIXED
+1461: # extra folds only -- same rows for every stage. Without
+1462: # rotation the primary split is fixed and still counts, which is
+1463: # the original behavior.
+1466: # Judge fix: when the race already scored this winner on the
+1467: # extra splits (to SELECT it), reuse those scores instead of
+1468: # re-fitting -- same computation, deterministic, half the
+1469: # cost. The classic path still computes them here.
+1483: # 5. Update best overall
+1488: # _best_accuracy is now this run's own, starting at 0.0 (bug
+1489: # #26), so any stage scoring above zero improves and stage 1
+1490: # effectively always sets the model. This fallback -- which
+1491: # existed to stop a champion-blocked run returning model=None
+1492: # and breaking predict() (bug #16) -- is therefore near-dead,
+1493: # but it is kept for the degenerate case of a run whose every
+1494: # stage scores exactly 0.0. Cheap, and still the right answer.
+1506: # Macro-F1 (unweighted mean over classes) surfaces imbalance
+1507: # that accuracy AND weighted-F1 both hide: on a 76%-majority
+1508: # set, a model weak on the minority class still scores high
+1509: # on both. macro-F1 is the honest metric there (Finding 4).
+1514: # Stagnation tracking for the evolution trigger (below).
+1520: # Rolling recent accuracy for maturity (last 10 stages).
+1525: # 6. Get feature importance feedback
+1530: # 7. Compute stress and regret
+1548: # Category-D telemetry (audit Part E): log the marginal
+1549: # distribution of each component of the hand-weighted stress
+1550: # blend. Purely observational. The immediate payoff is spotting
+1551: # a DEAD component: if e.g. explanation_failure has std ~0
+1552: # across a run, its 0.20 weight contributes nothing regardless
+1553: # of value, and the blend is effectively 3-term ΓÇö exactly the
+1554: # kind of finding needed before any of these weights is touched.
+1566: # 8. Investigation (if regret > 0)
+1567: # V20+.4: Full investigation engine with C.1-C.5 strategies
+1579: # V20+.4: Execute investigation strategy
+1587: # Get best config for comparison
+1610: # Apply the proposed config if the strategy recommends it
+1615: # Merge investigation result into investigation record
+1622: # 9. Record to journal (pure numbers)
+1623: # V20: include classifier config and formula info.
+1624: # Use winning_config directly (re-applied right after the
+1625: # scoring loop, above) rather than re-reading
+1626: # get_current_config() -- that call can also reflect an
+1627: # investigation's proposed_config for the NEXT stage (step 8
+1628: # above), which must not leak into the record of what
+1629: # actually produced THIS stage's outcome.
+1636: # V20: Include classifier config in action
+1639: # V20: Include formula metadata
+1642: # V20+.14: numeric proxies so the Miner can explain
+1643: # outcomes by formula complexity (see selection block
+1644: # above) -- formula_id itself is a string and unusable.
+1648: # V20+.12: carry forward into next stage's ExecutionContext.
+1655: self.journal.record(
+1671: # M0.1: fold provenance -- accuracy above is the mean
+1672: # of these per-split scores (single element = legacy).
+1682: # Research step 2 (PBT-style default-path architecture variation,
+1683: # opt-in): fit ONE architecture-perturbed probe and journal it as
+1684: # evidence, so the miner finally sees architecture knobs VARY
+1685: # instead of being constant (F4's root cause). Never competes for
+1686: # the stage winner, so it cannot regress accuracy. Skipped in
+1687: # race mode, which supplies its own architecture variation.
+1701: # EXPERIMENTAL (held-out principle gate): score the winning
+1702: # model on the never-touched held-out set so principle credit
+1703: # below can be judged on generalization, not the validation
+1704: # score the search already maximizes.
+1710: # 10. Track triggered principles (for library feedback)
+1714: # A principle "helped" only if it did not hurt held-out
+1715: # accuracy vs the previous stage -- the generalization
+1716: # test, not the validation-split test.
+1720: # V20+.1: Pass dataset_name for per-dataset tier tracking
+1721: self.library.record_application(
+1725: # M0.4: the same helped signal drives maturity, so PSO
+1726: # detachment is earned by principles that demonstrably
+1727: # predict wins (see hybrid_foundation.update_maturity).
+1729: # Part 16: Carry triggered principles forward so co-activation
+1730: # bonuses can be applied on the NEXT stage's principle retrieval.
+1733: # V20.3: Record formula outcome so retirement evidence
+1734: # actually accumulates (previously orphaned ΓÇö set but never
+1735: # recorded against).
+1737: self.formula_library.record_result(
+1744: # V20+.18: parallel read-back for SymbolicFormulaAdapter --
+1745: # formula *selection* happens inside fit_weighted() (the
+1746: # adapter), not in this loop, so the optimizer reads the
+1747: # choice back out by convention to record its outcome. Same
+1748: # pattern KNN's distance-metric repurposing already uses.
+1762: # 11. Update search strategy with feedback
+1769: # The genuinely worst-scoring candidate THIS stage. Previously
+1770: # only the winner was reported back, so the search inferred
+1771: # "worst" as "the winning weights of the lowest-scoring stage" --
+1772: # a decent vector, not a bad one (and on stage 1, literally the
+1773: # same vector as best). Its "Opposite of worst" action was
+1774: # therefore stepping away from something good, and the journal
+1775: # recorded that wrong label for the miner to learn from.
+1792: # 12. Mine for principles (frequency scales with stress)
+1799: # V20+.7: Apply journal forgetting ΓÇö recency-weighted window
+1804: # Within-dataset mining (stronger causal evidence).
+1805: # V20+.16: mining itself is cheap analysis over journal
+1806: # entries -- only APPLYING the rules is gated, so
+1807: # "principles OFF" means discovered rules are never
+1808: # written anywhere, not that mining never runs.
+1814: self.library.update_principles(
+1820: # V20+.3: Add new rules as nodes in the network
+1822: self.network.import_from_principles(within_rules)
+1823: # V20+.5: Form causal hypotheses from new rules
+1825: self.causal_engine.form_hypotheses_from_rules(within_rules)
+1826: # Part 12: Version tracking for each updated principle
+1830: # Cross-dataset mining (correlational, needs more evidence)
+1836: # Part 5: Cross-dataset rules represent weaker causal
+1837: # evidence ΓÇö discount confidence before library update
+1838: # so they must prove themselves further to affect
+1839: # principle selection over within-dataset rules.
+1842: self.library.update_principles(
+1849: self.network.import_from_principles(cross_rules)
+1851: # V20.3: Cognitive novelty ΓÇö under high stress, mutate the
+1852: # current best formula instead of relying on PSO alone
+1853: # (Part 15: novelty should come from formula invention,
+1854: # not just random search). Validated before being stored
+1855: # so a broken mutation never reaches set_custom_objective.
+1856: # V20+.14: gated on the incubation queue, not just stress --
+1857: # every mutation forces MIN_EVIDENCE_BOOTSTRAP real training
+1858: # trials under a possibly-bad objective (see
+1859: # formula_library.py), and a bad mutation raising stress
+1860: # would otherwise spawn more mutations with no limit,
+1861: # a runaway feedback loop discovered empirically this
+1862: # session. Capping how many can be incubating at once
+1863: # throttles the birth rate directly, independent of stress.
+1870: # V20+.15/.17: tournament-selected, lineage-stratified
+1871: # mutation parent, NOT get_best_formula() -- using the
+1872: # single best formula as the mutation base every time
+1873: # turns evolution into hill-climbing along one lineage
+1874: # (see formula_library.select_mutation_parent
+1875: # docstring). progress feeds the stratification decay.
+1877: self.formula_engine.rng,
+1887: # Gate on has_proposer, not available: the
+1888: # offline own-transformer (neural_proposer)
+1889: # participates even without an external LLM key.
+1900: # Label reflects the actual source
+1901: # (neural / llm) for the journal +
+1902: # changelog provenance.
+1912: self.formula_library.add_formula(
+1920: # V20+.18: same generation-advance, extended to the
+1921: # SymbolicFormula classifier's own population (duck-typed
+1922: # via self.symbolic_engine/self.symbolic_library -- None
+1923: # for every other classifier, so this block is a no-op
+1924: # for them). fit_weighted() never mutates its own
+1925: # population; this is the one place it advances, exactly
+1926: # like the loss-formula block above. feature_bias lets
+1927: # PSO's per-feature relevance signal shape which features
+1928: # new formulas reference (see search/pso_search.py).
+1946: # Own-transformer ranks the candidates: generate
+1947: # several grammar-safe mutations, let the neural
+1948: # proposer pick the highest-scored (falls back to
+1949: # a single engine mutation when no model exists).
+1961: # DreamCoder gate: only mint if the
+1962: # candidate improves a held-out
+1963: # sparse_linear fit. Rejected mutants
+1964: # are not added ΓÇö nothing to prune.
+2007: # V20+.3: Discover relationships from co-activation patterns.
+2008: # Attach the current best formula so edges actually carry
+2009: # one for traverse() to execute (see editable_network.py).
+2012: self.formula_library.get_best_formula(
+2017: # Filter to THIS fold so "stage" is unique within the
+2018: # entries discover_relationships() matches against --
+2019: # stage resets to 0 each fold, so an unfiltered
+2020: # cross-fold list would let a different fold's stage-3
+2021: # entry silently stand in for this fold's stage-3.
+2026: # Base-rate: fraction of this fold's stages where the
+2027: # system actually improved (regret <= 0). Passed to
+2028: # discover_relationships() so edge-type thresholds are
+2029: # lift-over-base-rate rather than absolute, preventing
+2030: # every edge from becoming "contradicts" when the
+2031: # overall success rate is low (e.g. 8% on hard datasets).
+2037: self.network.discover_relationships(
+2068: # V20+.3: Record traversal outcome for edge feedback
+2073: self.network.record_traversal_outcome(activated, helped)
+2075: # V20+.3: Periodic edge decay + working-graph prune (every 10 stages)
+2077: self.network.apply_edge_decay(
+2082: # Learning-preserving formula prune on a SHORT cadence so the
+2083: # accelerated evolution from stagnation-triggered births (b)
+2084: # can't bloat the working pool even in short runs. Keeps
+2085: # seeds + proven formulas; archives the weakest mutants to the
+2086: # (queryable) KnowledgeArchive. Retired formulas archived too.
+2095: # Size-triggered graph prune: the stage%15 cadence below
+2096: # never fires in short runs, so across many short runs the
+2097: # shared working graph grew unboundedly (observed 49k edges
+2098: # -> traverse_with_attention exploded, hanging stages for
+2099: # minutes). Prune to cap whenever oversized, on the same
+2100: # short cadence as the formula prune. Everything archived,
+2101: # nothing lost.
+2109: self.network.prune_working_graph(
+2121: self.network.consolidate_duplicate_nodes(
+2124: self.network.prune_working_graph(
+2148: # 13. Check for failure ΓåÆ failsafe (LAST RESORT only)
+2168: self.journal.record_failsafe(self.dataset_name, diagnosis)
+2170: # If classifier mismatch was found, record as lesson
+2173: self.journal.update_dataset_memory(
+2180: # Reset and continue with accumulated knowledge
+2183: # 14. Update previous accuracy for next iteration
+2195: on_stage,
+2224: # webui/ + terminal live feed (see cognition/live_feed.py).
+2226: on_stage,
+2253: # ΓöÇΓöÇ End of optimization ΓöÇΓöÇ
+2255: # Update dataset memory
+2256: self.journal.update_dataset_memory(
+2262: # V20+.8: Store this episode for future warm-starts.
+2263: # Gated with retrieval: an "episodic OFF" arm must not leave an
+2264: # episode behind for a later arm to retrieve (bug #30b's leak
+2265: # class), otherwise the switch only half-removes the subsystem.
+2285: # V20+.18: lets a future similar-regime dataset's
+2286: # SymbolicFormulaAdapter.set_episodic_hint() warm-start
+2287: # from whatever formula this run last used (see
+2288: # episodic_attention.py's _blend_resolutions).
+2295: # V20+.3: Persist the graph (nodes/edges/co-activation tally) --
+2296: # saved once per fit() rather than per-mutation, see editable_network.py.
+2297: self.network.save()
+2299: # Bug #26: the champion comparison happens HERE, once, instead of
+2300: # gating every stage. Both numbers are this-run-vs-stored on the
+2301: # same measure (the k-fold mean when cv_folds > 1). A worse run
+2302: # simply doesn't overwrite the record -- it is no longer prevented
+2303: # from doing its own work first.
+2304: #
+2305: # Deliberately NOT compared on self._X_heldout: that set is the one
+2306: # measurement in the system nothing has selected against, and it
+2307: # stays that way. A two-way choice would leak little, but it costs
+2308: # nothing to keep it clean.
+2309: #
+2310: # Research step 6 (Dwork Thresholdout): when enabled, "did this run
+2311: # beat the stored champion?" goes through a seeded-noise threshold
+2312: # so repeated adaptive comparisons against the same bar do not
+2313: # silently overfit the instrument. Deterministic given the seed.
+2361: # Bug #27: flush the archive AFTER the champion + conclusion are
+2362: # written into it, not before. save() used to run above the champion
+2363: # block, so the champion only ever reached _data in memory -- it
+2364: # survived to disk purely by accident, when some LATER component
+2365: # (formula_library.prune_*, working_memory_pruner, the next fit())
+2366: # happened to flush the same singleton. A process that optimized one
+2367: # dataset and exited persisted no champion at all, which is why
+2368: # champion-resume looked like it worked in multi-dataset benchmarks
+2369: # and did nothing in single runs.
+2376: # V21 Pipeline: Structural ΓåÆ Meta ΓåÆ Safeguards (skip when target hit ΓÇö
+2377: # post-run merge on a 5k-edge KG can block the worker for minutes).
+2384: # V21.1: Encode all principles structurally
+2389: # V21.2: Merge similar principles into meta-principles.
+2390: # `merge()` PERSISTS to uil_meta_principles.json (bug #8), so
+2391: # this has to be skipped, not just ignored, for the switch to
+2392: # actually remove the subsystem.
+2398: # V21.3: Safeguard each meta-principle before promotion
+2404: # Log but don't discard ΓÇö investigation can revisit
+2406: # Part 12: Detect contradictions in the full principle set
+2411: # Feature selection: PSO weights + formula tree leaves (SymbolicFormula)
+2433: # M5: lab report from event stream
+2446: # M3: record routing outcome for episodic memory
+2454: # Audit Part E: persist the run's guard-bind observations (accumulates
+2455: # across runs into uil_guard_telemetry.json) and surface this run's
+2456: # snapshot for the web UI / caller. Pure observation, never gated.
+2491: # ΓöÇΓöÇ Predict ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ

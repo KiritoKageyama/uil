@@ -1,0 +1,179 @@
+/* ════════════════════════════════════════════════════════════════════
+   FIGPSO UIL — shared design tokens
+   Single source of truth for the visual language across the marketing
+   site ("/") and the research console ("/app/").
+
+   Palette: deep space-black · space-blue primary · a full mission
+   spectrum (red / orange / yellow / green) · purple tints. Particles
+   render as LIGHT, transparent, vibrant motes over the dark field.
+   Shapes: a deliberate MIX of sharp and rounded corners.
+   ════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── type (ui-ux-pro-max Science/Tech mood · avoid Inter/Roboto) ── */
+  --font: "Sora", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", "Cascadia Code", Consolas, monospace;
+  --font-display: "Syne", "Sora", system-ui, sans-serif;
+
+  /* ── brand: space blue primary + orange / red / green on matte black ── */
+  --acc: #3b74ff;          /* space blue — primary, the transparent-panel tint */
+  --acc-2: #6f9dff;        /* lighter space blue */
+  --acc-soft: rgba(59, 116, 255, 0.12);
+  --neural: #21d99a;       /* green — cool gradient partner */
+  --neural-2: #66f0c2;
+  --synapse: #3b74ff;      /* signal blue */
+
+  /* ── four-colour mission palette (no purple / yellow) ── */
+  --c-blue: #3b74ff;
+  --c-cyan: #3b74ff;   /* legacy alias → space blue */
+  --c-green: #21d99a;
+  --c-yellow: #ff8a34; /* legacy alias → orange (yellow folded into orange) */
+  --c-orange: #ff8a34;
+  --c-red: #ff4757;
+  --c-purple: #3b74ff; /* legacy alias → space blue */
+
+  /* ── data series (blue / green / orange / red on matte black) ── */
+  --s1: #3b74ff;   /* blue */
+  --s2: #21d99a;   /* green */
+  --s3: #ff8a34;   /* orange */
+  --s4: #ff4757;   /* red */
+  --s5: #6f9dff;   /* light blue */
+
+  --ok: #21d99a;
+  --warn: #ff8a34;
+  --bad: #ff4757;
+
+  /* ── light, transparent, vibrant particle colors ── */
+  --p1: #cfe0ff;   /* light blue */
+  --p2: #b6ffe0;   /* light green */
+  --p3: #ffd9b0;   /* light orange */
+  --p4: #ffc2c9;   /* light red */
+  --p5: #cfe0ff;   /* light blue */
+  --p6: #ffd9b0;   /* light orange */
+
+  /* thematic vision channels — blue / orange / green / red */
+  --ch-reason: #3b74ff;
+  --ch-vision: #ff8a34;
+  --ch-robotics: #21d99a;
+  --ch-automation: #ff4757;
+
+  /* ── motion ── */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* ── geometry: SHARP panels & buttons, rounded only for pills/dots ── */
+  --radius: 4px;
+  --radius-sm: 3px;
+  --radius-lg: 6px;
+  --r-sharp: 2px;
+  --r-mix: 2px 10px;          /* subtle angular accent where a mix is wanted */
+  --r-mix-alt: 10px 2px;
+  --chamfer: 14px;            /* cut-corner size for clip-path panels */
+  --maxw: 1240px;
+}
+
+/* ── dark (default) — PURE MATTE BLACK. Panels are near-black glass with
+      a space-blue tint; orange / red / green are the warm signal accents. ── */
+:root,
+[data-theme="dark"] {
+  --bg: #050506;          /* pure matte black */
+  --bg-2: #0a0a0d;
+  --bg-grad:
+    radial-gradient(1000px 560px at 88% -8%, rgba(59, 116, 255, 0.10), transparent 55%),
+    radial-gradient(760px 520px at 4% 104%, rgba(255, 138, 52, 0.05), transparent 52%),
+    radial-gradient(620px 420px at 60% 120%, rgba(33, 217, 154, 0.045), transparent 55%);
+  --surface: rgba(10, 14, 24, 0.55);       /* transparent panel · space-blue glass */
+  --surface-2: rgba(14, 19, 32, 0.72);
+  --surface-3: rgba(26, 34, 54, 0.82);
+  --border: rgba(90, 130, 205, 0.16);      /* space-blue hairline */
+  --border-hi: rgba(90, 130, 205, 0.32);
+  --text: #eef1f8;
+  --text-2: #98a4bb;
+  --text-3: #5c6880;
+  --shadow: 0 24px 60px rgba(0, 0, 0, 0.62);
+  --chart-grid: rgba(90, 130, 205, 0.08);
+  --tip-bg: rgba(6, 8, 14, 0.95);
+  --glass: rgba(59, 116, 255, 0.04);
+  --glass-border: rgba(90, 130, 205, 0.14);
+  --sb-bg: rgba(4, 5, 8, 0.8);
+  --sb-bg2: rgba(6, 7, 11, 0.9);
+  --sb-text: #8290a8;
+  --sb-text-hi: #eef1f8;
+  --sb-border: rgba(90, 130, 205, 0.08);
+}
+
+/* ── light — a real theme, not an inversion. Paper-white with ink-deep
+      accents; particles/synapses flip from light-additive to saturated
+      pigment so the field stays visible on white. ── */
+[data-theme="light"] {
+  --bg: #f6f7fb;
+  --bg-2: #eceff7;
+  --bg-grad:
+    radial-gradient(1000px 560px at 88% -8%, rgba(59, 116, 255, 0.07), transparent 55%),
+    radial-gradient(760px 520px at 4% 104%, rgba(124, 77, 214, 0.05), transparent 52%),
+    linear-gradient(180deg, #fbfcff, #f2f4fa);
+  --surface: rgba(255, 255, 255, 0.92);
+  --surface-2: #f2f5fb;
+  --surface-3: #e3e8f3;
+  --border: rgba(18, 32, 70, 0.1);
+  --border-hi: rgba(18, 32, 70, 0.2);
+  --text: #10182b;
+  --text-2: #3f4b66;
+  --text-3: #7c86a0;
+  --shadow: 0 2px 6px rgba(16, 24, 43, 0.05), 0 18px 40px rgba(16, 24, 43, 0.09);
+  --chart-grid: rgba(16, 24, 43, 0.07);
+  --tip-bg: #10182b;
+  --glass: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(18, 32, 70, 0.1);
+  --sb-bg: rgba(252, 253, 255, 0.92);
+  --sb-bg2: rgba(244, 246, 252, 0.96);
+  --sb-text: #4a5670;
+  --sb-text-hi: #10182b;
+  --sb-border: rgba(18, 32, 70, 0.08);
+
+  /* accents shift one stop deeper so they hold contrast on white */
+  --acc: #2b55d6;
+  --acc-2: #3b74ff;
+  --acc-soft: rgba(43, 85, 214, 0.1);
+  --neural: #7c4dd6;
+  --neural-2: #9a6ee8;
+  --synapse: #2b55d6;
+
+  /* particles & fluid ink: saturated pigment, not pastel light */
+  --p1: #2b55d6;   /* deep blue */
+  --p2: #0b9e6e;   /* deep green */
+  --p3: #d99000;   /* deep amber */
+  --p4: #d63a5e;   /* deep red */
+  --p5: #7c4dd6;   /* deep purple */
+  --p6: #e07714;   /* deep orange */
+}
+
+/* ── shared primitives ─────────────────────────────────────────────── */
+.u-glass {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(14px);
+}
+.u-mono { font-family: var(--mono); }
+.u-grad-text {
+  background: linear-gradient(100deg, var(--acc-2), var(--neural) 55%, var(--c-orange));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
+/* ── sharp + rounded shape helpers ─────────────────────────────────── */
+.r-mix { border-radius: var(--r-mix); }
+.r-mix-alt { border-radius: var(--r-mix-alt); }
+.r-sharp { border-radius: var(--r-sharp); }
+/* chamfered (cut) corners — a hard-tech accent; note the cut edge has no
+   border line, so use on filled/glass panels, not outlined chips */
+.edge-cut-tr { clip-path: polygon(0 0, calc(100% - var(--chamfer)) 0, 100% var(--chamfer), 100% 100%, 0 100%); }
+.edge-cut-br { clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--chamfer)), calc(100% - var(--chamfer)) 100%, 0 100%); }
+.edge-cut-2 { clip-path: polygon(var(--chamfer) 0, 100% 0, 100% calc(100% - var(--chamfer)), calc(100% - var(--chamfer)) 100%, 0 100%, 0 var(--chamfer)); }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+}

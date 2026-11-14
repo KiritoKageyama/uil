@@ -1,0 +1,1593 @@
+  <button class="tab-btn" data-tab="principles">Principles &amp; Causal</button>
+</nav>
+
+=====FRAG=====
+
+  <button class="tab-btn" data-tab="external">Terminal Runs</button>
+  <button class="tab-btn" data-tab="retrace">Journal Replay</button>
+
+=====FRAG=====
+
+  </section>
+
+</main>
+
+<script src="js/api.js"></script>
+
+=====FRAG=====
+
+  </section>
+
+  <!-- TERMINAL / EXTERNAL RUNS -->
+  <section id="tab-external" class="tab-panel">
+    <div class="panel">
+      <h2>Terminal &amp; external runs (live feed)</h2>
+      <p class="hint">While this web UI is running, <strong>any</strong> test you run from a terminal
+        (<code>python figpso_uil/tests/test_comprehensive.py</code>, etc.) streams here automatically.
+        Keep the web server open in one window, run tests in another.</p>
+      <p id="feed-status" class="hint">Checking feed…</p>
+      <button id="btn-clear-feed">Clear feed log</button>
+    </div>
+    <div class="grid-2">
+      <div class="panel">
+        <h2>Active sources</h2>
+        <div id="external-sources"></div>
+      </div>
+      <div class="panel">
+        <h2>Live event log</h2>
+        <div id="external-feed-log" class="decision-log"></div>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>Ablation harness reports (terminal-only, after completion)</h2>
+      <p class="hint">Ablation runs use <em>isolated temp state</em> — they won't grow shared memory files, but JSON reports appear here when done.</p>
+      <button id="btn-refresh-ablation">Refresh reports</button>
+      <div id="ablation-reports-list"></div>
+    </div>
+  </section>
+
+  <!-- JOURNAL REPLAY -->
+  <section id="tab-retrace" class="tab-panel">
+    <div class="panel">
+      <h2>Replay completed runs from journal (terminal or web)</h2>
+      <p class="hint">Reads persisted journal on disk — works for any finished run that wrote to shared memory.</p>
+      <label>Dataset <input id="retrace-dataset" placeholder="easy_200x15"></label>
+      <label>Fold (optional) <input id="retrace-fold" type="number"></label>
+      <button id="btn-load-retrace">Load journal</button>
+      <div style="margin-top:12px">
+        <input id="retrace-scrubber" type="range" min="0" max="0" value="0" style="width:100%">
+        <span id="retrace-position"></span>
+      </div>
+      <pre id="retrace-detail"></pre>
+    </div>
+  </section>
+
+</main>
+
+<script src="js/api.js"></script>
+
+=====FRAG=====
+
+<script src="js/memory-proof.js"></script>
+<script src="js/network-view.js"></script>
+
+=====FRAG=====
+
+<script src="js/memory-proof.js"></script>
+<script src="js/external-feed.js"></script>
+<script src="js/retrace.js"></script>
+<script src="js/network-view.js"></script>
+
+=====FRAG=====
+
+  <button class="tab-btn" data-tab="network">Knowledge Graph</button>
+  <button class="tab-btn" data-tab="external">Terminal Runs</button>
+  <button class="tab-btn" data-tab="retrace">Journal Replay</button>
+
+<main>
+
+=====FRAG=====
+
+  <button class="tab-btn" data-tab="network">Knowledge Graph</button>
+  <button class="tab-btn" data-tab="principles">Principles &amp; Causal</button>
+  <button class="tab-btn" data-tab="external">Terminal Runs</button>
+  <button class="tab-btn" data-tab="retrace">Journal Replay</button>
+</nav>
+
+=====FRAG=====
+
+<script src="js/retrace.js"></script>
+<script src="js/network-view.js"></script>
+<script src="js/app.js"></script>
+
+=====FRAG=====
+
+<script src="js/network-view.js"></script>
+<script src="js/retrace.js"></script>
+<script src="js/app.js"></script>
+
+=====FRAG=====
+
+      <div class="toolbar">
+        <button id="btn-refresh-persistence">Refresh now</button>
+        <button id="btn-snapshot-baseline">Set baseline (before run)</button>
+        <button id="btn-learning-test">How to test transfer</button>
+      </div>
+
+=====FRAG=====
+
+      <div class="toolbar">
+        <button id="btn-refresh-persistence">Refresh now</button>
+        <button id="btn-snapshot-baseline">Set baseline (before run)</button>
+        <button id="btn-clear-memory" class="btn-danger">Clear ALL memory</button>
+        <button id="btn-learning-test">How to test transfer</button>
+      </div>
+
+=====FRAG=====
+
+      <p class="hint">Tip: use <strong>40+ stages</strong> on easy/medium datasets so the DT miner discovers principles (~30 journal entries needed).</p>
+
+=====FRAG=====
+
+      <p class="hint">Tip: use <strong>40+ stages</strong> on real curated datasets. Only sklearn/OpenML benchmarks — no synthetic data.</p>
+
+=====FRAG=====
+
+      <p class="hint">While this web UI is running, <strong>any</strong> test you run from a terminal
+        (<code>python figpso_uil/tests/test_comprehensive.py</code>, etc.) streams here automatically.
+        Keep the web server open in one window, run tests in another.</p>
+
+=====FRAG=====
+
+      <p class="hint">While this web UI is running, terminal runs stream here automatically
+        (<code>python -m figpso_uil.experiments.run_curated_real</code>).</p>
+
+=====FRAG=====
+
+  <button class="tab-btn" data-tab="network">Knowledge Graph</button>
+  <button class="tab-btn" data-tab="principles">Principles &amp; Causal</button>
+
+=====FRAG=====
+
+  <button class="tab-btn" data-tab="network">Knowledge Graph</button>
+  <button class="tab-btn" data-tab="formulas">Formulas</button>
+  <button class="tab-btn" data-tab="principles">Principles &amp; Causal</button>
+
+=====FRAG=====
+
+  <!-- PRINCIPLES -->
+
+=====FRAG=====
+
+  <!-- FORMULAS -->
+  <section id="tab-formulas" class="tab-panel">
+    <div id="formula-active-banner" class="formula-active-banner idle">
+      <strong>No custom formula this stage</strong> — using default classifier loss.
+    </div>
+
+    <div class="panel">
+      <h2>Formula library — real-time evolution &amp; performance</h2>
+      <p class="hint">UIL evolves custom loss functions (XGBoost path) and symbolic classifiers. Each formula tracks confidence (Wilson lower bound), evidence, helped/hurt counts, and best accuracy achieved.</p>
+      <div class="toolbar">
+        <button id="btn-refresh-formulas">Refresh</button>
+        <label>Filter
+          <select id="formula-filter">
+            <option value="all">All</option>
+            <option value="active">Active</option>
+            <option value="seed">Seed</option>
+            <option value="incubating">Incubating</option>
+            <option value="retired">Retired</option>
+          </select>
+        </label>
+        <label>Sort by
+          <select id="formula-sort">
+            <option value="confidence">Confidence</option>
+            <option value="evidence">Evidence</option>
+            <option value="best_accuracy">Best accuracy</option>
+            <option value="name">Name</option>
+          </select>
+        </label>
+        <span id="formula-summary" class="hint"></span>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <h2>Custom loss formulas (XGBoost objective)</h2>
+        <table id="formulas-loss-table">
+          <thead><tr>
+            <th>id</th><th>name</th><th>status</th><th>conf</th><th>evid</th>
+            <th>+/−</th><th>win%</th><th>best acc</th><th>depth</th><th>origin</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="panel">
+        <h2>Symbolic classifier formulas</h2>
+        <table id="formulas-symbolic-table">
+          <thead><tr>
+            <th>id</th><th>name</th><th>status</th><th>conf</th><th>evid</th>
+            <th>+/−</th><th>win%</th><th>best acc</th><th>depth</th><th>origin</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <h2>Top performers (by confidence)</h2>
+        <canvas id="chart-formulas"></canvas>
+      </div>
+      <div class="panel">
+        <h2>Formula picks this run (live)</h2>
+        <div id="formula-usage-log" class="decision-log"></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Formula detail</h2>
+      <div id="formula-detail"><p class="hint">Click a formula row to see its expression tree and performance history.</p></div>
+    </div>
+  </section>
+
+  <!-- PRINCIPLES -->
+
+=====FRAG=====
+
+<script src="js/network-view.js"></script>
+<script src="js/retrace.js"></script>
+
+=====FRAG=====
+
+<script src="js/network-view.js"></script>
+<script src="js/formula-view.js"></script>
+<script src="js/retrace.js"></script>
+
+=====FRAG=====
+
+        <label>Seed <input id="cfg-seed" type="number" value="42"></label>
+      </div>
+
+=====FRAG=====
+
+        <label>Seed <input id="cfg-seed" type="number" value="42"></label>
+        <label>Target accuracy (0–1, optional)
+          <input id="cfg-target-acc" type="number" step="0.01" min="0" max="1" placeholder="e.g. 0.95">
+        </label>
+        <label>Max stages (cap if target set) <input id="cfg-max-stages" type="number" value="500" min="1"></label>
+      </div>
+      <p class="hint" id="target-acc-hint" style="display:none">
+        <strong>Run-until-target mode:</strong> same data, same train/val split — UIL keeps evolving formulas/stages until accuracy ≥ target or max stages. Best for <strong>SymbolicFormula</strong> on binary datasets (e.g. breast_cancer).
+      </p>
+
+=====FRAG=====
+
+      <p class="hint">Tip: use <strong>40+ stages</strong> on real curated datasets. Only sklearn/OpenML benchmarks — no synthetic data.</p>
+
+=====FRAG=====
+
+      <p class="hint">Tip: use <strong>40+ stages</strong> on real curated datasets. <strong>SymbolicFormula</strong> works on binary and multiclass — UIL feature weights now scale formula inputs per row.</p>
+
+=====FRAG=====
+
+      <p class="hint">Tip: use <strong>40+ stages</strong> on real curated datasets. <strong>SymbolicFormula</strong> works on binary and multiclass — UIL feature weights now scale formula inputs per row.</p>
+      <div class="form-row">
+        <label>Dataset <select id="dataset-select"></select></label>
+        <label>Classifier
+          <select id="classifier-select">
+            <option>XGBoost</option>
+            <option>RandomForest</option>
+            <option>KNN</option>
+            <option>SymbolicFormula</option>
+          </select>
+        </label>
+
+=====FRAG=====
+
+      <p class="hint">Tip: <strong>SymbolicFormula</strong> is standalone — use <strong>Boosting rounds</strong> for internal formula boosting, <strong>auto</strong> mode picks boost/bag/single by dataset size. XGBoost = external GBM baseline.</p>
+      <div class="form-row">
+        <label>Dataset <select id="dataset-select"></select></label>
+        <label>Classifier
+          <select id="classifier-select">
+            <option>XGBoost</option>
+            <option>RandomForest</option>
+            <option>KNN</option>
+            <option selected>SymbolicFormula</option>
+          </select>
+        </label>
+        <label>Symbolic mode
+          <select id="cfg-symbolic-mode">
+            <option value="auto" selected>auto (UIL picks)</option>
+            <option value="single">single formula</option>
+            <option value="boosting">boosting</option>
+            <option value="bagging">bagging</option>
+          </select>
+        </label>
+
+=====FRAG=====
+
+      <p class="hint">Tip: <strong>SymbolicFormula</strong> is standalone — use <strong>Boosting rounds</strong> for internal formula boosting, <strong>auto</strong> mode picks boost/bag/single by dataset size. XGBoost = external GBM baseline.</p>
+
+=====FRAG=====
+
+      <p class="hint">Tip: <strong>SymbolicFormula</strong> uses tournament selection + optional <strong>multi</strong> mode (residual / gradient / Newton boosting). UIL auto-scales to ~75% CPU/RAM. Small datasets get bootstrap copies (≥15 rows) for seeds &amp; particles.</p>
+
+=====FRAG=====
+
+            <option value="bagging">bagging</option>
+          </select>
+
+=====FRAG=====
+
+            <option value="bagging">bagging</option>
+            <option value="multi">multi boost/gradient</option>
+          </select>
+
+=====FRAG=====
+
+      <p class="hint">Tip: <strong>SymbolicFormula</strong> uses tournament selection + optional <strong>multi</strong> mode (residual / gradient / Newton boosting). UIL auto-scales to ~75% CPU/RAM. Small datasets get bootstrap copies (≥15 rows) for seeds &amp; particles.</p>
+
+=====FRAG=====
+
+      <p class="hint">Tip: <strong>multi</strong> = hybrid stack: single + boosting + gradient + bagging (+ boosted-bag) blended together, not pick-one. UIL stress can switch modes per stage.</p>
+
+=====FRAG=====
+
+            <option value="multi">multi boost/gradient</option>
+
+=====FRAG=====
+
+            <option value="multi">multi (hybrid stack)</option>
+
+=====FRAG=====
+
+    <p class="subtitle">Real-time KG + DT + NN decision trace · persistent memory proof</p>
+
+=====FRAG=====
+
+    <p class="subtitle">Real-time KG + DT + NN decision trace · persistent memory proof · UIL runs on 1 worker thread (hybrid mode = heavy per stage)</p>
+
+=====FRAG=====
+
+        <label>Target accuracy (0–1, optional)
+          <input id="cfg-target-acc" type="number" step="0.01" min="0" max="1" placeholder="e.g. 0.95">
+        </label>
+        <label>Max stages (cap if target set) <input id="cfg-max-stages" type="number" value="500" min="1"></label>
+      </div>
+      <p class="hint" id="target-acc-hint" style="display:none">
+        <strong>Run-until-target mode:</strong> same data, same train/val split — UIL keeps evolving formulas/stages until accuracy ≥ target or max stages. Best for <strong>SymbolicFormula</strong> on binary datasets (e.g. breast_cancer).
+      </p>
+      <button id="btn-start-run">▶ Start Run</button>
+
+=====FRAG=====
+
+        <label>Target accuracy (0–1, optional)
+          <input id="cfg-target-acc" type="number" step="0.01" min="0" max="1" value="0.80">
+        </label>
+        <label>Max stages (cap if target set) <input id="cfg-max-stages" type="number" value="300" min="1"></label>
+      </div>
+      <p class="hint" id="target-acc-hint">
+        <strong>Path A (SymbolicFormula):</strong> target <strong>80%</strong> val accuracy on holdout — curriculum: breast_cancer → spambase → sonar (boosting on hard data). Journal = numbers only; principles = mined hypotheses (see Governance).
+      </p>
+      <div class="toolbar">
+        <button id="btn-path-a-preset" type="button">Load Path A preset</button>
+      </div>
+      <button id="btn-start-run">▶ Start Run</button>
+
+=====FRAG=====
+
+  <!-- PRINCIPLES -->
+  <section id="tab-principles" class="tab-panel">
+    <div class="panel">
+
+=====FRAG=====
+
+  <!-- PRINCIPLES -->
+  <section id="tab-principles" class="tab-panel">
+    <div class="panel">
+      <h2>Governance — journal vs principles (Path A)</h2>
+      <p class="hint">Seed rules installed at startup / memory clear. Keeps the journal numeric and principles hypothesis-only.</p>
+      <div id="governance-panel" class="governance-panel"><p class="hint">Loading…</p></div>
+    </div>
+    <div class="panel">
+
+=====FRAG=====
+
+      <table id="persistence-table">
+        <thead><tr><th>Store</th><th>Exists</th><th>Size</th><th>Records</th><th>Path</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="grid-2">
+
+=====FRAG=====
+
+      <table id="persistence-table">
+        <thead><tr><th>Store</th><th>Exists</th><th>Size</th><th>Records</th><th>Last modified (UTC)</th><th>Path</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="panel">
+      <h2>Memory architecture — working vs archive</h2>
+      <p class="hint">Working graph/formulas are pruned during runs for speed. Everything removed is copied to the archive with timestamps in separate changelog files.</p>
+      <div id="memory-architecture-summary" class="kv-grid"></div>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <h2>Dataset champions (resume accuracy)</h2>
+        <div id="champions-list"><p class="hint">Loading…</p></div>
+      </div>
+      <div class="panel">
+        <h2>Exploration consciousness</h2>
+        <div class="toolbar">
+          <label>Dataset
+            <select id="consciousness-dataset"><option value="">— pick dataset —</option></select>
+          </label>
+          <button id="btn-load-consciousness">Load brief</button>
+        </div>
+        <div id="consciousness-panel"><p class="hint">Shows what was already tried, conclusions reached, and formulas to avoid.</p></div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <h2>Graph changelog (nodes &amp; edges)</h2>
+        <p class="hint">Timestamps live here — not on working graph nodes.</p>
+        <div id="graph-changelog" class="changelog-feed"></div>
+      </div>
+      <div class="panel">
+        <h2>Formula changelog</h2>
+        <div id="formula-changelog" class="changelog-feed"></div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+
+=====FRAG=====
+
+            <th>id</th><th>name</th><th>status</th><th>conf</th><th>evid</th>
+            <th>+/−</th><th>win%</th><th>best acc</th><th>depth</th><th>origin</th>
+
+=====FRAG=====
+
+            <th>id</th><th>name</th><th>status</th><th>conf</th><th>evid</th>
+            <th>+/−</th><th>win%</th><th>best acc</th><th>updated</th><th>depth</th><th>origin</th>
+
+=====FRAG=====
+
+          <div><span class="k">KG nodes / edges</span><span id="mem-network">0/0</span></div>
+
+=====FRAG=====
+
+          <div><span class="k">KG nodes / edges</span><span id="mem-network">0/0</span></div>
+          <div><span class="k">Archive nodes</span><span id="mem-archive">0</span></div>
+          <div><span class="k">Champion acc</span><span id="mem-champion">—</span></div>
+
+=====FRAG=====
+
+      <div class="toolbar">
+        <button id="btn-path-a-preset" type="button">Load Path A preset</button>
+      </div>
+      <button id="btn-start-run">▶ Start Run</button>
+
+=====FRAG=====
+
+      <div class="toolbar">
+        <button id="btn-path-a-preset" type="button">Load Path A preset</button>
+      </div>
+      <div id="system-resources" class="hint kv-grid" style="margin:12px 0"></div>
+      <button id="btn-start-run">▶ Start Run</button>
+
+=====FRAG=====
+
+      <table id="runs-table"><thead><tr><th>id</th><th>dataset</th><th>classifier</th><th>status</th><th>stage</th></tr></thead><tbody></tbody></table>
+
+=====FRAG=====
+
+      <table id="runs-table"><thead><tr><th>id</th><th>dataset</th><th>classifier</th><th>status</th><th>stage</th><th>error</th></tr></thead><tbody></tbody></table>
+
+=====FRAG=====
+
+          <div><span class="k">Archive nodes</span><span id="mem-archive">0</span></div>
+
+=====FRAG=====
+
+          <div><span class="k">Archive nodes / edges</span><span id="mem-archive">0</span></div>
+
+=====FRAG=====
+
+  <button class="tab-btn" data-tab="external">Terminal Runs</button>
+
+=====FRAG=====
+
+  <button class="tab-btn" data-tab="hitl">HITL Review</button>
+  <button class="tab-btn" data-tab="external">Terminal Runs</button>
+
+=====FRAG=====
+
+  <!-- TERMINAL / EXTERNAL RUNS -->
+
+=====FRAG=====
+
+  <!-- HITL REVIEW (v22 M5) -->
+  <section id="tab-hitl" class="tab-panel">
+    <div class="panel">
+      <h2>Knowledge cell review (HITL)</h2>
+      <p class="hint">Accept / edit / reject cells between runs. Every action is a <code>human_edit</code> or <code>human_reject</code> event — undo = replay to previous seq.</p>
+      <button id="btn-hitl-refresh">Refresh cells &amp; lab report</button>
+      <span id="hitl-last-seq" class="hint"></span>
+      <div id="hitl-cells" style="margin-top:12px"></div>
+    </div>
+    <div class="panel">
+      <h2>Replay preview (undo)</h2>
+      <pre id="hitl-replay-preview" class="hint">Select Undo preview on a row to reconstruct state at seq-1.</pre>
+    </div>
+    <div class="panel">
+      <h2>Latest lab report</h2>
+      <div id="hitl-lab-report"><p class="hint">Auto-generated at end of each UIL run.</p></div>
+    </div>
+  </section>
+
+  <!-- TERMINAL / EXTERNAL RUNS -->
+
+=====FRAG=====
+
+<script src="js/app.js"></script>
+
+=====FRAG=====
+
+<script src="js/hitl-review.js"></script>
+<script src="js/app.js"></script>
+
+=====FRAG=====
+
+      <button id="btn-hitl-refresh">Refresh cells &amp; lab report</button>
+
+=====FRAG=====
+
+      <button id="btn-hitl-refresh">Refresh cells &amp; lab report</button>
+      <label>Filter <select id="hitl-type-filter">
+        <option value="">all types</option>
+        <option value="principle">principles</option>
+        <option value="routing_rule">routing rules</option>
+        <option value="formula">formulas</option>
+        <option value="causal_hypothesis">causal</option>
+        <option value="node">KG nodes</option>
+        <option value="edge">KG edges</option>
+        <option value="episode">episodes</option>
+      </select></label>
+
+=====FRAG=====
+
+href="/desktop/
+
+=====FRAG=====
+
+href="/app/
+
+=====FRAG=====
+
+href="/desktop/#kg"
+
+=====FRAG=====
+
+href="/app/#kg"
+
+=====FRAG=====
+
+href="/desktop/#hitl"
+
+=====FRAG=====
+
+href="/app/#hitl"
+
+=====FRAG=====
+
+<script src="js/site.js"></script>
+<script src="js/embed-kg.js"></script>
+<script src="js/embed-hitl.js"></script>
+
+=====FRAG=====
+
+<script src="js/site.js"></script>
+<script type="module" src="js/anime-motion.js"></script>
+<script src="js/embed-kg.js"></script>
+<script src="js/embed-hitl.js"></script>
+
+=====FRAG=====
+
+<link rel="stylesheet" href="/shared/tokens.css">
+<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="modes.css">
+</head>
+<body>
+
+<div class="site-grid" aria-hidden="true"></div>
+<div class="site-scan" aria-hidden="true"></div>
+
+=====FRAG=====
+
+<link rel="stylesheet" href="/shared/tokens.css">
+<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="modes.css">
+<link rel="stylesheet" href="story.css">
+</head>
+<body class="has-intro">
+
+<canvas class="site-field" id="siteField" aria-hidden="true"></canvas>
+<div class="site-grid" aria-hidden="true"></div>
+<div class="site-scan" aria-hidden="true"></div>
+
+=====FRAG=====
+
+<main id="top">
+
+  <!-- ═══════════ HERO ═══════════ -->
+  <section class="hero hud-frame" id="hero">
+    <span class="hud-bl" aria-hidden="true"></span>
+    <span class="hud-br" aria-hidden="true"></span>
+    <img class="hero-photo" src="assets/photos/galaxy.jpg" alt="" aria-hidden="true">
+    <canvas class="hero-gl" id="heroGl" aria-hidden="true"></canvas>
+    <img class="hero-planet" src="assets/photos/earth.jpg" alt="Earth photographed from space (NASA)">
+    <img class="hero-brain" src="assets/brain-mesh.svg" alt="" aria-hidden="true">
+    <div class="hero-inner reveal">
+      <div class="hero-kicker"><span class="pulse-dot"></span><span class="hud-label">SYS · UIL</span>&nbsp;Universal Intelligence Layer · v19 → v22 “The Editable Scientist”</div>
+      <h1 class="hero-title">
+        A machine that <span class="u-grad-text">remembers,<br>reasons,</span> and can be <em>corrected.</em>
+      </h1>
+      <p class="hero-sub">
+        FIGPSO UIL wraps ordinary classifiers in a cognitive layer that watches every run,
+        mines causal rules about why it succeeds or fails, stores them as inspectable, editable
+        knowledge — and applies them to the next run. No labels. A human can overrule any belief.
+      </p>
+      <div class="hero-cta">
+        <a class="btn primary big" href="/app/">Open the Research Console<span class="btn-arrow">→</span></a>
+        <a class="btn ghost big" href="#graph">Explore the live graph</a>
+      </div>
+      <div class="hero-stats" id="heroStats">
+        <div class="hstat"><b id="hsGraph">—</b><span>neurons · synapses</span></div>
+        <div class="hstat"><b id="hsMemory">—</b><span>persisted knowledge</span></div>
+        <div class="hstat"><b id="hsEvents">—</b><span>events in history</span></div>
+        <div class="hstat"><b id="hsFiles">—</b><span>memory stores</span></div>
+      </div>
+    </div>
+    <a class="hero-scroll" href="#what" aria-label="Scroll down"><span></span></a>
+  </section>
+
+=====FRAG=====
+
+<main id="siteMain">
+
+  <!-- ═══════════ INTRO (scroll to enter) ═══════════ -->
+  <section class="intro-pin" id="intro" aria-label="Introduction">
+    <div class="intro-sticky" id="introSticky">
+      <div class="intro-bg-wash" aria-hidden="true"></div>
+      <div class="intro-mark" aria-hidden="true">
+        <span class="orbit"></span><span class="orbit2"></span><span class="core"></span>
+      </div>
+      <div class="intro-kicker">FIGPSO · Universal Intelligence Layer</div>
+      <h1 class="intro-title">The editable<br>scientist.</h1>
+      <p class="intro-sub">Optimized search. Transparent beliefs. A cognitive engine you can read, correct, and trust.</p>
+      <div class="intro-scroll-hint" aria-hidden="true">
+        <span>Scroll to enter</span>
+        <span class="bar"></span>
+      </div>
+    </div>
+  </section>
+
+  <div id="top">
+
+  <!-- ═══════════ HERO ═══════════ -->
+  <section class="hero hud-frame" id="hero">
+    <span class="hud-bl" aria-hidden="true"></span>
+    <span class="hud-br" aria-hidden="true"></span>
+    <img class="hero-photo" src="assets/photos/galaxy.jpg" alt="" aria-hidden="true">
+    <img class="hero-planet" src="assets/photos/earth.jpg" alt="Earth photographed from space (NASA)">
+    <img class="hero-brain" src="assets/brain-mesh.svg" alt="" aria-hidden="true">
+    <div class="hero-inner reveal">
+      <div class="hero-kicker"><span class="pulse-dot"></span><span class="hud-label">SYS · UIL</span>&nbsp;Universal Intelligence Layer · v19 → v22 “The Editable Scientist”</div>
+      <h1 class="hero-title">
+        A machine that <span class="u-grad-text">remembers,<br>reasons,</span> and can be <em>corrected.</em>
+      </h1>
+      <p class="hero-sub">
+        FIGPSO UIL wraps ordinary classifiers in a cognitive layer that watches every run,
+        mines causal rules about why it succeeds or fails, stores them as inspectable, editable
+        knowledge — and applies them to the next run. No labels. A human can overrule any belief.
+      </p>
+      <div class="hero-cta">
+        <a class="btn primary big" href="/app/">Open the Research Console<span class="btn-arrow">→</span></a>
+        <a class="btn ghost big" href="#graph">Explore the live graph</a>
+      </div>
+      <div class="hero-stats" id="heroStats">
+        <div class="hstat"><b id="hsGraph">—</b><span>neurons · synapses</span></div>
+        <div class="hstat"><b id="hsMemory">—</b><span>persisted knowledge</span></div>
+        <div class="hstat"><b id="hsEvents">—</b><span>events in history</span></div>
+        <div class="hstat"><b id="hsFiles">—</b><span>memory stores</span></div>
+      </div>
+    </div>
+    <a class="hero-scroll" href="#pillars" aria-label="Scroll down"><span></span></a>
+  </section>
+
+  <!-- ═══════════ OPTIMIZED + TRANSPARENT ═══════════ -->
+  <section class="chapter" id="pillars">
+    <div class="wrap">
+      <div class="chapter-head reveal">
+        <span class="chapter-idx">00 · WHY UIL</span>
+        <h2>Optimized. Transparent.</h2>
+        <p class="chapter-lead">Two ML promises that usually fight each other — UIL is built so they don't. Swarm search finds good configs; every belief stays a readable, editable cell.</p>
+      </div>
+      <div class="pillar-grid">
+        <article class="pillar hud-frame reveal" id="pillarTransparent" style="--d:0">
+          <span class="hud-bl"></span><span class="hud-br"></span>
+          <div class="pillar-tag">Transparency · glass over the black box</div>
+          <h3>See through the model</h3>
+          <p class="pillar-lead">Most ML hides decisions in opaque weights. UIL peels the box: glass layers of confidence, then a symbolic law you can read — and rewrite.</p>
+          <div class="glass-stack" aria-hidden="true">
+            <div class="glass-layer box">BLACK BOX · WEIGHTS</div>
+            <div class="glass-layer glass">GLASS · CONFIDENCE · TIER</div>
+            <div class="glass-layer law">σ(−0.88·1[x₂₆>-0.24] + …)</div>
+          </div>
+          <p class="glass-caption"><b>Transparency in ML</b> means inspectable intermediate beliefs — not a post-hoc heatmap on a sealed model.</p>
+        </article>
+
+        <article class="pillar hud-frame reveal" id="pillarOptimized" style="--d:1">
+          <span class="hud-bl"></span><span class="hud-br"></span>
+          <div class="pillar-tag">Optimization · cognition engine</div>
+          <h3>A turbo loop for search</h3>
+          <p class="pillar-lead">Like anime.js’s animation engine — one clock driving many motions — UIL’s cognition engine drives PSO, mining, and execution in sync. Pause it. Speed it. Watch the swarm converge.</p>
+          <div class="cog-engine" id="cogEngine">
+            <div class="engine-viz" id="engineViz">
+              <div class="engine-dots" id="engineDots"></div>
+              <div class="engine-ring" id="engineRing"></div>
+              <div class="engine-ring r2" id="engineRing2"></div>
+              <div class="engine-core-label"><b id="engineStage">PSO</b>stage</div>
+            </div>
+            <div class="engine-panel">
+              <div class="engine-row"><span>Speed</span><div class="engine-meter"><i id="meterSpeed"></i></div><b id="valSpeed">1.00×</b></div>
+              <div class="engine-row"><span>Swarm</span><div class="engine-meter"><i id="meterSwarm"></i></div><b id="valSwarm">64</b></div>
+              <div class="engine-row"><span>Stress</span><div class="engine-meter"><i id="meterStress"></i></div><b id="valStress">0.42</b></div>
+              <div class="engine-row"><span>FPS</span><div class="engine-meter"><i id="meterFps"></i></div><b id="valFps">60</b></div>
+              <div class="engine-controls">
+                <button type="button" id="enginePause" aria-pressed="false">Pause</button>
+                <button type="button" id="engineBoost" aria-pressed="false">Turbo</button>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+=====FRAG=====
+
+  </footer>
+
+</main>
+
+<script src="/shared/js/loader.js"></script>
+<script src="/shared/js/neural-graph.js"></script>
+<script src="/shared/js/neural-field.js"></script>
+<script src="/shared/js/cursor.js"></script>
+<script src="js/site.js"></script>
+<script type="module" src="js/anime-motion.js"></script>
+<script src="js/embed-kg.js"></script>
+<script src="js/embed-hitl.js"></script>
+</body>
+</html>
+
+=====FRAG=====
+
+  </footer>
+
+  </div><!-- /#top -->
+</main>
+
+<script src="/shared/js/loader.js"></script>
+<script src="/shared/js/neural-graph.js"></script>
+<script src="/shared/js/neural-field.js"></script>
+<script src="/shared/js/cursor.js"></script>
+<script src="js/site.js"></script>
+<script type="module" src="js/anime-motion.js"></script>
+<script src="js/embed-kg.js"></script>
+<script src="js/embed-hitl.js"></script>
+</body>
+</html>
+
+=====FRAG=====
+
+    <a href="#what" data-nav>What it is</a>
+
+=====FRAG=====
+
+    <a href="#pillars" data-nav>Why UIL</a>
+    <a href="#what" data-nav>What it is</a>
+
+=====FRAG=====
+
+      <div class="intro-atmos" aria-hidden="true">
+        <img class="intro-photo" src="assets/photos/nebula.jpg" alt="">
+        <div class="intro-fog f1"></div>
+        <div class="intro-fog f2"></div>
+        <div class="intro-vignette"></div>
+      </div>
+      <div class="intro-bg-wash" aria-hidden="true"></div>
+
+      <div class="intro-engine" id="introEngine" aria-hidden="true">
+        <svg viewBox="-110 -110 220 220" role="presentation">
+          <defs>
+            <radialGradient id="ieCore" cx="42%" cy="38%" r="65%">
+              <stop offset="0%" stop-color="#eaf1ff"/><stop offset="45%" stop-color="#3b74ff"/><stop offset="100%" stop-color="#21d99a"/>
+            </radialGradient>
+          </defs>
+          <g class="ie-ring ie-outer">
+            <circle r="98" class="ie-track"/>
+            <circle r="98" class="ie-blades"/>
+          </g>
+          <g class="ie-ring ie-mid"><circle r="70" class="ie-track2"/></g>
+          <g class="ie-pistons" id="iePistons"></g>
+          <g class="ie-spokes" id="ieSpokes"></g>
+          <circle r="26" class="ie-corebg"/>
+          <circle r="15" class="ie-core" fill="url(#ieCore)"/>
+          <circle r="5" class="ie-spark"/>
+        </svg>
+        <div class="ie-readout"><b id="ieRpm">0</b><span>rpm · idle</span></div>
+      </div>
+
+      <div class="intro-kicker">FIGPSO · Universal Intelligence Layer</div>
+      <h1 class="intro-title">The editable<br>scientist.</h1>
+      <p class="intro-poem" id="introPoem">It remembers what it learns —<br>and lets you correct it.</p>
+
+      <div class="intro-foot">
+        <span class="intro-copy">© 2026 · FIGPSO UIL</span>
+        <span class="intro-clock"><b id="clkLocal">--:--:--</b> <em id="clkLocalZone">LOCAL</em></span>
+        <span class="intro-clock"><b id="clkTokyo">--:--:--</b> <em>JST · TOKYO</em></span>
+        <a class="intro-scrollword" href="#top"><span>SCROLL</span><i class="bar"></i></a>
+      </div>
+
+=====FRAG=====
+
+      <div class="intro-atmos" aria-hidden="true">
+        <video
+          class="intro-video"
+          id="introVideo"
+          muted
+          playsinline
+          preload="auto"
+          poster="assets/photos/nebula.jpg"
+        >
+          <source src="assets/video/nasa-bh-plunge.mp4" type="video/mp4">
+        </video>
+        <div class="intro-vignette"></div>
+        <div class="intro-credit">NASA · black-hole plunge simulation (SVS 14576)</div>
+      </div>
+      <div class="intro-bg-wash" aria-hidden="true"></div>
+
+      <div class="intro-logo-wrap" id="introLogo" aria-hidden="true">
+        <img class="intro-logo" src="/shared/assets/logo-mark.svg" alt="FIGPSO UIL">
+        <div class="intro-logo-ring" aria-hidden="true"></div>
+      </div>
+
+      <div class="intro-kicker">FIGPSO · Universal Intelligence Layer</div>
+      <h1 class="intro-title">The editable<br>scientist.</h1>
+      <p class="intro-poem" id="introPoem">It remembers what it learns —<br>and lets you correct it.</p>
+
+      <div class="intro-foot">
+        <span class="intro-copy">© 2026 · FIGPSO UIL</span>
+        <span class="intro-clock"><b id="clkLocal">--:--:--</b> <em id="clkLocalZone">LOCAL</em></span>
+        <span class="intro-clock"><b id="clkTokyo">--:--:--</b> <em>JST · TOKYO</em></span>
+        <a class="intro-scrollword" href="#top"><span>SCROLL</span><i class="bar"></i></a>
+      </div>
+
+=====FRAG=====
+
+<script type="module" src="js/anime-motion.js"></script>
+<script type="module" src="js/intro-engine.js"></script>
+<script type="module" src="js/exploded-engine.js"></script>
+
+=====FRAG=====
+
+<script type="module" src="js/anime-motion.js"></script>
+<script src="js/intro-scrub.js"></script>
+<script type="module" src="js/exploded-engine.js"></script>
+
+=====FRAG=====
+
+          <div class="pillar-tag">Optimization · cognition engine</div>
+          <h3>A turbo loop for search</h3>
+          <p class="pillar-lead">Like anime.js’s animation engine — one clock driving many motions — UIL’s cognition engine drives PSO, mining, and execution in sync. Pause it. Speed it. Watch the swarm converge.</p>
+
+=====FRAG=====
+
+          <div class="pillar-tag">Optimization · cognition turbine</div>
+          <h3>A turbo loop for search</h3>
+          <p class="pillar-lead">Like the anime.js animation engine — one clock driving many motions — UIL’s cognition turbine drives PSO, mining, and execution in sync. Pause it. Turbo it. Watch the swarm converge. (Full exploded pipeline below.)</p>
+
+=====FRAG=====
+
+      <div class="intro-atmos" aria-hidden="true">
+        <video
+          class="intro-video"
+          id="introVideo"
+          muted
+          playsinline
+          preload="auto"
+          poster="assets/photos/nebula.jpg"
+        >
+          <source src="assets/video/nasa-bh-plunge.mp4" type="video/mp4">
+        </video>
+        <div class="intro-vignette"></div>
+        <div class="intro-credit">NASA · black-hole plunge simulation (SVS 14576)</div>
+      </div>
+
+=====FRAG=====
+
+      <div class="intro-atmos" aria-hidden="true">
+        <video
+          class="intro-video"
+          id="introVideo"
+          muted
+          playsinline
+          preload="auto"
+          src="/assets/video/nasa-bh-plunge.mp4"
+        ></video>
+        <div class="intro-vignette"></div>
+        <div class="intro-credit">NASA · black-hole plunge simulation (SVS 14576)</div>
+      </div>
+
+=====FRAG=====
+
+        <video
+          class="intro-video"
+          id="introVideo"
+          muted
+          playsinline
+          preload="auto"
+          src="/assets/video/nasa-bh-plunge.mp4"
+        ></video>
+
+=====FRAG=====
+
+        <video
+          class="intro-video"
+          id="introVideo"
+          muted
+          playsinline
+          webkit-playsinline
+          preload="auto"
+          src="/assets/video/nasa-bh-plunge.mp4?v=1080"
+        ></video>
+
+=====FRAG=====
+
+<html lang="en" data-theme="dark" data-view="rendered">
+
+=====FRAG=====
+
+<html lang="en" data-theme="dark" data-view="rendered" class="is-intro">
+
+=====FRAG=====
+
+          src="/assets/video/nasa-bh-plunge.mp4?v=1080"
+
+=====FRAG=====
+
+          src="/assets/video/nasa-bh-plunge-lite.mp4?v=2"
+
+=====FRAG=====
+
+      <div class="intro-foot">
+        <span class="intro-copy">© 2026 · FIGPSO UIL</span>
+        <span class="intro-clock"><b id="clkLocal">--:--:--</b> <em id="clkLocalZone">LOCAL</em></span>
+        <span class="intro-clock"><b id="clkTokyo">--:--:--</b> <em>JST · TOKYO</em></span>
+        <a class="intro-scrollword" href="#top"><span>SCROLL</span><i class="bar"></i></a>
+      </div>
+
+=====FRAG=====
+
+      <div class="intro-foot">
+        <span class="intro-copy">© 2026 · FIGPSO UIL</span>
+        <span class="intro-clock"><b id="clkLocal">--:--:--</b> <em id="clkLocalZone">LOCAL</em></span>
+        <span class="intro-clock"><b id="clkTokyo">--:--:--</b> <em>JST · TOKYO</em></span>
+        <button type="button" class="intro-skip" id="introSkip">Skip →</button>
+      </div>
+      <div class="intro-progress" aria-hidden="true"><i id="introBar"></i></div>
+
+=====FRAG=====
+
+<script src="/shared/js/loader.js"></script>
+<script src="/shared/js/neural-graph.js"></script>
+<script src="/shared/js/neural-field.js"></script>
+<script src="/shared/js/cursor.js"></script>
+<script src="js/site.js"></script>
+<script type="module" src="js/anime-motion.js"></script>
+<script src="js/intro-scrub.js"></script>
+
+=====FRAG=====
+
+<script src="/shared/js/loader.js"></script>
+<script src="/shared/js/neural-graph.js"></script>
+<script src="/shared/js/neural-field.js"></script>
+<script src="js/site.js"></script>
+<script type="module" src="js/anime-motion.js"></script>
+<script src="js/intro-scrub.js"></script>
+
+=====FRAG=====
+
+  <!-- ═══════════ INTRO (scroll to enter) ═══════════ -->
+
+=====FRAG=====
+
+  <!-- ═══════════ INTRO (autoplay plunge → site) ═══════════ -->
+
+=====FRAG=====
+
+          src="/assets/video/nasa-bh-plunge-lite.mp4?v=2"
+
+=====FRAG=====
+
+          src="/assets/video/nasa-bh-plunge-lite.mp4?v=3"
+
+=====FRAG=====
+
+<script src="/shared/js/loader.js"></script>
+<script src="/shared/js/neural-graph.js"></script>
+<script src="/shared/js/neural-field.js"></script>
+<script src="js/site.js"></script>
+<script type="module" src="js/anime-motion.js"></script>
+<script src="js/intro-scrub.js"></script>
+<script type="module" src="js/exploded-engine.js"></script>
+<script src="js/embed-kg.js"></script>
+<script src="js/embed-hitl.js"></script>
+
+=====FRAG=====
+
+<script src="/shared/js/loader.js"></script>
+<script src="/shared/js/neural-graph.js"></script>
+<script src="/shared/js/neural-field.js"></script>
+<script src="/shared/js/cursor.js"></script>
+<script src="js/site.js"></script>
+<script type="module" src="js/anime-motion.js"></script>
+<script src="js/intro-scrub.js"></script>
+<script src="js/uil-machine.js"></script>
+<script src="js/embed-kg.js"></script>
+<script src="js/embed-hitl.js"></script>
+
+=====FRAG=====
+
+        <article class="pillar hud-frame reveal" id="pillarOptimized" style="--d:1">
+          <span class="hud-bl"></span><span class="hud-br"></span>
+          <div class="pillar-tag">Optimization · cognition turbine</div>
+          <h3>A turbo loop for search</h3>
+          <p class="pillar-lead">Like the anime.js animation engine — one clock driving many motions — UIL’s cognition turbine drives PSO, mining, and execution in sync. Pause it. Turbo it. Watch the swarm converge. (Full exploded pipeline below.)</p>
+          <div class="cog-engine" id="cogEngine">
+            <div class="engine-viz" id="engineViz">
+              <div class="engine-dots" id="engineDots"></div>
+              <div class="engine-ring" id="engineRing"></div>
+              <div class="engine-ring r2" id="engineRing2"></div>
+              <div class="engine-core-label"><b id="engineStage">PSO</b>stage</div>
+            </div>
+            <div class="engine-panel">
+              <div class="engine-row"><span>Speed</span><div class="engine-meter"><i id="meterSpeed"></i></div><b id="valSpeed">1.00×</b></div>
+              <div class="engine-row"><span>Swarm</span><div class="engine-meter"><i id="meterSwarm"></i></div><b id="valSwarm">64</b></div>
+              <div class="engine-row"><span>Stress</span><div class="engine-meter"><i id="meterStress"></i></div><b id="valStress">0.42</b></div>
+              <div class="engine-row"><span>FPS</span><div class="engine-meter"><i id="meterFps"></i></div><b id="valFps">60</b></div>
+              <div class="engine-controls">
+                <button type="button" id="enginePause" aria-pressed="false">Pause</button>
+                <button type="button" id="engineBoost" aria-pressed="false">Turbo</button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+=====FRAG=====
+
+        <article class="pillar hud-frame reveal" id="pillarOptimized" style="--d:1">
+          <span class="hud-bl"></span><span class="hud-br"></span>
+          <div class="pillar-tag">Optimization · cognitive machine</div>
+          <h3>A closed loop that learns itself</h3>
+          <p class="pillar-lead">UIL is not a jet metaphor — it is a <b>cognitive machine</b>: search writes a journal, mining turns regret into principles, the executor steers the next stage. Pause it. Turbo it. Watch the stages fire in order.</p>
+          <div class="cog-engine" id="cogEngine">
+            <div class="engine-viz" id="engineViz" aria-hidden="true">
+              <div class="engine-dots" id="engineDots"></div>
+              <div class="engine-ring" id="engineRing"></div>
+              <div class="engine-ring r2" id="engineRing2"></div>
+              <div class="engine-core-label"><b id="engineStage">PSO</b>stage</div>
+            </div>
+            <div class="engine-panel">
+              <div class="engine-row"><span>Speed</span><div class="engine-meter"><i id="meterSpeed"></i></div><b id="valSpeed">1.00×</b></div>
+              <div class="engine-row"><span>Swarm</span><div class="engine-meter"><i id="meterSwarm"></i></div><b id="valSwarm">64</b></div>
+              <div class="engine-row"><span>Stress</span><div class="engine-meter"><i id="meterStress"></i></div><b id="valStress">0.42</b></div>
+              <div class="engine-row"><span>FPS</span><div class="engine-meter"><i id="meterFps"></i></div><b id="valFps">60</b></div>
+              <div class="engine-controls">
+                <button type="button" id="enginePause" aria-pressed="false">Pause</button>
+                <button type="button" id="engineBoost" aria-pressed="false">Turbo</button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+=====FRAG=====
+
+  <!-- ═══════════ EXPLODED ENGINE ═══════════ -->
+  <section class="chapter alt" id="engine">
+    <div class="wrap">
+      <div class="chapter-head reveal">
+        <span class="chapter-idx">01·5 · THE ENGINE</span>
+        <h2>The cognition turbine, exploded.</h2>
+        <p class="chapter-lead">One engine, seven stages. Data flows in through the swarm intake and out as a corrected belief — the same way air moves through a jet turbine. Watch it come apart, or take the controls.</p>
+      </div>
+
+      <div class="exploded reveal" id="exploded">
+        <div class="exploded-rig" id="explodedRig" style="--ex:0">
+          <div class="exploded-axis" aria-hidden="true"></div>
+
+          <div class="estage" style="--i:0;--sz:1.06;--c:var(--acc)">
+            <svg class="edisc" viewBox="-54 -36 108 72" aria-hidden="true">
+              <ellipse class="disc-glow" rx="50" ry="30"/><ellipse class="disc-blades" rx="42" ry="25"/>
+              <ellipse class="disc-rim" rx="50" ry="30"/><ellipse class="disc-inner" rx="20" ry="12"/><circle class="disc-hub" r="6"/>
+            </svg>
+            <div class="elabel"><span class="epart">01 · INTAKE FAN</span><b>PSO Search</b><span class="edesc">swarm explores classifier configs</span></div>
+          </div>
+
+          <div class="estage" style="--i:1;--sz:0.9;--c:var(--synapse)">
+            <svg class="edisc" viewBox="-54 -36 108 72" aria-hidden="true">
+              <ellipse class="disc-glow" rx="50" ry="30"/><ellipse class="disc-blades" rx="42" ry="25"/>
+              <ellipse class="disc-rim" rx="50" ry="30"/><ellipse class="disc-inner" rx="20" ry="12"/><circle class="disc-hub" r="6"/>
+            </svg>
+            <div class="elabel"><span class="epart">02 · LP COMPRESSOR</span><b>Journal</b><span class="edesc">state · action · outcome, per stage</span></div>
+          </div>
+
+          <div class="estage" style="--i:2;--sz:0.78;--c:var(--s3)">
+            <svg class="edisc" viewBox="-54 -36 108 72" aria-hidden="true">
+              <ellipse class="disc-glow" rx="50" ry="30"/><ellipse class="disc-blades" rx="42" ry="25"/>
+              <ellipse class="disc-rim" rx="50" ry="30"/><ellipse class="disc-inner" rx="20" ry="12"/><circle class="disc-hub" r="6"/>
+            </svg>
+            <div class="elabel"><span class="epart">03 · HP COMPRESSOR</span><b>DT Miner</b><span class="edesc">decision trees mine rules</span></div>
+          </div>
+
+          <div class="estage burn" style="--i:3;--sz:0.72;--c:var(--c-orange)">
+            <svg class="edisc" viewBox="-54 -36 108 72" aria-hidden="true">
+              <ellipse class="disc-glow" rx="50" ry="30"/><ellipse class="disc-blades" rx="42" ry="25"/>
+              <ellipse class="disc-rim" rx="50" ry="30"/><ellipse class="disc-inner" rx="20" ry="12"/><circle class="disc-hub" r="6"/>
+            </svg>
+            <div class="elabel"><span class="epart">04 · COMBUSTOR</span><b>Causal Engine</b><span class="edesc">hypotheses ignite — majority-of-3</span></div>
+          </div>
+
+          <div class="estage" style="--i:4;--sz:0.78;--c:var(--s2)">
+            <svg class="edisc" viewBox="-54 -36 108 72" aria-hidden="true">
+              <ellipse class="disc-glow" rx="50" ry="30"/><ellipse class="disc-blades" rx="42" ry="25"/>
+              <ellipse class="disc-rim" rx="50" ry="30"/><ellipse class="disc-inner" rx="20" ry="12"/><circle class="disc-hub" r="6"/>
+            </svg>
+            <div class="elabel"><span class="epart">05 · HP TURBINE</span><b>Principle Library</b><span class="edesc">tiered, confidence-weighted rules</span></div>
+          </div>
+
+          <div class="estage" style="--i:5;--sz:0.9;--c:var(--neural)">
+            <svg class="edisc" viewBox="-54 -36 108 72" aria-hidden="true">
+              <ellipse class="disc-glow" rx="50" ry="30"/><ellipse class="disc-blades" rx="42" ry="25"/>
+              <ellipse class="disc-rim" rx="50" ry="30"/><ellipse class="disc-inner" rx="20" ry="12"/><circle class="disc-hub" r="6"/>
+            </svg>
+            <div class="elabel"><span class="epart">06 · LP TURBINE</span><b>Executor</b><span class="edesc">principles steer the next stage</span></div>
+          </div>
+
+          <div class="estage" style="--i:6;--sz:0.64;--c:var(--c-red)">
+            <svg class="edisc" viewBox="-54 -36 108 72" aria-hidden="true">
+              <ellipse class="disc-glow" rx="50" ry="30"/><ellipse class="disc-blades" rx="42" ry="25"/>
+              <ellipse class="disc-rim" rx="50" ry="30"/><ellipse class="disc-inner" rx="20" ry="12"/><circle class="disc-hub" r="6"/>
+            </svg>
+            <div class="elabel"><span class="epart">07 · EXHAUST</span><b>VersionStore</b><span class="edesc">every belief, event-sourced</span></div>
+          </div>
+        </div>
+
+        <div class="exploded-controls">
+          <button type="button" class="btn ghost sm" id="explodeToggle" aria-pressed="false">Explode</button>
+          <label class="exploded-scrub-wrap"><span>Assembled</span>
+            <input type="range" id="explodeScrub" min="0" max="100" value="0" aria-label="Explode amount">
+            <span>Exploded</span>
+          </label>
+          <span class="exploded-hint">drag any stage to fling it — it springs back · hover to isolate · casing: Knowledge Graph · HITL · Symbolic laws wrap the core</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+=====FRAG=====
+
+  <!-- ═══════════ UIL MACHINE ═══════════ -->
+  <section class="chapter alt" id="engine">
+    <div class="wrap">
+      <div class="chapter-head reveal">
+        <span class="chapter-idx">01·5 · THE MACHINE</span>
+        <h2>UIL, as a machine.</h2>
+        <p class="chapter-lead">Every run is a pipeline of named subsystems — search, memory, mining, belief, execution, history, and human override. Click a bay to see what it does.</p>
+      </div>
+
+      <div class="uil-machine reveal" id="uilMachine">
+        <div class="um-chassis hud-frame">
+          <span class="hud-bl"></span><span class="hud-br"></span>
+          <div class="um-rail" aria-hidden="true">
+            <i class="um-pulse"></i>
+          </div>
+
+          <div class="um-io um-in">
+            <span class="um-io-tag">IN</span>
+            <b>Dataset + classifier</b>
+            <em>fingerprint · normalize · route</em>
+          </div>
+
+          <div class="um-bays" role="list">
+            <button type="button" class="um-bay is-on" role="listitem" data-id="router" style="--c:var(--acc)">
+              <span class="um-num">01</span>
+              <span class="um-name">Domain Router</span>
+              <span class="um-hint">strategy</span>
+            </button>
+            <button type="button" class="um-bay" role="listitem" data-id="pso" style="--c:var(--acc-2)">
+              <span class="um-num">02</span>
+              <span class="um-name">PSO Search</span>
+              <span class="um-hint">swarm</span>
+            </button>
+            <button type="button" class="um-bay" role="listitem" data-id="journal" style="--c:var(--synapse)">
+              <span class="um-num">03</span>
+              <span class="um-name">Journal</span>
+              <span class="um-hint">lab book</span>
+            </button>
+            <button type="button" class="um-bay" role="listitem" data-id="stress" style="--c:var(--c-orange)">
+              <span class="um-num">04</span>
+              <span class="um-name">Stress &amp; Regret</span>
+              <span class="um-hint">signals</span>
+            </button>
+            <button type="button" class="um-bay" role="listitem" data-id="miner" style="--c:var(--s3)">
+              <span class="um-num">05</span>
+              <span class="um-name">DT Miner</span>
+              <span class="um-hint">rules</span>
+            </button>
+            <button type="button" class="um-bay" role="listitem" data-id="library" style="--c:var(--s2)">
+              <span class="um-num">06</span>
+              <span class="um-name">Principle Library</span>
+              <span class="um-hint">beliefs</span>
+            </button>
+            <button type="button" class="um-bay" role="listitem" data-id="graph" style="--c:var(--neural)">
+              <span class="um-num">07</span>
+              <span class="um-name">Knowledge Graph</span>
+              <span class="um-hint">network</span>
+            </button>
+            <button type="button" class="um-bay" role="listitem" data-id="causal" style="--c:var(--c-orange)">
+              <span class="um-num">08</span>
+              <span class="um-name">Causal Engine</span>
+              <span class="um-hint">tests</span>
+            </button>
+            <button type="button" class="um-bay" role="listitem" data-id="executor" style="--c:var(--neural)">
+              <span class="um-num">09</span>
+              <span class="um-name">Executor</span>
+              <span class="um-hint">steer</span>
+            </button>
+            <button type="button" class="um-bay" role="listitem" data-id="symbolic" style="--c:var(--acc)">
+              <span class="um-num">10</span>
+              <span class="um-name">Symbolic Formula</span>
+              <span class="um-hint">laws</span>
+            </button>
+            <button type="button" class="um-bay" role="listitem" data-id="version" style="--c:var(--c-red)">
+              <span class="um-num">11</span>
+              <span class="um-name">VersionStore</span>
+              <span class="um-hint">history</span>
+            </button>
+            <button type="button" class="um-bay" role="listitem" data-id="hitl" style="--c:var(--synapse)">
+              <span class="um-num">12</span>
+              <span class="um-name">Human Loop</span>
+              <span class="um-hint">edit</span>
+            </button>
+          </div>
+
+          <div class="um-io um-out">
+            <span class="um-io-tag">OUT</span>
+            <b>Corrected belief</b>
+            <em>model · principles · lab report</em>
+          </div>
+        </div>
+
+        <aside class="um-panel hud-frame" id="umPanel" aria-live="polite">
+          <span class="hud-bl"></span><span class="hud-br"></span>
+          <div class="um-panel-tag" id="umTag">01 · STRATEGY</div>
+          <h3 id="umTitle">Domain Router</h3>
+          <p class="um-lead" id="umLead">Fingerprints the dataset on five statistical axes, then picks a learner strategy — so UIL does not force one classifier onto every problem.</p>
+          <ul class="um-bullets" id="umBullets">
+            <li>Five-axis fingerprint (shape, scale, dependence, class structure, size)</li>
+            <li>Routes to domains like sparse_linear, gbm, symbolic, structured</li>
+            <li>Architectural knobs stay locked — PSO cannot silently override them</li>
+          </ul>
+          <div class="um-file"><span>module</span><code id="umFile">cognition/domain_router.py</code></div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+=====FRAG=====
+
+    <a href="#engine" data-nav>Engine</a>
+
+=====FRAG=====
+
+    <a href="#engine" data-nav>Machine</a>
+
+=====FRAG=====
+
+  <!-- ═══════════ UIL MACHINE ═══════════ -->
+  <section class="chapter alt" id="engine">
+    <div class="wrap">
+      <div class="chapter-head reveal">
+        <span class="chapter-idx">01·5 · THE MACHINE</span>
+        <h2>UIL, as a machine.</h2>
+        <p class="chapter-lead">Every run is a pipeline of named subsystems — search, memory, mining, belief, execution, history, and human override. Click a bay to see what it does.</p>
+      </div>
+
+      <div class="uil-machine reveal" id="uilMachine">
+        <div class="um-chassis hud-frame">
+          <span class="hud-bl"></span><span class="hud-br"></span>
+          <div class="um-rail" aria-hidden="true">
+            <i class="um-pulse"></i>
+          </div>
+
+          <div class="um-io um-in">
+            <span class="um-io-tag">IN</span>
+            <b>Dataset + classifier</b>
+            <em>fingerprint · normalize · route</em>
+          </div>
+
+          <div class="um-bays" role="list">
+            <button type="button" class="um-bay is-on" role="listitem" data-id="router" style="--c:var(--acc)">
+              <span class="um-num">01</span>
+              <span class="um-name">Domain Router</span>
+              <span class="um-hint">strategy</span>
+            </button>
+            <button type="button" class="um-bay" role="listitem" data-id="pso" style="--c:var(--acc-2)">
+              <span class="um-num">02</span>
+              <span class="um-name">PSO Search</span>
+              <span class="um-hint">swarm</span>
+            </button>
+            <button type="button" class="um-bay" role="listitem" data-id="journal" style="--c:var(--synapse)">
+              <span class="um-num">03</span>
+              <span class="um-name">Journal</span>
+              <span class="um-hint">lab book</span>
+            </button>
+            <button type="button" class="um-bay" role="listitem" data-id="stress" style="--c:var(--c-orange)">
+              <span class="um-num">04</span>
+              <span class="um-name">Stress &amp; Regret</span>
+              <span class="um-hint">signals</span>
+            </button>
+            <button type="button" class="um-bay" role="listitem" data-id="miner" style="--c:var(--s3)">
+              <span class="um-num">05</span>
+              <span class="um-name">DT Miner</span>
+              <span class="um-hint">rules</span>
+            </button>
+            <button type="button" class="um-bay" role="listitem" data-id="library" style="--c:var(--s2)">
+              <span class="um-num">06</span>
+              <span class="um-name">Principle Library</span>
+              <span class="um-hint">beliefs</span>
+            </button>
+            <button type="button" class="um-bay" role="listitem" data-id="graph" style="--c:var(--neural)">
+              <span class="um-num">07</span>
+              <span class="um-name">Knowledge Graph</span>
+              <span class="um-hint">network</span>
+            </button>
+            <button type="button" class="um-bay" role="listitem" data-id="causal" style="--c:var(--c-orange)">
+              <span class="um-num">08</span>
+              <span class="um-name">Causal Engine</span>
+              <span class="um-hint">tests</span>
+            </button>
+            <button type="button" class="um-bay" role="listitem" data-id="executor" style="--c:var(--neural)">
+              <span class="um-num">09</span>
+              <span class="um-name">Executor</span>
+              <span class="um-hint">steer</span>
+            </button>
+            <button type="button" class="um-bay" role="listitem" data-id="symbolic" style="--c:var(--acc)">
+              <span class="um-num">10</span>
+              <span class="um-name">Symbolic Formula</span>
+              <span class="um-hint">laws</span>
+            </button>
+            <button type="button" class="um-bay" role="listitem" data-id="version" style="--c:var(--c-red)">
+              <span class="um-num">11</span>
+              <span class="um-name">VersionStore</span>
+              <span class="um-hint">history</span>
+            </button>
+            <button type="button" class="um-bay" role="listitem" data-id="hitl" style="--c:var(--synapse)">
+              <span class="um-num">12</span>
+              <span class="um-name">Human Loop</span>
+              <span class="um-hint">edit</span>
+            </button>
+          </div>
+
+          <div class="um-io um-out">
+            <span class="um-io-tag">OUT</span>
+            <b>Corrected belief</b>
+            <em>model · principles · lab report</em>
+          </div>
+        </div>
+
+        <aside class="um-panel hud-frame" id="umPanel" aria-live="polite">
+          <span class="hud-bl"></span><span class="hud-br"></span>
+          <div class="um-panel-tag" id="umTag">01 · STRATEGY</div>
+          <h3 id="umTitle">Domain Router</h3>
+          <p class="um-lead" id="umLead">Fingerprints the dataset on five statistical axes, then picks a learner strategy — so UIL does not force one classifier onto every problem.</p>
+          <ul class="um-bullets" id="umBullets">
+            <li>Five-axis fingerprint (shape, scale, dependence, class structure, size)</li>
+            <li>Routes to domains like sparse_linear, gbm, symbolic, structured</li>
+            <li>Architectural knobs stay locked — PSO cannot silently override them</li>
+          </ul>
+          <div class="um-file"><span>module</span><code id="umFile">cognition/domain_router.py</code></div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+=====FRAG=====
+
+  <!-- ═══════════ UIL COGNITIVE BRAIN ═══════════ -->
+  <section class="chapter alt" id="engine">
+    <div class="wrap">
+      <div class="chapter-head reveal">
+        <span class="chapter-idx">01·5 · COGNITIVE ENGINE</span>
+        <h2>UIL as a living brain.</h2>
+        <p class="chapter-lead">Twelve subsystems orbit a shared core — like neurons in a mind that searches, remembers, reasons, and can be corrected. Drag a node (it springs back). Click to read what it does.</p>
+      </div>
+
+      <div class="uil-brain reveal" id="uilBrain">
+        <div class="ub-stage hud-frame" id="ubStage">
+          <span class="hud-bl"></span><span class="hud-br"></span>
+          <svg class="ub-synapses" id="ubSynapses" aria-hidden="true"></svg>
+          <div class="ub-swarm" id="ubSwarm" aria-hidden="true"></div>
+
+          <div class="ub-core" id="ubCore">
+            <div class="ub-hemi left" aria-hidden="true"></div>
+            <div class="ub-hemi right" aria-hidden="true"></div>
+            <div class="ub-core-ring r1"></div>
+            <div class="ub-core-ring r2"></div>
+            <div class="ub-core-glow"></div>
+            <div class="ub-core-label">
+              <b>UIL</b>
+              <span>cognitive core</span>
+            </div>
+          </div>
+
+          <!-- 12 component nodes — positioned by JS on an ellipse -->
+          <button type="button" class="ub-node is-on" data-id="router" style="--c:var(--acc)"><i>01</i><b>Router</b></button>
+          <button type="button" class="ub-node" data-id="pso" style="--c:var(--acc-2)"><i>02</i><b>PSO</b></button>
+          <button type="button" class="ub-node" data-id="journal" style="--c:var(--synapse)"><i>03</i><b>Journal</b></button>
+          <button type="button" class="ub-node" data-id="stress" style="--c:var(--c-orange)"><i>04</i><b>Stress</b></button>
+          <button type="button" class="ub-node" data-id="miner" style="--c:var(--s3)"><i>05</i><b>Miner</b></button>
+          <button type="button" class="ub-node" data-id="library" style="--c:var(--s2)"><i>06</i><b>Library</b></button>
+          <button type="button" class="ub-node" data-id="graph" style="--c:var(--neural)"><i>07</i><b>Graph</b></button>
+          <button type="button" class="ub-node" data-id="causal" style="--c:var(--c-orange)"><i>08</i><b>Causal</b></button>
+          <button type="button" class="ub-node" data-id="executor" style="--c:var(--neural)"><i>09</i><b>Executor</b></button>
+          <button type="button" class="ub-node" data-id="symbolic" style="--c:var(--acc)"><i>10</i><b>Symbolic</b></button>
+          <button type="button" class="ub-node" data-id="version" style="--c:var(--c-red)"><i>11</i><b>Version</b></button>
+          <button type="button" class="ub-node" data-id="hitl" style="--c:var(--synapse)"><i>12</i><b>HITL</b></button>
+        </div>
+
+        <aside class="ub-panel hud-frame" id="ubPanel" aria-live="polite">
+          <span class="hud-bl"></span><span class="hud-br"></span>
+          <div class="ub-panel-tag" id="ubTag">01 · STRATEGY</div>
+          <h3 id="ubTitle">Domain Router</h3>
+          <p class="ub-lead" id="ubLead">Fingerprints the dataset on five statistical axes, then picks a learner strategy — so UIL does not force one classifier onto every problem.</p>
+          <ul class="ub-bullets" id="ubBullets">
+            <li>Five-axis fingerprint (shape, scale, dependence, class structure, size)</li>
+            <li>Routes to domains like sparse_linear, gbm, symbolic, structured</li>
+            <li>Architectural knobs stay locked — PSO cannot silently override them</li>
+          </ul>
+          <div class="ub-file"><span>module</span><code id="ubFile">cognition/domain_router.py</code></div>
+          <div class="ub-hint">Drag any node · it springs back · auto-cycles the 12 lobes</div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+=====FRAG=====
+
+    <a href="#engine" data-nav>Machine</a>
+
+=====FRAG=====
+
+    <a href="#engine" data-nav>Brain</a>
+
+=====FRAG=====
+
+<script src="js/uil-machine.js"></script>
+
+=====FRAG=====
+
+<script src="js/uil-brain.js" type="module"></script>
+
+=====FRAG=====
+
+          <div class="pillar-tag">Optimization · cognitive machine</div>
+          <h3>A closed loop that learns itself</h3>
+          <p class="pillar-lead">UIL is not a jet metaphor — it is a <b>cognitive machine</b>: search writes a journal, mining turns regret into principles, the executor steers the next stage. Pause it. Turbo it. Watch the stages fire in order.</p>
+
+=====FRAG=====
+
+          <div class="pillar-tag">Optimization · cognitive brain</div>
+          <h3>A closed loop that learns itself</h3>
+          <p class="pillar-lead">UIL is a <b>cognitive engine</b>: search writes a journal, mining turns regret into principles, the executor steers the next stage — twelve lobes around one core. Pause it. Turbo it. Watch stages fire. (Full brain below.)</p>
+
+=====FRAG=====
+
+<link rel="stylesheet" href="/shared/tokens.css">
+<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="modes.css">
+<link rel="stylesheet" href="story.css">
+
+=====FRAG=====
+
+<link rel="stylesheet" href="/shared/tokens.css">
+<link rel="stylesheet" href="/shared/css/logo.css">
+<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="modes.css">
+<link rel="stylesheet" href="story.css">
+
+=====FRAG=====
+
+  <a class="brand" href="#top">
+    <span class="brand-mark"><span class="orbit"></span><span class="core"></span></span>
+    <span class="brand-text"><b>FIGPSO</b> UIL</span>
+  </a>
+
+=====FRAG=====
+
+  <a class="brand" href="#top">
+    <span data-uil-logo data-size="sm"></span>
+    <span class="uil-wordmark"><b>FIGPSO</b> <em>UIL</em></span>
+  </a>
+
+=====FRAG=====
+
+      <div class="intro-logo-wrap" id="introLogo" aria-hidden="true">
+        <img class="intro-logo" src="/shared/assets/logo-mark.svg" alt="FIGPSO UIL">
+        <div class="intro-logo-ring" aria-hidden="true"></div>
+      </div>
+
+=====FRAG=====
+
+      <div class="intro-logo-wrap" id="introLogo" aria-hidden="true">
+        <span data-uil-logo data-size="hero" class="intro-logo-live"></span>
+      </div>
+
+=====FRAG=====
+
+      <div class="footer-brand">
+        <span class="brand-mark lg"><span class="orbit"></span><span class="core"></span></span>
+        <div>
+          <div class="footer-name"><b>FIGPSO</b> UIL</div>
+          <div class="footer-sub">Universal Intelligence Layer · The Editable Scientist</div>
+        </div>
+      </div>
+
+=====FRAG=====
+
+      <div class="footer-brand">
+        <span data-uil-logo data-size="lg"></span>
+        <div>
+          <div class="uil-wordmark footer-name"><b>FIGPSO</b> <em>UIL</em></div>
+          <div class="footer-sub">Universal Intelligence Layer · The Editable Scientist</div>
+        </div>
+      </div>
+
+=====FRAG=====
+
+<script src="/shared/js/loader.js"></script>
+<script src="/shared/js/neural-graph.js"></script>
+
+=====FRAG=====
+
+<script src="/shared/js/loader.js"></script>
+<script src="/shared/js/logo.js"></script>
+<script src="/shared/js/neural-graph.js"></script>
+
+=====FRAG=====
+
+        <span data-uil-logo data-size="lg"></span>
+
+=====FRAG=====
+
+        <span data-uil-logo data-size="md"></span>

@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FIGPSO UIL — Research Console</title>
+<link rel="icon" href="/shared/assets/logo-mark.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/shared/tokens.css">
+<link rel="stylesheet" href="/shared/css/logo.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<canvas class="site-field" id="siteField" aria-hidden="true"></canvas>
+<div id="toasts"></div>
+<aside class="sidebar">
+  <a class="brand" href="/"><span data-uil-logo data-size="sm"></span><span class="uil-wordmark"><b>FIGPSO</b> <em>UIL</em></span></a>
+  <nav class="nav">
+    <div class="nav-group">Overview</div>
+    <button class="nav-item active" data-view="overview">What is UIL</button>
+    <div class="nav-group">Operate</div>
+    <button class="nav-item" data-view="mission">Mission Control<span class="nav-dot hidden" id="navRunDot"></span></button>
+    <button class="nav-item" data-view="ops">Terminal Feed</button>
+    <div class="nav-group">Knowledge</div>
+    <button class="nav-item" data-view="kg">Knowledge Graph</button>
+    <button class="nav-item" data-view="formulas">Formulas</button>
+    <button class="nav-item" data-view="principles">Principles</button>
+    <button class="nav-item" data-view="memory">Memory Proof</button>
+    <div class="nav-group">Scientist</div>
+    <button class="nav-item" data-view="hitl">Human in the Loop</button>
+    <button class="nav-item" data-view="goal">Goal Director</button>
+    <button class="nav-item" data-view="timeline">Timeline</button>
+  </nav>
+  <div class="sidebar-foot">
+    <button class="run-chip" id="runChip"><span id="runChipText">No active run</span></button>
+    <div class="api-status"><span class="dot" id="apiDot"></span><span id="apiStatus">API…</span></div>
+    <div class="muted" id="memFiles">—</div>
+    <button class="icon-btn" id="themeToggle" title="Toggle theme">Theme</button>
+  </div>
+</aside>
+<main class="main">
+  <header class="topbar"><div><div class="crumb" id="topCrumb">Overview</div><h1 id="topTitle">What is UIL</h1></div></header>
+
+  <section class="view active" id="view-overview">
+    <div class="overview-grid">
+      <div class="hero-copy card">
+        <span class="eyebrow">Editable scientist</span>
+        <h2>A cognitive layer that remembers why it was right — and lets you correct it.</h2>
+        <p class="lede">UIL watches a classifier over stages, mines causal rules into an editable knowledge graph, and applies them on the next run.</p>
+        <div class="btn-row"><button class="btn primary" data-goto="mission">Launch a run</button><button class="btn ghost" data-goto="kg">Inspect the graph</button></div>
+        <div class="module-map" id="moduleMap"></div>
+      </div>
+      <div class="hero-aside">
+        <div class="hero-mindmap card">
+          <div class="card-title-row"><div class="card-title">Live knowledge mindmap</div><button class="btn ghost sm" data-goto="kg">Open KG</button></div>
+          <div class="mini-kg-wrap"><canvas id="ovMindmap"></canvas></div>
+        </div>
+        <div class="hero-stats-panel">
+          <div class="ostat"><span class="ostat-v" id="ovStatFiles">—</span><span class="ostat-k">memory files</span></div>
+          <div class="ostat"><span class="ostat-v" id="ovStatBytes">—</span><span class="ostat-k">persisted</span></div>
+          <div class="ostat"><span class="ostat-v" id="ovStatGraph">—</span><span class="ostat-k">nodes / edges</span></div>
+          <div class="ostat"><span class="ostat-v" id="ovStatSeq">—</span><span class="ostat-k">event seq</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="view" id="view-mission">
+    <div class="mission-grid">
+      <div class="card">
+        <div class="card-title">Launch</div>
+        <label>Dataset<select id="dsSelect"></select></label>
+        <div class="seg" id="clfSeg">
+          <button data-v="XGBoost" class="on">XGBoost</button>
+          <button data-v="RandomForest">RF</button>
+          <button data-v="SymbolicFormula">Symbolic</button>
+          <button data-v="KNN">KNN</button>
+        </div>
+        <label id="symModeField" style="display:none">Symbolic mode
+          <select id="symMode"><option value="auto">auto</option><option value="sparse_linear">sparse_linear</option><option value="boosting">boosting</option><option value="bagging">bagging</option><option value="multi">multi</option></select>
+        </label>
+        <div class="form-row">
+          <label>Stages<input id="stagesInput" type="number" value="8"></label>
+          <label>Seed<input id="seedInput" type="number" value="42"></label>
+          <label>Particles<input id="particlesInput" type="number" value="15"></label>
+          <label>PSO iters<input id="psoItersInput" type="number" value="15"></label>
+          <label>Boost rounds<input id="boostInput" type="number" value="30"></label>
+          <label>Max stages<input id="maxStagesInput" type="number" value="300"></label>
+          <label>Target acc<input id="targetAccInput" type="number" step="0.01"></label>
+        </div>
+        <div class="btn-row"><button class="btn primary" id="startBtn"><span class="btn-label">Start run</span></button><button class="btn ghost" id="pathAPreset">Path A preset</button></div>
+        <div id="runControls" class="btn-row hidden"><button class="btn" id="pauseBtn">Pause</button><button class="btn danger" id="stopBtn">Stop</button></div>
+        <div class="muted" id="sysResources"></div>
+      </div>
+      <div class="card">
+        <div class="ring-wrap">
+          <svg viewBox="0 0 120 120" class="ring"><circle cx="60" cy="60" r="52" class="ring-bg"/><circle cx="60" cy="60" r="52" class="ring-fg" id="ringFill"/></svg>
+          <div class="ring-val" id="heroAcc">—</div>
+        </div>
+        <div class="hero-kpis">
+          <div><span class="k">Stage</span><b id="hStage">—</b></div>
+          <div><span class="k">Stress</span><b id="hStress">—</b></div>
+          <div><span class="k">Regret</span><b id="hRegret">—</b></div>
+          <div><span class="k">Macro-F1</span><b id="hMacroF1">—</b></div>
+          <div><span class="k">Maturity</span><b id="hMaturity">—</b></div>
+          <div><span class="k">Goal</span><b id="heroGoal">—</b></div>
+        </div>
+      </div>
+    </div>
+    <div class="card"><div class="card-title">Decision pipeline</div><div id="pipelineFlow" class="pipeline-flow"></div></div>
+    <div class="charts-row">
+      <div class="card chart-card"><div class="card-title">Accuracy</div><canvas id="accChart"></canvas><div class="chart-tip" id="accTip"></div></div>
+      <div class="card chart-card"><div class="card-title">Stress / Regret</div><canvas id="stressChart"></canvas><div class="chart-tip" id="stressTip"></div></div>
+      <div class="card chart-card"><div class="card-title">Allocation</div><canvas id="allocChart"></canvas><div class="chart-tip" id="allocTip"></div></div>
+    </div>
+    <div class="mission-bottom">
+      <div class="card"><div class="card-title">Memory counters</div><div class="mem-counters">
+        <div><span>Journal</span><b id="mcJournal">0</b></div><div><span>Principles</span><b id="mcPrinciples">0</b></div>
+        <div><span>KG n/e</span><b id="mcNetwork">0/0</b></div><div><span>Archive</span><b id="mcArchive">0</b></div>
+        <div><span>Episodes</span><b id="mcEpisodes">0</b></div><div><span>Causal</span><b id="mcCausal">0</b></div>
+        <div><span>Formulas</span><b id="mcFormulas">0</b></div><div><span>Miner R²</span><b id="mcMinerR2">—</b></div>
+        <div><span>Champion</span><b id="mcChampion">—</b></div>
+      </div></div>
+      <div class="card"><div class="card-title">Stage feed</div><div id="stageFeed"><div class="empty small" id="feedEmpty"><p>Start a run to see stages.</p></div></div></div>
+      <div class="card"><div class="card-title-row"><div class="card-title">Recent runs</div><button class="btn ghost sm" id="runsRefresh">Refresh</button></div>
+        <table id="runsTable"><thead><tr><th>ID</th><th>Dataset</th><th>Status</th><th>Acc</th></tr></thead><tbody></tbody></table></div>
+      <div class="card"><div class="card-title">Formula usage</div><div id="formulaUsageLog" class="log"></div></div>
+    </div>
+  </section>
+
+  <section class="view" id="view-ops">
+    <div class="card"><div class="card-title-row"><div class="card-title">Live feed</div><span id="feedStatus" class="muted"></span><button class="btn ghost sm" id="feedClear">Clear</button></div>
+      <div id="feedSources" class="chips"></div><div id="feedLog" class="log"></div></div>
+    <div class="card"><div class="card-title-row"><div class="card-title">Ablation reports</div><button class="btn ghost sm" id="ablationRefresh">Refresh</button></div><div id="ablationList"></div></div>
+  </section>
+
+  <section class="view" id="view-kg">
+    <div class="kg-workspace">
+      <div class="kg-float-bar">
+        <div class="kg-title-block"><span class="kg-eyebrow">Neural knowledge layer</span><h3>Editable Network</h3><span class="muted" id="kgFocusLabel"></span></div>
+        <div class="seg glass" id="kgModeSeg"><button data-v="network" class="on">Network</button><button data-v="brain">Mindmap</button><button data-v="orbit">Orbit</button></div>
+        <div class="chips compact" id="kgEdgeChips">
+          <button class="chip on" data-t="">all</button><button class="chip" data-t="leads_to">leads_to</button>
+          <button class="chip" data-t="strengthens">strengthens</button><button class="chip" data-t="contradicts">contradicts</button>
+          <button class="chip" data-t="depends_on">depends_on</button>
+        </div>
+        <input class="kg-search glass" id="kgSearch" placeholder="Search neurons…">
+        <div class="kg-toggles">
+          <label class="toggle"><input type="checkbox" id="kgLabels" checked><span>labels</span></label>
+          <label class="toggle"><input type="checkbox" id="kgPhysics" checked><span>physics</span></label>
+          <label class="toggle"><input type="checkbox" id="kgPulse" checked><span>pulse</span></label>
+          <label class="toggle"><input type="checkbox" id="kgDetail" checked><span>detail</span></label>
+        </div>
+        <button class="btn ghost sm" id="kgFit">Fit</button>
+        <button class="btn ghost sm hidden" id="kgClearFocus">Clear focus</button>
+        <button class="btn ghost sm" id="kgRefresh">Refresh</button>
+      </div>
+      <div class="kg-layout">
+        <div class="card kg-canvas-card"><canvas id="kgCanvas"></canvas><div class="kg-hovercard hidden" id="kgHover"></div><div class="kg-legend" id="kgLegend"></div></div>
+        <div class="kg-side">
+          <div class="card"><div class="card-title">Vitals</div><div id="kgVitals"></div></div>
+          <div class="card"><div class="card-title">Edge types</div><div id="kgTypeBars"></div></div>
+          <div class="card"><div class="card-title">Top nodes</div><div id="kgTopNodes"></div></div>
+          <div class="card" id="kgNodeEditor"><div class="empty small"><p>Select a node</p></div></div>
+          <div class="card" id="kgEdgeEditor"><div class="empty small"><p>Select an edge</p></div></div>
+          <div class="hidden">
+            <input id="kgConfSlider" type="range" min="0" max="100" value="50"><span id="kgConfLive">0.50</span>
+            <select id="kgTierSelect"><option>0</option><option>1</option><option>2</option><option>3</option></select>
+            <button id="kgSaveNode">Save</button><button id="kgFocusNode">Focus</button><button id="kgAdvEdit">Advanced</button>
+            <button id="kgJumpSource">Source</button><button id="kgJumpTarget">Target</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="view" id="view-formulas">
+    <div class="card"><div class="card-title-row"><div class="card-title">Formula library</div>
+      <select id="formulaFilter"><option value="">all</option><option value="active">active</option><option value="incubating">incubating</option><option value="seed">seed</option></select>
+      <select id="formulaSort"><option value="score">score</option><option value="id">id</option></select>
+      <button class="btn ghost sm" id="formulasRefresh">Refresh</button></div>
+      <div id="formulaBanner" class="banner"></div><div id="formulaSummary" class="muted"></div><div id="formulaTop"></div>
+      <div class="split"><div><h4>Loss</h4><table id="lossTable"><thead><tr><th>ID</th><th>Status</th><th>Score</th></tr></thead><tbody></tbody></table></div>
+        <div><h4>Symbolic</h4><table id="symbolicTable"><thead><tr><th>ID</th><th>Status</th><th>Score</th></tr></thead><tbody></tbody></table></div></div>
+      <div id="formulaDetail" class="card-inset"></div>
+      <div class="btn-row"><button class="btn" id="formulaEditBtn">Edit</button><button class="btn danger" id="formulaRejectBtn">Reject</button></div>
+    </div>
+  </section>
+
+  <section class="view" id="view-principles">
+    <div class="card"><div class="card-title-row"><div class="card-title">Principles</div><button class="btn ghost sm" id="principlesRefresh">Refresh</button></div>
+      <table id="principlesTable"><thead><tr><th>ID</th><th>Tier</th><th>Conf</th><th>Override</th></tr></thead><tbody></tbody></table></div>
+    <div class="card"><div class="card-title-row"><div class="card-title">Causal</div><button class="btn ghost sm" id="causalRefresh">Refresh</button></div>
+      <table id="causalTable"><thead><tr><th>ID</th><th>Status</th><th>Factor</th></tr></thead><tbody></tbody></table></div>
+    <div class="card"><div class="card-title">Governance</div><div id="governancePanel"></div></div>
+  </section>
+
+  <section class="view" id="view-memory">
+    <div id="proofBanner" class="banner"></div>
+    <div class="card"><div class="card-title-row"><div class="card-title">Disk persistence</div><span id="resultsDir" class="muted"></span>
+      <button class="btn ghost sm" id="memRefresh">Refresh</button><button class="btn ghost sm" id="memBaseline">Set baseline</button>
+      <button class="btn ghost sm" id="memTransferHelp">How to test</button><button class="btn danger sm" id="memClear">Clear memory</button></div>
+      <canvas id="memGrowthChart"></canvas><div class="chart-tip" id="memGrowthTip"></div><div id="memArch"></div><div id="championsList"></div>
+    </div>
+    <div class="card"><div class="card-title-row"><div class="card-title">Consciousness</div><select id="consciousnessDs"></select><button class="btn ghost sm" id="consciousnessLoad">Load</button></div><div id="consciousnessPanel"></div></div>
+    <div class="card"><div class="card-title-row"><div class="card-title">Episodes</div><button class="btn ghost sm" id="episodesLoad">Load</button></div><div id="episodesList"></div></div>
+    <div class="split"><div class="card"><div class="card-title">Graph changelog</div><div id="graphChangelog" class="log"></div></div>
+      <div class="card"><div class="card-title">Formula changelog</div><div id="formulaChangelog" class="log"></div></div></div>
+  </section>
+
+  <section class="view" id="view-hitl">
+    <div class="hitl-steps" id="hitlSteps"><div class="hstep lit">1 Review</div><div class="hstep">2 Edit</div><div class="hstep">3 Replay</div></div>
+    <div class="kpis">
+      <div class="ostat"><span class="ostat-v" id="hitlSeqNow">—</span><span class="ostat-k">last seq</span></div>
+      <div class="ostat"><span class="ostat-v" id="hitlCellsNow">—</span><span class="ostat-k">cells</span></div>
+      <div class="ostat"><span class="ostat-v" id="hitlHumanNow">—</span><span class="ostat-k">human edits</span></div>
+      <div class="muted" id="hitlLastSeq"></div>
+    </div>
+    <div class="chips" id="typeChips">
+      <button class="chip on" data-t="">all</button><button class="chip" data-t="principle">principle</button>
+      <button class="chip" data-t="formula">formula</button><button class="chip" data-t="edge">edge</button><button class="chip" data-t="goal">goal</button>
+    </div>
+    <div class="btn-row"><button class="btn ghost sm" id="cellsRefresh">Refresh</button><button class="btn ghost sm" id="hitlPeek">Peek replay</button><button class="btn ghost sm" id="labReportRefresh">Lab report</button></div>
+    <div id="cellGrid" class="cell-grid"></div>
+    <pre id="hitlReplayPreview" class="log"></pre>
+    <div class="card" id="labReport"></div>
+  </section>
+
+  <section class="view" id="view-goal">
+    <div class="card" id="activeGoalBox"><div class="empty small"><p>No active goal</p></div></div>
+    <div class="card">
+      <div class="card-title">Set goal directive</div>
+      <label>Directive<textarea id="goalDirective" rows="3"></textarea></label>
+      <label>Focus features<input id="goalFocus"></label>
+      <label>Ignore features<input id="goalIgnore"></label>
+      <label>Keywords<input id="goalKeywords"></label>
+      <label>Domains<select id="goalDomains" multiple><option>tabular</option><option>symbolic</option><option>tiny</option><option>text</option></select></label>
+      <label>Relations<select id="goalRelations" multiple><option>leads_to</option><option>strengthens</option><option>contradicts</option><option>depends_on</option></select></label>
+      <label>Confidence <span id="goalConfVal">0.70</span><input id="goalConf" type="range" min="0" max="100" value="70"></label>
+      <div class="btn-row"><button class="btn primary" id="goalSetBtn">Set goal</button><button class="btn danger" id="goalClearBtn">Clear</button></div>
+    </div>
+  </section>
+
+  <section class="view" id="view-timeline">
+    <div class="card"><div class="card-title">VersionStore scrub</div>
+      <input id="seqSlider" type="range" min="0" max="0" value="0">
+      <div><b id="seqLabel">0</b> <span class="muted" id="seqMax">of 0</span></div><div id="replayBars"></div>
+    </div>
+    <div class="card"><div class="card-title-row"><div class="card-title">Journal retrace</div><button class="btn ghost sm" id="journalRefresh">Refresh datasets</button></div>
+      <input list="retraceDatasets" id="retraceDataset" placeholder="dataset"><datalist id="retraceDatasets"></datalist>
+      <input id="retraceFold" placeholder="fold (optional)"><button class="btn" id="retraceLoad">Load</button>
+      <input id="retraceScrubber" type="range" min="0" max="0" value="0">
+      <div id="retracePos" class="muted"></div><div id="retraceDetail"></div>
+    </div>
+  </section>
+</main>
+
+<div class="modal-veil hidden" id="modalVeil">
+  <div class="modal card">
+    <h3 id="modalTitle">Edit</h3>
+    <pre id="modalReadable" class="readable"></pre>
+    <label id="modalConfField">Confidence<input id="modalConf" type="number" step="0.01" min="0" max="1"></label>
+    <label id="modalStatusField" class="hidden">Status<select id="modalStatus"></select></label>
+    <label id="modalTierField" class="hidden">Tier<input id="modalTier" type="number" min="0" max="3"></label>
+    <div class="btn-row">
+      <button class="btn primary" id="modalSave">Save</button>
+      <button class="btn danger hidden" id="modalReject">Reject</button>
+      <button class="btn ghost hidden" id="modalUndo">Undo</button>
+      <button class="btn ghost" id="modalCancel">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script src="/shared/js/loader.js"></script>
+<script src="/shared/js/logo.js"></script>
+<script src="js/core.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/graph.js"></script>
+<script src="js/views-run.js"></script>
+<script src="js/views-kg.js"></script>
+<script src="js/views-formulas.js"></script>
+<script src="js/views-principles.js"></script>
+<script src="js/views-memory.js"></script>
+<script src="js/views-hitl.js"></script>
+<script src="js/views-goal.js"></script>
+<script src="js/views-timeline.js"></script>
+<script src="js/views-ops.js"></script>
+<script src="js/views-overview.js"></script>
+<script src="js/motion.js"></script>
+<script src="/shared/js/neural-field.js"></script>
+<script src="js/neural-bg.js"></script>
+<script src="/shared/js/cursor.js"></script>
+<script src="js/boot.js"></script>
+</body>
+</html>

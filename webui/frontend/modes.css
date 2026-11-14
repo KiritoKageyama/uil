@@ -1,0 +1,297 @@
+/* ════════════════════════════════════════════════════════════════════
+   modes.css — dual skins from ui-ux-pro-max:
+   · Rendered  → 3D Hyperrealism + Modern Dark Cinema
+   · Wireframe → HUD / Sci-Fi FUI
+   Driven by html[data-view="rendered|wireframe"]
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ── view toggle control ──────────────────────────────────────────── */
+.view-toggle {
+  display: inline-flex; align-items: stretch;
+  border: 1px solid var(--border-hi);
+  border-radius: 3px;
+  overflow: hidden;
+  background: var(--surface);
+  height: 36px;
+}
+.view-toggle button {
+  appearance: none; border: 0; background: transparent;
+  color: var(--text-3); font-family: var(--mono); font-size: 10.5px;
+  letter-spacing: 0.12em; text-transform: uppercase; padding: 0 12px;
+  cursor: pointer; transition: color 0.2s, background 0.25s;
+}
+.view-toggle button:hover { color: var(--text); }
+.view-toggle button[aria-pressed="true"] {
+  background: color-mix(in srgb, var(--acc) 22%, transparent);
+  color: var(--acc-2);
+}
+.view-toggle button:focus-visible {
+  outline: 2px solid var(--acc); outline-offset: -2px;
+}
+
+/* HUD corner brackets (wireframe chrome) */
+.hud-frame { position: relative; }
+.hud-frame::before, .hud-frame::after,
+.hud-frame > .hud-br, .hud-frame > .hud-bl {
+  content: ""; position: absolute; width: 18px; height: 18px;
+  pointer-events: none; opacity: 0; transition: opacity 0.35s;
+  border-color: var(--acc-2); border-style: solid; border-width: 0;
+}
+.hud-frame::before { top: 8px; left: 8px; border-top-width: 1px; border-left-width: 1px; }
+.hud-frame::after { top: 8px; right: 8px; border-top-width: 1px; border-right-width: 1px; }
+.hud-frame > .hud-bl { bottom: 8px; left: 8px; border-bottom-width: 1px; border-left-width: 1px; }
+.hud-frame > .hud-br { bottom: 8px; right: 8px; border-bottom-width: 1px; border-right-width: 1px; }
+
+.hud-label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--acc-2); opacity: 0.75;
+}
+
+.site-grid {
+  position: fixed; inset: 0; pointer-events: none; z-index: 1;
+  opacity: 0; transition: opacity 0.4s;
+  background-image:
+    linear-gradient(rgba(74, 168, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(74, 168, 255, 0.045) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse at 50% 30%, #000 20%, transparent 75%);
+}
+.site-scan {
+  position: fixed; inset: 0; pointer-events: none; z-index: 2;
+  opacity: 0; transition: opacity 0.4s;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(4, 8, 18, 0.18) 2px,
+    rgba(4, 8, 18, 0.18) 4px
+  );
+}
+.ticker {
+  display: none; overflow: hidden; white-space: nowrap;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em;
+  color: var(--acc-2); border-bottom: 1px solid var(--border);
+  background: color-mix(in srgb, var(--bg) 88%, var(--acc));
+  padding: 6px 0; position: fixed; top: 0; left: 0; right: 0; z-index: 95;
+}
+.ticker-track {
+  display: inline-block; padding-left: 100%;
+  animation: ticker 42s linear infinite;
+}
+@keyframes ticker { to { transform: translateX(-100%); } }
+
+/* ═══════════════ RENDERED (default) ═══════════════ */
+html[data-view="rendered"] body {
+  font-family: var(--font);
+}
+html[data-view="rendered"] .hero-title,
+html[data-view="rendered"] .chapter-head h2,
+html[data-view="rendered"] .quiet-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+}
+html[data-view="rendered"] .hero-photo { opacity: 0.2; filter: saturate(1.1) contrast(1.05); }
+html[data-view="rendered"] .hero-planet { opacity: 0.95; }
+html[data-view="rendered"] .hero-brain { opacity: 0.2; filter: drop-shadow(0 0 48px rgba(59,116,255,0.35)); }
+html[data-view="rendered"] .hero {
+  perspective: 1200px;
+}
+html[data-view="rendered"] .hero-inner {
+  transform: translateZ(0);
+  text-shadow: 0 2px 40px rgba(4, 5, 11, 0.55);
+}
+html[data-view="rendered"] .case,
+html[data-view="rendered"] .mod-card,
+html[data-view="rendered"] .vision-card,
+html[data-view="rendered"] .hitl-live,
+html[data-view="rendered"] .kg-embed-stage {
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(14px);
+}
+html[data-view="rendered"] .btn.primary {
+  box-shadow: 0 12px 36px rgba(59, 116, 255, 0.35), 0 0 0 1px rgba(255,255,255,0.06) inset;
+}
+
+/* ═══════════════ WIREFRAME ═══════════════ */
+html[data-view="wireframe"] {
+  --surface: rgba(4, 12, 22, 0.55);
+  --surface-2: rgba(6, 16, 28, 0.7);
+  --border: rgba(74, 168, 255, 0.28);
+  --border-hi: rgba(74, 168, 255, 0.55);
+  --radius: 0px;
+  --radius-sm: 0px;
+  --radius-lg: 0px;
+}
+html[data-view="wireframe"] body {
+  font-family: var(--mono);
+  letter-spacing: 0.01em;
+  background-image:
+    radial-gradient(900px 500px at 80% -10%, rgba(59, 116, 255, 0.08), transparent 55%),
+    radial-gradient(700px 480px at 10% 100%, rgba(180, 139, 255, 0.05), transparent 50%);
+}
+html[data-view="wireframe"] .site-grid { opacity: 1; }
+html[data-view="wireframe"] .site-scan { opacity: 0.55; }
+html[data-view="wireframe"] .ticker { display: block; }
+html[data-view="wireframe"] .topnav { top: 28px; }
+html[data-view="wireframe"] .scroll-progress { top: 28px; }
+html[data-view="wireframe"] .hero-photo,
+html[data-view="wireframe"] .hero-planet { opacity: 0.08; filter: grayscale(1) contrast(1.4); }
+html[data-view="wireframe"] .hero-brain {
+  opacity: 0.45;
+  filter: grayscale(1) contrast(1.6) drop-shadow(0 0 1px var(--acc-2));
+  mix-blend-mode: screen;
+}
+html[data-view="wireframe"] .hero-gl { opacity: 0.55; mix-blend-mode: screen; }
+html[data-view="wireframe"] .hero-title,
+html[data-view="wireframe"] .chapter-head h2,
+html[data-view="wireframe"] .quiet-title {
+  font-family: var(--mono);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  text-transform: none;
+}
+html[data-view="wireframe"] .u-grad-text {
+  background: none; -webkit-background-clip: unset; background-clip: unset;
+  color: var(--acc-2);
+  text-shadow: 0 0 12px rgba(74, 168, 255, 0.45);
+}
+html[data-view="wireframe"] .hero-title em {
+  color: var(--neural-2);
+  text-shadow: 0 0 10px rgba(180, 139, 255, 0.4);
+}
+html[data-view="wireframe"] .hero-kicker,
+html[data-view="wireframe"] .case-tag,
+html[data-view="wireframe"] .cell-type,
+html[data-view="wireframe"] .badge {
+  border-radius: 0;
+  border: 1px solid var(--border-hi);
+  background: transparent;
+  box-shadow: none;
+}
+html[data-view="wireframe"] .btn,
+html[data-view="wireframe"] .icon-btn,
+html[data-view="wireframe"] .case,
+html[data-view="wireframe"] .mod-card,
+html[data-view="wireframe"] .film,
+html[data-view="wireframe"] .loop-node,
+html[data-view="wireframe"] .hitl-step,
+html[data-view="wireframe"] .vision-card,
+html[data-view="wireframe"] .kg-embed-stage,
+html[data-view="wireframe"] .kg-inspect,
+html[data-view="wireframe"] .kv-tile,
+html[data-view="wireframe"] .hitl-live,
+html[data-view="wireframe"] .cell-mini {
+  border-radius: 0 !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+  background: rgba(4, 10, 18, 0.72);
+  border: 1px solid var(--border);
+}
+html[data-view="wireframe"] .btn.primary {
+  background: transparent;
+  color: var(--acc-2);
+  border: 1px solid var(--acc-2);
+  box-shadow: 0 0 18px rgba(74, 168, 255, 0.18), inset 0 0 18px rgba(74, 168, 255, 0.06) !important;
+  text-shadow: 0 0 8px rgba(74, 168, 255, 0.35);
+}
+html[data-view="wireframe"] .btn.primary:hover {
+  background: color-mix(in srgb, var(--acc) 18%, transparent);
+  filter: none;
+}
+html[data-view="wireframe"] .btn.ghost {
+  background: transparent;
+  border-color: var(--border-hi);
+}
+html[data-view="wireframe"] .hud-frame::before,
+html[data-view="wireframe"] .hud-frame::after,
+html[data-view="wireframe"] .hud-frame > .hud-bl,
+html[data-view="wireframe"] .hud-frame > .hud-br { opacity: 1; }
+html[data-view="wireframe"] .case::before { display: none; }
+html[data-view="wireframe"] .vision-card.ph {
+  background-image: none !important;
+  background: rgba(4, 10, 18, 0.8) !important;
+}
+html[data-view="wireframe"] .vision-card::after {
+  height: 1px;
+  box-shadow: 0 0 8px var(--c, var(--acc));
+}
+html[data-view="wireframe"] .film img {
+  filter: grayscale(1) contrast(1.5) brightness(1.15);
+  background: transparent;
+}
+html[data-view="wireframe"] .chapter.alt {
+  background: transparent;
+  border-color: var(--border);
+}
+html[data-view="wireframe"] .topnav.stuck {
+  background: rgba(4, 8, 16, 0.92);
+  backdrop-filter: none;
+  border-bottom-color: var(--border-hi);
+}
+html[data-view="wireframe"] .scroll-progress {
+  height: 1px;
+  box-shadow: 0 0 8px var(--acc-2);
+  background: var(--acc-2);
+}
+html[data-view="wireframe"] .uil-logo {
+  filter: none;
+}
+html[data-view="wireframe"] .uil-logo .ul-hemi-l,
+html[data-view="wireframe"] .uil-logo .ul-hemi-r {
+  opacity: 0.15;
+}
+html[data-view="wireframe"] .uil-logo .ul-hex path:first-child {
+  fill: transparent;
+  stroke: var(--acc-2);
+}
+html[data-view="wireframe"] .pulse-dot {
+  border-radius: 0;
+  box-shadow: none;
+  animation: hudBlink 1.4s steps(2) infinite;
+}
+@keyframes hudBlink { 50% { opacity: 0.25; } }
+html[data-view="wireframe"] .loop-node {
+  border-left-width: 1px;
+  border-left-color: var(--c, var(--acc));
+}
+html[data-view="wireframe"] .loop-sep { text-shadow: 0 0 8px var(--acc); }
+html[data-view="wireframe"] .roadmap-line {
+  height: 1px;
+  background: var(--border-hi);
+  opacity: 1;
+}
+html[data-view="wireframe"] .rm-dot {
+  border-radius: 0;
+  transform: translateX(-50%) rotate(45deg);
+  width: 10px; height: 10px;
+}
+html[data-view="wireframe"] .mod-ic,
+html[data-view="wireframe"] .hs-n,
+html[data-view="wireframe"] .vision-ic {
+  border-radius: 0;
+  border: 1px solid color-mix(in srgb, var(--c, var(--acc)) 55%, transparent);
+  background: transparent;
+}
+html[data-view="wireframe"] .cell-conf i,
+html[data-view="wireframe"] .cell-conf {
+  border-radius: 0;
+}
+html[data-view="wireframe"] .kg-embed-hint {
+  border-radius: 0;
+  border: 1px solid var(--border);
+  font-family: var(--mono);
+}
+
+/* light theme still works — wireframe keeps dark HUD overlays readable */
+html[data-view="wireframe"][data-theme="light"] {
+  --border: rgba(43, 85, 214, 0.35);
+  --border-hi: rgba(43, 85, 214, 0.55);
+}
+html[data-view="wireframe"][data-theme="light"] .site-scan { opacity: 0.2; }
+html[data-view="wireframe"][data-theme="light"] body { color: #10182b; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track { animation: none; }
+  html[data-view="wireframe"] .pulse-dot { animation: none; }
+}

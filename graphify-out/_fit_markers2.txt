@@ -1,0 +1,141 @@
+1339: # what produced the recorded outcome, not an empty dict.
+1372: # Causal comparison stays on the primary split: control
+1377: # Winner selection is centralized in one helper (Category-C
+1378: # discipline): plain argmax on select_score by default -- the
+1381: # opt-in race incumbent-margin. select_score is absent on the
+1403: # get_current_config() (journal recording at step 9,
+1404: # investigation's current_cfg below, and therefore every
+1405: # "config.*" rule the Miner later learns from) depends on
+1422: # V20+.5: Evaluate the causal intervention, if both control
+1446: # M0.1 (v22 blueprint §4.1): re-score the WINNING action on the
+1449: # best-overall update, rolling maturity accuracies, stress,
+1450: # regret, the journal entry the miner learns from, and
+1454: # still selects on the primary split; RACE finalists are
+1456: # _race_actions. The causal control/treatment comparison stays
+1466: # Judge fix: when the race already scored this winner on the
+1483: # 5. Update best overall
+1491: # existed to stop a champion-blocked run returning model=None
+1514: # Stagnation tracking for the evolution trigger (below).
+1520: # Rolling recent accuracy for maturity (last 10 stages).
+1525: # 6. Get feature importance feedback
+1530: # 7. Compute stress and regret
+1530: # 7. Compute stress and regret
+1548: # Category-D telemetry (audit Part E): log the marginal
+1549: # distribution of each component of the hand-weighted stress
+1566: # 8. Investigation (if regret > 0)
+1566: # 8. Investigation (if regret > 0)
+1567: # V20+.4: Full investigation engine with C.1-C.5 strategies
+1579: # V20+.4: Execute investigation strategy
+1615: # Merge investigation result into investigation record
+1622: # 9. Record to journal (pure numbers)
+1622: # 9. Record to journal (pure numbers)
+1623: # V20: include classifier config and formula info.
+1627: # investigation's proposed_config for the NEXT stage (step 8
+1628: # above), which must not leak into the record of what
+1636: # V20: Include classifier config in action
+1639: # V20: Include formula metadata
+1642: # V20+.14: numeric proxies so the Miner can explain
+1643: # outcomes by formula complexity (see selection block
+1644: # above) -- formula_id itself is a string and unusable.
+1648: # V20+.12: carry forward into next stage's ExecutionContext.
+1671: # M0.1: fold provenance -- accuracy above is the mean
+1682: # Research step 2 (PBT-style default-path architecture variation,
+1683: # opt-in): fit ONE architecture-perturbed probe and journal it as
+1684: # evidence, so the miner finally sees architecture knobs VARY
+1686: # the stage winner, so it cannot regress accuracy. Skipped in
+1687: # race mode, which supplies its own architecture variation.
+1710: # 10. Track triggered principles (for library feedback)
+1710: # 10. Track triggered principles (for library feedback)
+1720: # V20+.1: Pass dataset_name for per-dataset tier tracking
+1725: # M0.4: the same helped signal drives maturity, so PSO
+1727: # predict wins (see hybrid_foundation.update_maturity).
+1729: # Part 16: Carry triggered principles forward so co-activation
+1733: # V20.3: Record formula outcome so retirement evidence
+1735: # recorded against).
+1744: # V20+.18: parallel read-back for SymbolicFormulaAdapter --
+1745: # formula *selection* happens inside fit_weighted() (the
+1747: # choice back out by convention to record its outcome. Same
+1762: # 11. Update search strategy with feedback
+1762: # 11. Update search strategy with feedback
+1770: # only the winner was reported back, so the search inferred
+1774: # therefore stepping away from something good, and the journal
+1775: # recorded that wrong label for the miner to learn from.
+1792: # 12. Mine for principles (frequency scales with stress)
+1792: # 12. Mine for principles (frequency scales with stress)
+1799: # V20+.7: Apply journal forgetting — recency-weighted window
+1804: # Within-dataset mining (stronger causal evidence).
+1805: # V20+.16: mining itself is cheap analysis over journal
+1820: # V20+.3: Add new rules as nodes in the network
+1823: # V20+.5: Form causal hypotheses from new rules
+1826: # Part 12: Version tracking for each updated principle
+1836: # Part 5: Cross-dataset rules represent weaker causal
+1837: # evidence — discount confidence before library update
+1851: # V20.3: Cognitive novelty — under high stress, mutate the
+1852: # current best formula instead of relying on PSO alone
+1853: # (Part 15: novelty should come from formula invention,
+1856: # V20+.14: gated on the incubation queue, not just stress --
+1859: # formula_library.py), and a bad mutation raising stress
+1863: # throttles the birth rate directly, independent of stress.
+1870: # V20+.15/.17: tournament-selected, lineage-stratified
+1871: # mutation parent, NOT get_best_formula() -- using the
+1872: # single best formula as the mutation base every time
+1873: # turns evolution into hill-climbing along one lineage
+1874: # (see formula_library.select_mutation_parent
+1901: # (neural / llm) for the journal +
+1920: # V20+.18: same generation-advance, extended to the
+1921: # SymbolicFormula classifier's own population (duck-typed
+1922: # via self.symbolic_engine/self.symbolic_library -- None
+1926: # like the loss-formula block above. feature_bias lets
+1928: # new formulas reference (see search/pso_search.py).
+1964: # are not added — nothing to prune.
+2007: # V20+.3: Discover relationships from co-activation patterns.
+2008: # Attach the current best formula so edges actually carry
+2009: # one for traverse() to execute (see editable_network.py).
+2027: # system actually improved (regret <= 0). Passed to
+2068: # V20+.3: Record traversal outcome for edge feedback
+2075: # V20+.3: Periodic edge decay + working-graph prune (every 10 stages)
+2082: # Learning-preserving formula prune on a SHORT cadence so the
+2083: # accelerated evolution from stagnation-triggered births (b)
+2085: # seeds + proven formulas; archives the weakest mutants to the
+2086: # (queryable) KnowledgeArchive. Retired formulas archived too.
+2095: # Size-triggered graph prune: the stage%15 cadence below
+2099: # minutes). Prune to cap whenever oversized, on the same
+2100: # short cadence as the formula prune. Everything archived,
+2148: # 13. Check for failure → failsafe (LAST RESORT only)
+2148: # 13. Check for failure → failsafe (LAST RESORT only)
+2170: # If classifier mismatch was found, record as lesson
+2183: # 14. Update previous accuracy for next iteration
+2183: # 14. Update previous accuracy for next iteration
+2224: # webui/ + terminal live feed (see cognition/live_feed.py).
+2253: # ── End of optimization ──
+2262: # V20+.8: Store this episode for future warm-starts.
+2263: # Gated with retrieval: an "episodic OFF" arm must not leave an
+2285: # V20+.18: lets a future similar-regime dataset's
+2286: # SymbolicFormulaAdapter.set_episodic_hint() warm-start
+2287: # from whatever formula this run last used (see
+2288: # episodic_attention.py's _blend_resolutions).
+2295: # V20+.3: Persist the graph (nodes/edges/co-activation tally) --
+2296: # saved once per fit() rather than per-mutation, see editable_network.py.
+2299: # Bug #26: the champion comparison happens HERE, once, instead of
+2302: # simply doesn't overwrite the record -- it is no longer prevented
+2310: # Research step 6 (Dwork Thresholdout): when enabled, "did this run
+2311: # beat the stored champion?" goes through a seeded-noise threshold
+2361: # Bug #27: flush the archive AFTER the champion + conclusion are
+2362: # written into it, not before. save() used to run above the champion
+2363: # block, so the champion only ever reached _data in memory -- it
+2365: # (formula_library.prune_*, working_memory_pruner, the next fit())
+2367: # dataset and exited persisted no champion at all, which is why
+2368: # champion-resume looked like it worked in multi-dataset benchmarks
+2376: # V21 Pipeline: Structural → Meta → Safeguards (skip when target hit —
+2384: # V21.1: Encode all principles structurally
+2389: # V21.2: Merge similar principles into meta-principles.
+2390: # `merge()` PERSISTS to uil_meta_principles.json (bug #8), so
+2398: # V21.3: Safeguard each meta-principle before promotion
+2404: # Log but don't discard — investigation can revisit
+2406: # Part 12: Detect contradictions in the full principle set
+2411: # Feature selection: PSO weights + formula tree leaves (SymbolicFormula)
+2433: # M5: lab report from event stream
+2446: # M3: record routing outcome for episodic memory
+2454: # Audit Part E: persist the run's guard-bind observations (accumulates
+2456: # snapshot for the web UI / caller. Pure observation, never gated.
+2491: # ── Predict ──────────────────────────────────────────────────────

@@ -1,0 +1,833 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FIGPSO UIL — Research Console</title>
+<link rel="icon" href="/shared/assets/logo-mark.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/shared/css/logo.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+<div class="shell">
+  <!-- ════════════════════ Sidebar ════════════════════ -->
+  <aside class="sidebar">
+    <div class="brand">
+      <span data-uil-logo data-size="md"></span>
+      <div class="brand-text">
+        <div class="uil-wordmark brand-name"><b>FIGPSO</b> <em>UIL</em></div>
+        <div class="brand-sub">Universal Intelligence Layer</div>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <div class="nav-group">Overview</div>
+      <button class="nav-item active" data-view="overview">
+        <svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5M5.5 9.8V20h13V9.8" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>What is UIL</span>
+      </button>
+
+      <div class="nav-group">Operate</div>
+      <button class="nav-item" data-view="mission">
+        <svg viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M3 12h3M18 12h3" fill="none" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="12" r="6" fill="none" stroke-width="1.8"/><circle cx="12" cy="12" r="1.8"/></svg>
+        <span>Mission Control</span>
+        <span class="nav-dot hidden" id="navRunDot"></span>
+      </button>
+      <button class="nav-item" data-view="ops">
+        <svg viewBox="0 0 24 24"><path d="M4 17l5-5 4 3 7-8" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 21h16" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span>Terminal Feed</span>
+      </button>
+
+      <div class="nav-group">Knowledge</div>
+      <button class="nav-item" data-view="kg">
+        <svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.4"/><circle cx="18" cy="7" r="2.4"/><circle cx="12" cy="17" r="2.4"/><circle cx="19" cy="17" r="1.6"/><path d="M8 6.8l7.6-.6M7 8l4 7M16.5 8.7l-3.4 6.4M14.3 16.7l3.2.2" fill="none" stroke-width="1.5"/></svg>
+        <span>Knowledge Graph</span>
+      </button>
+      <button class="nav-item" data-view="formulas">
+        <svg viewBox="0 0 24 24"><path d="M5 5h14M8 5c4 5 4 9 0 14M16 5c-4 5-4 9 0 14M5 19h14" fill="none" stroke-width="1.7" stroke-linecap="round"/></svg>
+        <span>Formulas</span>
+      </button>
+      <button class="nav-item" data-view="principles">
+        <svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z" fill="none" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Principles &amp; Causal</span>
+      </button>
+      <button class="nav-item" data-view="memory">
+        <svg viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="2.6" fill="none" stroke-width="1.7"/><path d="M5 6v12c0 1.4 3.1 2.6 7 2.6s7-1.2 7-2.6V6M5 12c0 1.4 3.1 2.6 7 2.6s7-1.2 7-2.6" fill="none" stroke-width="1.7"/></svg>
+        <span>Memory Proof</span>
+      </button>
+
+      <div class="nav-group">Scientist</div>
+      <button class="nav-item" data-view="hitl">
+        <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2" fill="none" stroke-width="1.7"/><path d="M3.5 19.5c.6-3.2 2.9-4.8 5.5-4.8s4.9 1.6 5.5 4.8" fill="none" stroke-width="1.7" stroke-linecap="round"/><path d="M16 7.5l1.2 1.2L20 5.9" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.5 12.8h5" stroke-width="1.7" stroke-linecap="round"/></svg>
+        <span>HITL &amp; Sneak Peek</span>
+      </button>
+      <button class="nav-item" data-view="goal">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke-width="1.7"/><circle cx="12" cy="12" r="4.7" fill="none" stroke-width="1.7"/><circle cx="12" cy="12" r="1.5"/></svg>
+        <span>Goal Director</span>
+      </button>
+      <button class="nav-item" data-view="timeline">
+        <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h9M4 18h13" fill="none" stroke-width="1.9" stroke-linecap="round"/><circle cx="18.5" cy="12" r="2"/></svg>
+        <span>Timeline &amp; Replay</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-foot">
+      <div class="sys-stat"><span class="dot" id="apiDot"></span><span id="apiStatus">connecting…</span></div>
+      <div class="sys-meta" id="memFiles"></div>
+    </div>
+  </aside>
+
+  <!-- ════════════════════ Main ════════════════════ -->
+  <div class="main-col">
+    <header class="topbar">
+      <div class="topbar-title">
+        <h2 id="topTitle">What is UIL</h2>
+        <span class="crumb" id="topCrumb">Overview</span>
+      </div>
+      <div class="topbar-actions">
+        <div class="run-chip hidden" id="runChip" title="Jump to Mission Control">
+          <span class="live-dot"></span><span id="runChipText">idle</span>
+        </div>
+        <a class="btn ghost sm" href="/" title="Pitch site">← Site</a>
+        <a class="icon-btn" href="/" title="Back to the marketing site" aria-label="Marketing site">
+          <svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5M5.5 9.8V20h13V9.8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <button class="icon-btn" id="themeToggle" title="Toggle light / dark theme">
+          <svg class="ic-moon" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z" fill="none" stroke-width="1.7" stroke-linejoin="round"/></svg>
+          <svg class="ic-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2" fill="none" stroke-width="1.7"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6L17 7M7 17l-1.4 1.4" stroke-width="1.7" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="main">
+
+      <!-- ══════════ OVERVIEW / ABOUT ══════════ -->
+      <section class="view active" id="view-overview">
+        <div class="hero-banner card">
+          <div class="hero-copy">
+            <div class="hero-kicker">AI · neuroscience · symbolic science</div>
+            <h1>A cognitive layer that <em>thinks in graphs, learns in symbols, and yields to human correction.</em></h1>
+            <p>FIGPSO UIL wraps classifiers in a living knowledge network — neurons (principles), synapses (causal edges), episodic memory, and an event-sourced scientist loop. Every belief is inspectable, editable, and replayable.</p>
+            <div class="btn-row">
+              <button class="btn primary" data-goto="mission">Launch a run</button>
+              <button class="btn ghost" data-goto="kg">Explore the knowledge graph</button>
+              <button class="btn ghost" data-goto="hitl">See how HITL works</button>
+            </div>
+          </div>
+          <div class="hero-aside">
+            <div class="hero-mindmap card-inset">
+              <div class="card-title-row">
+                <div class="card-title">Live knowledge mindmap</div>
+                <button class="btn ghost sm" data-goto="kg">Open KG</button>
+              </div>
+              <div class="mini-kg-wrap">
+                <canvas id="ovMindmap"></canvas>
+              </div>
+              <p class="hint">Animated radial view of your Editable Network — same engine as the Knowledge Graph section.</p>
+            </div>
+            <div class="hero-stats-panel">
+              <div class="ostat"><span class="ostat-v" id="ovStatFiles">—</span><span class="ostat-k">memory files on disk</span></div>
+              <div class="ostat"><span class="ostat-v" id="ovStatBytes">—</span><span class="ostat-k">persisted knowledge</span></div>
+              <div class="ostat"><span class="ostat-v" id="ovStatGraph">—</span><span class="ostat-k">KG nodes / edges</span></div>
+              <div class="ostat"><span class="ostat-v" id="ovStatSeq">—</span><span class="ostat-k">events in history</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-label">The core loop</div>
+        <div class="card">
+          <div class="loop-flow" id="loopFlow">
+            <div class="loop-step"><b>PSO search</b><span>particle swarm explores classifier configs</span></div>
+            <div class="loop-arrow">→</div>
+            <div class="loop-step"><b>Journal</b><span>every stage recorded: state, action, outcome</span></div>
+            <div class="loop-arrow">→</div>
+            <div class="loop-step"><b>DT Miner</b><span>decision trees mine rules from the journal</span></div>
+            <div class="loop-arrow">→</div>
+            <div class="loop-step"><b>Principle library</b><span>rules become tiered, confidence-weighted principles</span></div>
+            <div class="loop-arrow">→</div>
+            <div class="loop-step"><b>Executor</b><span>principles steer the next stage's search</span></div>
+            <div class="loop-arrow loop-back">↩</div>
+          </div>
+          <p class="hint">Around this loop sit 19 cognitive extensions — stress &amp; regret signals, a causal intervention engine (majority-of-3 confirmation), episodic memory with KDE fingerprint retrieval, an editable knowledge graph, formula evolution, abstraction safeguards, and PSO detachment as the system matures.</p>
+        </div>
+
+        <div class="grid-3">
+          <div class="card about-card">
+            <div class="about-ic" style="--c:var(--acc)">◈</div>
+            <h3>v19–v21 · The 20-part architecture</h3>
+            <p>The original loop plus cognitive extensions: dual stress &amp; regret, within/cross-dataset mining, 4-tier principle hierarchy, editable network with lift-based edges, 5-strategy investigation engine, causal co-activation, meta-principle merging, and structural representation.</p>
+          </div>
+          <div class="card about-card">
+            <div class="about-ic" style="--c:var(--s2)">⟳</div>
+            <h3>v22 · The Editable Scientist</h3>
+            <p>Event-sourced knowledge history (VersionStore — replay any belief at any point in time), five-axis dataset fingerprinting, a domain router that picks the right learner per dataset, a symbolic regressor that rediscovers Feynman laws, and full human-in-the-loop editability.</p>
+          </div>
+          <div class="card about-card">
+            <div class="about-ic" style="--c:var(--s3)">Σ</div>
+            <h3>Where it honestly wins</h3>
+            <p>On saturated tabular data the cognitive layer <b>ties</b> plain XGBoost+PSO on accuracy. Its defensible value: the <b>symbolic / extrapolation domain</b> (symbolic regression categorically beats XGBoost out-of-range) and <b>inspectable, replayable, human-editable knowledge</b> — every model is a readable law, not a black box.</p>
+          </div>
+        </div>
+
+        <div class="section-label">How to use this console</div>
+        <div class="grid-2">
+          <div class="card">
+            <ol class="howto">
+              <li><b>Mission Control</b> — pick a dataset and classifier (SymbolicFormula is the default and the recommended one), set stages, and start a run. Live charts, the stage-by-stage decision trace, and memory counters stream in over WebSocket.</li>
+              <li><b>Knowledge Graph</b> — watch the belief network the system builds: principles as nodes, <i>leads_to / contradicts / depends_on</i> edges. Switch to the mindmap for a hierarchical view. Click any node to edit its confidence or tier.</li>
+              <li><b>Formulas / Principles</b> — inspect the evolved loss formulas and symbolic classifiers, the mined principles and their confidence, and the causal hypotheses with their experimental status.</li>
+            </ol>
+          </div>
+          <div class="card">
+            <ol class="howto" start="4">
+              <li><b>Memory Proof</b> — verify learning persists: on-disk stores grow across runs, champions resume accuracy, and everything pruned lands in the archive (nothing is lost).</li>
+              <li><b>Human in the Loop</b> — review knowledge cells between runs: accept, edit, or reject any belief. Every action becomes a <code>human_edit</code> / <code>human_reject</code> event you can undo by replay.</li>
+              <li><b>Goal Director &amp; Timeline</b> — set a top-down goal the next run must honor, and scrub through the event-sourced history of everything the system has ever believed.</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="section-label">Module map</div>
+        <div class="card">
+          <div class="module-map" id="moduleMap"></div>
+        </div>
+      </section>
+
+      <!-- ══════════ MISSION CONTROL ══════════ -->
+      <section class="view" id="view-mission">
+        <div class="mission-grid">
+          <!-- Launch -->
+          <div class="card launch-card">
+            <div class="card-title">Launch a run</div>
+            <label class="field"><span>Dataset</span><select id="dsSelect"></select></label>
+            <label class="field"><span>Classifier</span>
+              <div class="seg" id="clfSeg">
+                <button data-v="SymbolicFormula" class="on">Symbolic</button>
+                <button data-v="XGBoost">XGBoost</button>
+                <button data-v="RandomForest">Forest</button>
+                <button data-v="KNN">KNN</button>
+              </div>
+            </label>
+            <label class="field" id="symModeField"><span>Symbolic mode</span>
+              <select id="symMode">
+                <option value="auto">auto (UIL picks)</option>
+                <option value="sparse_linear">sparse_linear (readable L1)</option>
+                <option value="boosting">boosting</option>
+                <option value="bagging">bagging</option>
+                <option value="multi">multi (hybrid stack)</option>
+                <option value="single">single formula</option>
+              </select>
+            </label>
+            <div class="field-row">
+              <label class="field"><span>Stages</span><input id="stagesInput" type="number" value="8" min="1" max="300"></label>
+              <label class="field"><span>Seed</span><input id="seedInput" type="number" value="42"></label>
+            </div>
+            <div class="field-row">
+              <label class="field"><span>Particles</span><input id="particlesInput" type="number" value="15" min="1"></label>
+              <label class="field"><span>PSO iters</span><input id="psoItersInput" type="number" value="15" min="1"></label>
+            </div>
+            <div class="field-row">
+              <label class="field"><span>Boost rounds</span><input id="boostInput" type="number" value="30" min="1"></label>
+              <label class="field"><span>Target acc <em>(opt.)</em></span><input id="targetAccInput" type="number" step="0.01" min="0" max="1" placeholder="0.80"></label>
+            </div>
+            <label class="field"><span>Max stages (cap when target set)</span><input id="maxStagesInput" type="number" value="300" min="1"></label>
+            <div class="btn-row">
+              <button class="btn ghost sm" id="pathAPreset" title="SymbolicFormula · target 80% · curriculum preset">Path A preset</button>
+            </div>
+            <div class="sys-resources" id="sysResources"></div>
+            <button class="btn primary big" id="startBtn"><span class="btn-label">Start run</span></button>
+            <div class="run-controls hidden" id="runControls">
+              <button class="btn ghost" id="pauseBtn">Pause</button>
+              <button class="btn danger" id="stopBtn">Stop</button>
+            </div>
+          </div>
+
+          <!-- Hero -->
+          <div class="card hero-card">
+            <div class="hero-ring">
+              <svg viewBox="0 0 120 120">
+                <circle class="ring-track" cx="60" cy="60" r="52"/>
+                <circle class="ring-fill" id="ringFill" cx="60" cy="60" r="52"/>
+              </svg>
+              <div class="hero-center">
+                <div class="hero-num" id="heroAcc">—</div>
+                <div class="hero-cap">best accuracy</div>
+              </div>
+            </div>
+            <div class="hero-stats">
+              <div class="hstat"><span class="hstat-v" id="hStage">—</span><span class="hstat-k">stage</span></div>
+              <div class="hstat"><span class="hstat-v" id="hStress">—</span><span class="hstat-k">stress</span></div>
+              <div class="hstat"><span class="hstat-v" id="hRegret">—</span><span class="hstat-k">regret</span></div>
+              <div class="hstat"><span class="hstat-v" id="hMacroF1">—</span><span class="hstat-k">macro-F1</span></div>
+              <div class="hstat"><span class="hstat-v" id="hMaturity">—</span><span class="hstat-k">maturity</span></div>
+            </div>
+            <div class="hero-goal" id="heroGoal"></div>
+          </div>
+
+          <!-- Charts -->
+          <div class="card chart-card chart-acc">
+            <div class="card-title-row">
+              <div class="card-title">Accuracy</div>
+              <div class="legend"><span class="lg"><i style="background:var(--s1)"></i>stage</span><span class="lg"><i style="background:var(--s2)"></i>best</span></div>
+            </div>
+            <div class="chart-wrap"><canvas id="accChart"></canvas><div class="tip" id="accTip"></div></div>
+          </div>
+          <div class="card chart-card chart-stress">
+            <div class="card-title-row">
+              <div class="card-title">Cognitive pressure</div>
+              <div class="legend"><span class="lg"><i style="background:var(--s3)"></i>stress</span><span class="lg"><i style="background:var(--s4)"></i>regret</span></div>
+            </div>
+            <div class="chart-wrap"><canvas id="stressChart"></canvas><div class="tip" id="stressTip"></div></div>
+          </div>
+          <div class="card chart-card chart-alloc">
+            <div class="card-title-row">
+              <div class="card-title">Search allocation</div>
+              <div class="legend"><span class="lg"><i style="background:var(--s5)"></i>PSO</span><span class="lg"><i style="background:var(--acc)"></i>reasoning</span></div>
+            </div>
+            <div class="chart-wrap"><canvas id="allocChart"></canvas><div class="tip" id="allocTip"></div></div>
+          </div>
+
+          <!-- Decision pipeline -->
+          <div class="card pipeline-card">
+            <div class="card-title-row">
+              <div class="card-title">Decision trace — this stage's pipeline</div>
+              <span class="muted">State → Episodic → Principles → KG → Hybrid search → Stress/Regret → Investigate/Mine/Causal</span>
+            </div>
+            <div class="pipeline-flow" id="pipelineFlow">
+              <div class="empty small"><p>Start a run to watch the cognitive pipeline decide, stage by stage.</p></div>
+            </div>
+          </div>
+
+          <!-- Memory counters -->
+          <div class="card memcount-card">
+            <div class="card-title">Live memory counters</div>
+            <div class="mem-counters">
+              <div class="mc"><span class="mc-v" id="mcJournal">0</span><span class="mc-k">journal entries</span></div>
+              <div class="mc"><span class="mc-v" id="mcPrinciples">0</span><span class="mc-k">principles</span></div>
+              <div class="mc"><span class="mc-v" id="mcNetwork">0/0</span><span class="mc-k">KG nodes/edges</span></div>
+              <div class="mc"><span class="mc-v" id="mcArchive">0</span><span class="mc-k">archived n+e</span></div>
+              <div class="mc"><span class="mc-v" id="mcEpisodes">0</span><span class="mc-k">episodes</span></div>
+              <div class="mc"><span class="mc-v" id="mcCausal">0</span><span class="mc-k">causal hyp.</span></div>
+              <div class="mc"><span class="mc-v" id="mcFormulas">0</span><span class="mc-k">formulas</span></div>
+              <div class="mc"><span class="mc-v" id="mcMinerR2">—</span><span class="mc-k">miner R²</span></div>
+              <div class="mc"><span class="mc-v" id="mcChampion">—</span><span class="mc-k">champion acc</span></div>
+            </div>
+          </div>
+
+          <!-- Stage feed -->
+          <div class="card feed-card">
+            <div class="card-title">Stage stream</div>
+            <div class="feed" id="stageFeed">
+              <div class="empty" id="feedEmpty"><div class="empty-orb"></div><p>No stages yet — launch a run and watch the mind work.</p></div>
+            </div>
+          </div>
+
+          <!-- Session runs -->
+          <div class="card runs-card">
+            <div class="card-title-row">
+              <div class="card-title">Session runs</div>
+              <button class="btn ghost sm" id="runsRefresh">Refresh</button>
+            </div>
+            <div class="table-scroll">
+              <table class="tbl" id="runsTable">
+                <thead><tr><th>run</th><th>dataset</th><th>classifier</th><th>status</th><th>stage</th><th>error</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════ KNOWLEDGE GRAPH — neural workspace ══════════ -->
+      <section class="view" id="view-kg">
+        <div class="kg-workspace">
+          <div class="kg-float-bar">
+            <div class="kg-title-block">
+              <span class="kg-eyebrow">Neural knowledge layer</span>
+              <h3>Editable Network · synapse map</h3>
+              <span class="muted" id="kgFocusLabel"></span>
+            </div>
+            <div class="seg glass" id="kgModeSeg">
+              <button data-v="network" class="on" title="Force-directed physics">Network</button>
+              <button data-v="brain" title="Radial mindmap — brain layout">Mindmap</button>
+              <button data-v="orbit" title="Orbital cluster view">Orbit</button>
+            </div>
+            <div class="chips compact" id="kgEdgeChips">
+              <button class="chip on" data-t="">all</button>
+              <button class="chip" data-t="leads_to">leads_to</button>
+              <button class="chip" data-t="strengthens">strengthens</button>
+              <button class="chip" data-t="contradicts">contradicts</button>
+              <button class="chip" data-t="depends_on">depends_on</button>
+            </div>
+            <input class="kg-search glass" id="kgSearch" placeholder="Search neurons…">
+            <div class="kg-toggles">
+              <label class="toggle"><input type="checkbox" id="kgLabels" checked><span>labels</span></label>
+              <label class="toggle"><input type="checkbox" id="kgPhysics" checked><span>physics</span></label>
+              <label class="toggle"><input type="checkbox" id="kgPulse" checked><span>pulse</span></label>
+              <label class="toggle"><input type="checkbox" id="kgDetail" checked><span>detail</span></label>
+            </div>
+            <div class="btn-row">
+              <button class="btn ghost sm hidden" id="kgClearFocus">Clear focus</button>
+              <button class="btn ghost sm" id="kgFit">Fit view</button>
+              <button class="btn primary sm" id="kgRefresh">Sync graph</button>
+            </div>
+          </div>
+
+          <div class="kg-stage glass">
+            <canvas id="kgCanvas"></canvas>
+            <canvas id="kgMinimap" class="kg-minimap" width="120" height="88"></canvas>
+            <div class="kg-hovercard glass hidden" id="kgHover"></div>
+            <div class="kg-canvas-hint">
+              <span>drag neurons</span><span>click synapses</span><span>scroll zoom</span>
+              <span><kbd>F</kbd> fit</span><span><kbd>Esc</kbd> clear focus</span>
+            </div>
+            <div class="kg-legend glass" id="kgLegend">
+              <span class="lg-item" style="--c:#38bdf8">leads_to</span>
+              <span class="lg-item" style="--c:#34d399">strengthens</span>
+              <span class="lg-item" style="--c:#fb7185">contradicts</span>
+              <span class="lg-item" style="--c:#fbbf24">depends_on</span>
+            </div>
+          </div>
+
+          <div class="kg-modules">
+            <div class="kg-mod glass" data-mod="vitals">
+              <button class="kg-mod-toggle" aria-expanded="true"><span>Graph vitals</span><i>−</i></button>
+              <div class="kg-mod-body">
+                <div class="kv-rows" id="kgVitals"><div class="empty small"><p>Loading…</p></div></div>
+                <div class="kg-typebars" id="kgTypeBars"></div>
+              </div>
+            </div>
+            <div class="kg-mod glass" data-mod="node">
+              <button class="kg-mod-toggle" aria-expanded="true"><span>Neuron editor</span><i>−</i></button>
+              <div class="kg-mod-body" id="kgNodeEditor">
+                <div class="empty small"><p>Select a neuron to edit confidence &amp; tier inline.</p></div>
+              </div>
+            </div>
+            <div class="kg-mod glass collapsed" data-mod="edge">
+              <button class="kg-mod-toggle" aria-expanded="false"><span>Synapse inspector</span><i>+</i></button>
+              <div class="kg-mod-body" id="kgEdgeEditor">
+                <div class="empty small"><p>Click a synapse between neurons.</p></div>
+              </div>
+            </div>
+            <div class="kg-mod glass collapsed" data-mod="hot">
+              <button class="kg-mod-toggle" aria-expanded="false"><span>Most activated</span><i>+</i></button>
+              <div class="kg-mod-body">
+                <div id="kgTopNodes" class="top-nodes"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════ FORMULAS ══════════ -->
+      <section class="view" id="view-formulas">
+        <div class="formula-banner card idle" id="formulaBanner">
+          <b>No custom formula this stage</b><span> — using default classifier loss. Start a run to see live picks.</span>
+        </div>
+        <div class="card">
+          <div class="toolbar">
+            <button class="btn ghost sm" id="formulasRefresh">Refresh</button>
+            <label class="inline-field">Filter
+              <select id="formulaFilter">
+                <option value="all">all</option><option value="active">active</option>
+                <option value="seed">seed</option><option value="incubating">incubating</option>
+                <option value="proven">proven</option><option value="retired">retired</option>
+              </select>
+            </label>
+            <label class="inline-field">Sort
+              <select id="formulaSort">
+                <option value="confidence">confidence</option><option value="evidence">evidence</option>
+                <option value="best_accuracy">best accuracy</option><option value="name">name</option>
+              </select>
+            </label>
+            <span class="muted" id="formulaSummary"></span>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">Custom loss formulas <span class="muted">(XGBoost objective)</span></div>
+            <div class="table-scroll tall">
+              <table class="tbl clickable" id="lossTable">
+                <thead><tr><th>name</th><th>status</th><th>conf</th><th>evid</th><th>+/−</th><th>best acc</th><th>depth</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">Symbolic classifier formulas</div>
+            <div class="table-scroll tall">
+              <table class="tbl clickable" id="symbolicTable">
+                <thead><tr><th>name</th><th>status</th><th>conf</th><th>evid</th><th>+/−</th><th>best acc</th><th>depth</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">Top performers by confidence</div>
+            <div class="hbar-list" id="formulaTop"></div>
+          </div>
+          <div class="card">
+            <div class="card-title">Formula picks this run <span class="muted">(live)</span></div>
+            <div class="feed compact" id="formulaUsageLog"><div class="empty small"><p>Formula picks appear here during a run.</p></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Formula detail</div>
+          <div id="formulaDetail"><div class="empty small"><p>Click a formula row to see its expression, stats, and edit its confidence or status.</p></div></div>
+        </div>
+      </section>
+
+      <!-- ══════════ PRINCIPLES & CAUSAL ══════════ -->
+      <section class="view" id="view-principles">
+        <div class="card">
+          <div class="card-title-row">
+            <div class="card-title">Governance — journal vs principles</div>
+            <span class="muted">seed rules installed at startup / memory clear</span>
+          </div>
+          <div id="governancePanel" class="governance"><div class="empty small"><p>Loading…</p></div></div>
+        </div>
+        <div class="card">
+          <div class="card-title-row">
+            <div class="card-title">Principles <span class="muted">(from the DT miner)</span></div>
+            <button class="btn ghost sm" id="principlesRefresh">Refresh</button>
+          </div>
+          <div class="table-scroll tall">
+            <table class="tbl clickable" id="principlesTable">
+              <thead><tr><th>id</th><th>tier</th><th>status</th><th>conf</th><th>evid</th><th>conditions</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title-row">
+            <div class="card-title">Causal hypotheses <span class="muted">(majority-of-3 confirmation)</span></div>
+            <button class="btn ghost sm" id="causalRefresh">Refresh</button>
+          </div>
+          <div class="causal-legend">
+            <span class="badge st-pending">pending</span><span class="badge st-testing">testing</span>
+            <span class="badge st-correlational">correlational</span><span class="badge st-confirmed">confirmed causal</span>
+            <span class="badge st-refuted">refuted</span>
+          </div>
+          <div class="table-scroll tall">
+            <table class="tbl clickable" id="causalTable">
+              <thead><tr><th>id</th><th>variable</th><th>direction</th><th>status</th><th>strength</th><th>trials</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════ MEMORY PROOF ══════════ -->
+      <section class="view" id="view-memory">
+        <div class="proof-banner card" id="proofBanner"><b>○</b><span>Checking persisted memory…</span></div>
+        <div class="card">
+          <div class="card-title-row">
+            <div class="card-title">Persisted memory on disk <span class="muted" id="resultsDir"></span></div>
+            <div class="btn-row">
+              <button class="btn ghost sm" id="memRefresh">Refresh</button>
+              <button class="btn ghost sm" id="memBaseline">Set baseline</button>
+              <button class="btn ghost sm" id="memTransferHelp">How to test transfer</button>
+              <button class="btn danger sm" id="memClear">Clear ALL memory</button>
+            </div>
+          </div>
+          <div class="table-scroll">
+            <table class="tbl" id="persistTable">
+              <thead><tr><th>store</th><th>exists</th><th>size</th><th>Δ since baseline</th><th>records</th><th>last modified (UTC)</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">Memory architecture — working vs archive</div>
+            <div class="kv-rows" id="memArch"><div class="empty small"><p>Loading…</p></div></div>
+          </div>
+          <div class="card">
+            <div class="card-title">Dataset champions <span class="muted">(resume accuracy)</span></div>
+            <div id="championsList"><div class="empty small"><p>Loading…</p></div></div>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title-row">
+              <div class="card-title">Exploration consciousness</div>
+              <div class="btn-row">
+                <select id="consciousnessDs" class="inline-select"><option value="">— dataset —</option></select>
+                <button class="btn ghost sm" id="consciousnessLoad">Load brief</button>
+              </div>
+            </div>
+            <div id="consciousnessPanel"><div class="empty small"><p>What was already tried, conclusions reached, and formulas to avoid.</p></div></div>
+          </div>
+          <div class="card">
+            <div class="card-title-row">
+              <div class="card-title">Episodic memories <span class="muted">(cross-run warm-start)</span></div>
+              <button class="btn ghost sm" id="episodesLoad">Load episodes</button>
+            </div>
+            <div id="episodesList"><div class="empty small"><p>KDE dataset fingerprints with their resolutions.</p></div></div>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">Graph changelog</div>
+            <div class="feed compact" id="graphChangelog"></div>
+          </div>
+          <div class="card">
+            <div class="card-title">Formula changelog</div>
+            <div class="feed compact" id="formulaChangelog"></div>
+          </div>
+        </div>
+        <div class="card chart-card">
+          <div class="card-title-row">
+            <div class="card-title">Knowledge growth this run</div>
+            <div class="legend"><span class="lg"><i style="background:var(--s1)"></i>principles</span><span class="lg"><i style="background:var(--s2)"></i>KG nodes</span><span class="lg"><i style="background:var(--s3)"></i>journal</span></div>
+          </div>
+          <div class="chart-wrap"><canvas id="memGrowthChart"></canvas><div class="tip" id="memGrowthTip"></div></div>
+        </div>
+      </section>
+
+      <!-- ══════════ HITL ══════════ -->
+      <section class="view" id="view-hitl">
+        <div class="section-label">Sneak peek — how human-in-the-loop actually works</div>
+        <div class="card hitl-guide">
+          <div class="hitl-steps" id="hitlSteps">
+            <div class="hstep" data-step="0">
+              <div class="hstep-num">1</div>
+              <div><b>The system learns</b><p>Every run mines principles, grows the knowledge graph, evolves formulas, and tests causal hypotheses. Each belief is a <i>knowledge cell</i> — the smallest self-modifiable unit.</p></div>
+            </div>
+            <div class="hstep" data-step="1">
+              <div class="hstep-num">2</div>
+              <div><b>Everything is an event</b><p>Every change is appended to the VersionStore — an event-sourced, lossless history. Nothing is ever silently overwritten; state at any past moment can be reconstructed byte-identically.</p></div>
+            </div>
+            <div class="hstep" data-step="2">
+              <div class="hstep-num">3</div>
+              <div><b>You review between runs</b><p>Below, every cell the system believes is listed with its human-readable form and confidence. You are the peer reviewer of a machine scientist.</p></div>
+            </div>
+            <div class="hstep" data-step="3">
+              <div class="hstep-num">4</div>
+              <div><b>Edit or reject</b><p>Change a confidence, demote a tier, or reject a belief outright. Your action is recorded as a <code>human_edit</code> / <code>human_reject</code> event <i>and</i> applied to the materialized store — both paths, so it survives snapshots (bug #16's hard-won invariant).</p></div>
+            </div>
+            <div class="hstep" data-step="4">
+              <div class="hstep-num">5</div>
+              <div><b>Undo is replay</b><p>Made a mistake? Reconstruct the state at any earlier sequence number — the Replay panel below previews exactly what the system believed before your change.</p></div>
+            </div>
+            <div class="hstep" data-step="5">
+              <div class="hstep-num">6</div>
+              <div><b>The next run honors you</b><p>Edited confidences steer principle selection; rejected cells stay dead; goals set in the Goal Director bias attention. Verified end-to-end: a human edit survives the event stream, replay, and a fresh snapshot.</p></div>
+            </div>
+          </div>
+          <div class="hitl-live" id="hitlLiveStrip">
+            <div class="ostat"><span class="ostat-v" id="hitlSeqNow">—</span><span class="ostat-k">events recorded</span></div>
+            <div class="ostat"><span class="ostat-v" id="hitlCellsNow">—</span><span class="ostat-k">reviewable cells</span></div>
+            <div class="ostat"><span class="ostat-v" id="hitlHumanNow">—</span><span class="ostat-k">human edits in history</span></div>
+            <button class="btn primary" id="hitlPeek">Peek live state</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title-row">
+            <div class="card-title">Knowledge cell review</div>
+            <div class="btn-row">
+              <span class="muted" id="hitlLastSeq"></span>
+              <button class="btn ghost sm" id="cellsRefresh">Refresh</button>
+            </div>
+          </div>
+          <div class="chips" id="typeChips">
+            <button class="chip on" data-t="">All</button>
+            <button class="chip" data-t="principle">Principles</button>
+            <button class="chip" data-t="formula">Formulas</button>
+            <button class="chip" data-t="causal_hypothesis">Hypotheses</button>
+            <button class="chip" data-t="edge">Edges</button>
+            <button class="chip" data-t="node">Nodes</button>
+            <button class="chip" data-t="routing_rule">Routing</button>
+            <button class="chip" data-t="episode">Episodes</button>
+            <button class="chip" data-t="goal">Goals</button>
+          </div>
+          <div class="cell-grid" id="cellGrid"></div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">Replay preview <span class="muted">(undo)</span></div>
+            <pre class="pre-panel" id="hitlReplayPreview">Use “Undo preview” on a cell to reconstruct the state one event earlier.</pre>
+          </div>
+          <div class="card">
+            <div class="card-title-row">
+              <div class="card-title">Latest lab report</div>
+              <button class="btn ghost sm" id="labReportRefresh">Refresh</button>
+            </div>
+            <div class="lab-md" id="labReport"><div class="empty small"><p>Auto-generated at the end of each UIL run.</p></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════ GOAL DIRECTOR ══════════ -->
+      <section class="view" id="view-goal">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">Active goal</div>
+            <div id="activeGoalBox" class="goal-active-box">
+              <div class="empty small"><p>No active goal — the system runs pure bottom-up attention.</p></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">Compose a goal</div>
+            <label class="field"><span>Directive</span>
+              <input id="goalDirective" placeholder="e.g. prefer readable symbolic model over marginal accuracy">
+            </label>
+            <div class="field-row">
+              <label class="field"><span>Focus features <em>(comma-sep)</em></span><input id="goalFocus" placeholder="x3, petal_width"></label>
+              <label class="field"><span>Ignore features</span><input id="goalIgnore" placeholder="x12, noise_col"></label>
+            </div>
+            <div class="field-row">
+              <label class="field"><span>Prefer domains</span>
+                <select id="goalDomains" multiple size="4">
+                  <option value="symbolic">symbolic</option><option value="sparse_linear">sparse_linear</option>
+                  <option value="grad_fit">grad_fit</option><option value="tabular">tabular</option>
+                </select>
+              </label>
+              <label class="field"><span>Prefer relations</span>
+                <select id="goalRelations" multiple size="4">
+                  <option value="leads_to">leads_to</option><option value="strengthens">strengthens</option>
+                  <option value="depends_on">depends_on</option>
+                </select>
+              </label>
+            </div>
+            <label class="field"><span>Keywords</span><input id="goalKeywords" placeholder="sparse, penalty, readable"></label>
+            <label class="field slider-field"><span>Strength <b id="goalConfVal">1.00</b></span>
+              <input id="goalConf" type="range" min="0" max="100" value="100">
+            </label>
+            <div class="btn-row">
+              <button class="btn primary" id="goalSetBtn">Set goal</button>
+              <button class="btn danger ghost" id="goalClearBtn">Clear active</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════ TIMELINE & REPLAY ══════════ -->
+      <section class="view" id="view-timeline">
+        <div class="card">
+          <div class="card-title-row">
+            <div class="card-title">Belief state at seq <b id="seqLabel">—</b></div>
+            <span class="muted" id="seqMax"></span>
+          </div>
+          <input type="range" class="seq-slider" id="seqSlider" min="1" max="1" value="1">
+          <div class="replay-bars" id="replayBars"></div>
+        </div>
+        <div class="card">
+          <div class="card-title-row">
+            <div class="card-title">Journal replay — retrace a completed run</div>
+            <div class="btn-row">
+              <input id="retraceDataset" class="inline-input" list="retraceDatasets" placeholder="dataset name">
+              <datalist id="retraceDatasets"></datalist>
+              <input id="retraceFold" class="inline-input narrow" type="number" placeholder="fold">
+              <button class="btn ghost sm" id="retraceLoad">Load journal</button>
+            </div>
+          </div>
+          <input type="range" class="seq-slider" id="retraceScrubber" min="0" max="0" value="0">
+          <div class="muted" id="retracePos"></div>
+          <div id="retraceDetail"><div class="empty small"><p>Reads the persisted journal on disk — works for any finished run (terminal or web).</p></div></div>
+        </div>
+        <div class="card">
+          <div class="card-title-row">
+            <div class="card-title">Recent journal entries</div>
+            <button class="btn ghost sm" id="journalRefresh">Refresh</button>
+          </div>
+          <div class="table-scroll tall">
+            <table class="tbl" id="journalTable">
+              <thead><tr><th>dataset</th><th>stage</th><th>accuracy</th><th>stress</th><th>regret</th><th>action keys</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════ TERMINAL FEED ══════════ -->
+      <section class="view" id="view-ops">
+        <div class="card">
+          <div class="card-title-row">
+            <div class="card-title">Terminal &amp; external runs — live feed</div>
+            <div class="btn-row">
+              <span class="muted" id="feedStatus">checking feed…</span>
+              <button class="btn ghost sm" id="feedClear">Clear feed log</button>
+            </div>
+          </div>
+          <p class="hint">While this console is open, terminal runs (e.g. <code>python -m figpso_uil.experiments.run_curated_real</code>) stream here automatically via <code>results/uil_live_feed.jsonl</code>.</p>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">Active sources</div>
+            <div id="feedSources"><div class="empty small"><p>No feed activity yet.</p></div></div>
+          </div>
+          <div class="card">
+            <div class="card-title">Live event log</div>
+            <div class="feed" id="feedLog"><div class="empty small"><p>Waiting for events…</p></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title-row">
+            <div class="card-title">Ablation harness reports <span class="muted">(isolated state — terminal only)</span></div>
+            <button class="btn ghost sm" id="ablationRefresh">Refresh</button>
+          </div>
+          <div id="ablationList"><div class="empty small"><p>JSON reports from <code>experiments/ablation_harness.py</code> appear here after completion.</p></div></div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- ═══ Shared edit modal ═══ -->
+<div class="modal-veil hidden" id="modalVeil">
+  <div class="modal">
+    <div class="modal-title" id="modalTitle">Edit</div>
+    <div class="modal-body">
+      <pre class="modal-readable" id="modalReadable"></pre>
+      <div class="field-row">
+        <label class="field" id="modalConfField"><span>Confidence</span><input id="modalConf" type="number" step="0.05" min="0" max="1"></label>
+        <label class="field" id="modalStatusField"><span>Status</span><select id="modalStatus"></select></label>
+        <label class="field" id="modalTierField"><span>Tier</span><select id="modalTier">
+          <option value="1">1 — universal</option><option value="2">2 — domain</option>
+          <option value="3">3 — dataset</option><option value="4">4 — experimental</option>
+        </select></label>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn primary" id="modalSave">Save edit</button>
+      <button class="btn danger ghost hidden" id="modalReject">Reject</button>
+      <button class="btn ghost hidden" id="modalUndo">Undo preview</button>
+      <button class="btn ghost" id="modalCancel">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="toasts" id="toasts"></div>
+
+<script src="/shared/js/loader.js"></script>
+<script src="/shared/js/logo.js"></script>
+<script src="js/core.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/graph.js"></script>
+<script src="js/views-run.js"></script>
+<script src="js/views-kg.js"></script>
+<script src="js/views-formulas.js"></script>
+<script src="js/views-principles.js"></script>
+<script src="js/views-memory.js"></script>
+<script src="js/views-hitl.js"></script>
+<script src="js/views-goal.js"></script>
+<script src="js/views-timeline.js"></script>
+<script src="js/views-ops.js"></script>
+<script src="js/views-overview.js"></script>
+<script src="js/motion.js"></script>
+<script src="/shared/js/neural-field.js"></script>
+<script src="js/neural-bg.js"></script>
+<script src="/shared/js/cursor.js"></script>
+<script src="js/boot.js"></script>
+</body>
+</html>

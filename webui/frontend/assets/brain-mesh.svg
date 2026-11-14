@@ -1,0 +1,91 @@
+<svg viewBox="0 0 360 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cognitive core — neural wireframe sphere">
+  <defs>
+    <radialGradient id="cc-vol" cx="40%" cy="34%" r="72%">
+      <stop offset="0%" stop-color="#0e2a52"/>
+      <stop offset="55%" stop-color="#081226" stop-opacity="0.65"/>
+      <stop offset="100%" stop-color="#050810" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="cc-core" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#e6ffff"/>
+      <stop offset="30%" stop-color="#7aa6ff"/>
+      <stop offset="70%" stop-color="#3b74ff" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#3b74ff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="cc-wire" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7aa6ff"/><stop offset="100%" stop-color="#b48bff"/>
+    </linearGradient>
+    <linearGradient id="cc-orbit" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#b48bff" stop-opacity="0.15"/>
+      <stop offset="50%" stop-color="#b48bff"/>
+      <stop offset="100%" stop-color="#4aa8ff" stop-opacity="0.15"/>
+    </linearGradient>
+    <filter id="cc-glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="2.2" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <clipPath id="cc-sph"><circle cx="180" cy="126" r="78"/></clipPath>
+  </defs>
+
+  <!-- HUD corner brackets -->
+  <g stroke="#3a5a9e" stroke-width="1" fill="none" opacity="0.7">
+    <path d="M14 30 L14 14 L30 14"/><path d="M346 30 L346 14 L330 14"/>
+    <path d="M14 230 L14 246 L30 246"/><path d="M346 230 L346 246 L330 246"/>
+  </g>
+  <g font-family="'IBM Plex Mono',monospace" font-size="7" fill="#5570a8" letter-spacing="0.5">
+    <text x="20" y="24">COGNITIVE_CORE</text>
+    <text x="292" y="24">R:78 · N:12</text>
+    <text x="20" y="242">Δt · SELF-MODEL</text>
+  </g>
+
+  <!-- volumetric halo -->
+  <circle cx="180" cy="126" r="96" fill="url(#cc-vol)"/>
+
+  <!-- orbital ring (behind) -->
+  <g transform="rotate(-18 180 126)">
+    <ellipse cx="180" cy="126" rx="118" ry="34" fill="none" stroke="url(#cc-orbit)" stroke-width="1.3" stroke-dasharray="1 6"/>
+  </g>
+
+  <!-- sphere shading -->
+  <circle cx="180" cy="126" r="78" fill="#081226"/>
+  <circle cx="180" cy="126" r="78" fill="url(#cc-vol)"/>
+
+  <!-- wireframe: latitudes + longitudes clipped to sphere -->
+  <g clip-path="url(#cc-sph)" fill="none" stroke="url(#cc-wire)" stroke-width="0.7" opacity="0.75">
+    <ellipse cx="180" cy="126" rx="78" ry="20"/>
+    <ellipse cx="180" cy="96" rx="72" ry="18"/>
+    <ellipse cx="180" cy="156" rx="72" ry="18"/>
+    <ellipse cx="180" cy="71" rx="55" ry="14"/>
+    <ellipse cx="180" cy="181" rx="55" ry="14"/>
+    <ellipse cx="180" cy="126" rx="67.5" ry="78"/>
+    <ellipse cx="180" cy="126" rx="39" ry="78"/>
+    <line x1="180" y1="48" x2="180" y2="204"/>
+  </g>
+  <circle cx="180" cy="126" r="78" fill="none" stroke="url(#cc-wire)" stroke-width="1.4"/>
+
+  <!-- neural nodes on the surface + connections -->
+  <g clip-path="url(#cc-sph)">
+    <g stroke="#4aa8ff" stroke-width="0.7" opacity="0.55" fill="none">
+      <path d="M150 96 L188 118 L214 150"/><path d="M188 118 L164 158"/>
+      <path d="M150 96 L134 132"/><path d="M214 150 L196 92"/>
+    </g>
+    <g fill="#7aa6ff">
+      <circle cx="188" cy="118" r="3"/><circle cx="150" cy="96" r="2.4"/>
+      <circle cx="214" cy="150" r="2.6"/><circle cx="164" cy="158" r="2.2"/>
+      <circle cx="196" cy="92" r="2"/><circle cx="134" cy="132" r="2"/>
+    </g>
+    <g fill="#b48bff" opacity="0.7">
+      <circle cx="222" cy="108" r="1.8"/><circle cx="140" cy="160" r="1.8"/><circle cx="205" cy="176" r="1.6"/>
+    </g>
+  </g>
+
+  <!-- luminous core -->
+  <circle cx="180" cy="126" r="26" fill="url(#cc-core)"/>
+  <circle cx="180" cy="126" r="4" fill="#eef4ff" filter="url(#cc-glow)"/>
+
+  <!-- orbital ring (front) + satellite -->
+  <g transform="rotate(-18 180 126)">
+    <path d="M62 126 A118 34 0 0 0 298 126" fill="none" stroke="url(#cc-orbit)" stroke-width="1.6"/>
+    <circle cx="296" cy="118" r="3" fill="#d3beff" filter="url(#cc-glow)"/>
+    <circle cx="296" cy="118" r="6.5" fill="none" stroke="#b48bff" stroke-width="0.7" opacity="0.6"/>
+  </g>
+</svg>

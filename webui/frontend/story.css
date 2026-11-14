@@ -1,0 +1,413 @@
+/* ════════════════════════════════════════════════════════════════════
+   story.css — scroll intro · ML transparency · UIL cognition engine
+   (anime.js Engine–inspired turbo panel for UIL)
+   ════════════════════════════════════════════════════════════════════ */
+
+/* full-site particle canvas — sits behind everything */
+.site-field {
+  position: fixed; inset: 0; width: 100%; height: 100%;
+  z-index: 0; pointer-events: none;
+  opacity: 1;
+}
+body {
+  /* keep particle field visible behind semi-opaque chapters */
+}
+.chapter {
+  background: color-mix(in srgb, var(--bg) 58%, transparent);
+  backdrop-filter: blur(2px);
+}
+.chapter.alt {
+  background: color-mix(in srgb, var(--surface-2) 42%, transparent);
+  backdrop-filter: blur(2px);
+}
+.site-field.no-webgl {
+  background:
+    radial-gradient(2px 2px at 18% 28%, var(--acc) 50%, transparent),
+    radial-gradient(2px 2px at 72% 58%, var(--neural) 50%, transparent),
+    radial-gradient(1.5px 1.5px at 44% 78%, var(--synapse) 50%, transparent),
+    radial-gradient(1.5px 1.5px at 88% 22%, var(--acc-2) 50%, transparent);
+  opacity: 0.55;
+}
+body > .site-grid, body > .site-scan { z-index: 1; }
+.topnav, .scroll-progress, .ticker { z-index: 90; }
+main, .intro-pin { position: relative; z-index: 2; }
+
+/* ── intro gate — SCROLL-SCRUBBED (tall pin + sticky, native scroll) ── */
+.intro-pin {
+  height: 320vh;            /* scroll distance that scrubs the video */
+  position: relative;
+  z-index: 3;
+}
+.intro-sticky {
+  position: sticky; top: 0; height: 100vh; height: 100dvh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  overflow: hidden;
+  padding: 80px 28px 40px;
+  --intro-p: 0;
+  background: #050506;
+}
+.intro-sticky::before {
+  /* fallback wash while video buffers — never leave a blank hole */
+  content: "";
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse at 50% 45%, #1a2240 0%, #04050b 70%);
+}
+.intro-atmos {
+  position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+  z-index: 0;
+  opacity: 1;
+}
+.intro-video {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  background: transparent;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  transform: none;
+  filter: none;
+  z-index: 0;
+}
+.intro-video.is-ready,
+.intro-sticky.video-on .intro-video {
+  opacity: 1;
+}
+/* hide the neural particle field while the intro video is on screen */
+html.is-intro .site-field,
+html.is-intro .site-grid,
+html.is-intro .site-scan {
+  opacity: 0 !important;
+  visibility: hidden;
+  pointer-events: none !important;
+}
+.intro-bg-wash {
+  position: absolute; inset: 0; pointer-events: none; z-index: 1;
+  background: radial-gradient(ellipse at 50% 42%, rgba(4,5,11,0.2), transparent 60%);
+  opacity: calc(0.4 - var(--intro-p) * 0.25);
+}
+.intro-vignette {
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(180deg, rgba(4,5,11,0.35) 0%, transparent 28%, transparent 65%, rgba(4,5,11,0.55) 100%);
+}
+.intro-sticky.deep .intro-title,
+.intro-sticky.deep .intro-poem,
+.intro-sticky.deep .intro-kicker {
+  opacity: 0.55;
+}
+.intro-skip {
+  appearance: none; border: 1px solid var(--border-hi);
+  background: color-mix(in srgb, var(--bg) 55%, transparent);
+  color: var(--text-2); font-family: var(--mono); font-size: 11px;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 8px 14px; cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.intro-skip:hover { color: var(--acc-2); border-color: var(--acc-2); }
+.intro-progress {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 2px; z-index: 3;
+  background: rgba(255,255,255,0.08);
+}
+.intro-progress i {
+  display: block; height: 100%; width: 100%;
+  transform-origin: left center; transform: scaleX(0);
+  background: linear-gradient(90deg, var(--acc), var(--neural));
+  will-change: transform;
+}
+.intro-logo-wrap,
+.intro-kicker,
+.intro-title,
+.intro-poem,
+.intro-foot {
+  position: relative;
+  z-index: 2;
+}
+.intro-mark {
+  position: relative; width: 88px; height: 88px; margin-bottom: 28px;
+  transform: scale(calc(1.15 - var(--intro-p) * 0.35));
+  opacity: calc(1 - var(--intro-p) * 0.4);
+}
+.intro-mark .orbit {
+  position: absolute; inset: 0; border-radius: 50%;
+  border: 1.5px solid rgba(74,168,255,0.65); border-top-color: transparent;
+  animation: spin 5.5s linear infinite;
+}
+.intro-mark .orbit2 {
+  position: absolute; inset: 10px; border-radius: 50%;
+  border: 1px solid rgba(180,139,255,0.45); border-bottom-color: transparent;
+  animation: spin 8s linear infinite reverse;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.intro-mark .core {
+  position: absolute; inset: 26px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--acc), var(--neural));
+  box-shadow: 0 0 40px rgba(59,116,255,0.55);
+}
+.intro-kicker {
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--acc-2); margin-bottom: 18px;
+  opacity: calc(1 - var(--intro-p) * 0.55);
+}
+.intro-title {
+  font-family: var(--font-display); font-weight: 800;
+  font-size: clamp(40px, 8vw, 92px); line-height: 0.98;
+  letter-spacing: -0.04em; text-align: center; max-width: 14ch;
+  margin-bottom: 18px;
+  transform: translateY(calc(var(--intro-p) * -28px)) scale(calc(1 - var(--intro-p) * 0.06));
+  opacity: calc(1 - var(--intro-p) * 0.45);
+}
+.intro-sub {
+  font-size: clamp(15px, 1.7vw, 19px); color: var(--text-2);
+  text-align: center; max-width: 36ch; line-height: 1.55; margin-bottom: 36px;
+  opacity: calc(1 - var(--intro-p) * 1.4);
+  transform: translateY(calc(var(--intro-p) * -20px));
+}
+.intro-scroll-hint {
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--text-3);
+  opacity: calc(1 - var(--intro-p) * 2);
+}
+.intro-scroll-hint .bar {
+  width: 1px; height: 48px;
+  background: linear-gradient(180deg, var(--acc-2), transparent);
+  animation: introPulse 1.8s ease-in-out infinite;
+}
+@keyframes introPulse {
+  0%, 100% { opacity: 0.35; transform: scaleY(0.7); }
+  50% { opacity: 1; transform: scaleY(1); }
+}
+.intro-sticky.is-done { pointer-events: none; }
+html.is-intro .topnav {
+  opacity: 0; transform: translateY(-12px);
+  pointer-events: none; transition: opacity 0.55s var(--ease-out), transform 0.55s var(--ease-out);
+}
+html:not(.is-intro) .topnav {
+  opacity: 1; transform: none;
+  transition: opacity 0.7s var(--ease-out) 0.05s, transform 0.7s var(--ease-out) 0.05s;
+}
+
+/* hide hero webgl duplicate — site-field is the field */
+.hero .hero-gl { display: none; }
+
+.intro-logo-wrap {
+  position: relative;
+  z-index: 2;
+  width: min(26vmin, 160px); height: min(26vmin, 160px);
+  margin-bottom: 26px;
+  display: grid; place-items: center;
+  transform: scale(calc(1.06 - var(--intro-p) * 0.14)) translateY(calc(var(--intro-p) * -14px));
+  opacity: calc(1 - var(--intro-p) * 0.3);
+}
+.intro-logo-wrap .uil-logo,
+.intro-logo-live {
+  width: 100% !important;
+  height: 100% !important;
+  --uil-logo-size: 100% !important;
+}
+
+/* legacy photo/engine selectors kept inert if present */
+.intro-photo, .intro-fog, .intro-engine { display: none !important; }
+
+.intro-poem { font-family: var(--font-display); font-weight: 600;
+  font-size: clamp(15px, 2.1vw, 22px); line-height: 1.5; text-align: center; color: var(--text-2);
+  max-width: 30ch; margin-bottom: 40px; letter-spacing: 0.01em;
+  opacity: calc(1 - var(--intro-p) * 0.5); transform: translateY(calc(var(--intro-p) * -10px)); }
+.intro-poem .w { display: inline-block; overflow: hidden; }
+.intro-poem .w i { display: inline-block; font-style: normal; transform: translateY(110%);
+  transition: transform 0.85s var(--ease-out); }
+.intro-poem.in .w i { transform: none; }
+
+.intro-foot { position: absolute; left: 0; right: 0; bottom: 28px;
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 18px;
+  padding: 0 clamp(20px, 4vw, 54px); flex-wrap: wrap;
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--text-3); opacity: 1; }
+.intro-clock b { color: var(--text-2); font-size: 12px; letter-spacing: 0.05em; }
+.intro-clock em { font-style: normal; }
+.intro-credit {
+  position: absolute; left: 18px; bottom: 58px; z-index: 2;
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: rgba(180, 200, 230, 0.45);
+}
+@media (max-width: 640px) { .intro-foot { font-size: 9px; gap: 10px; } .intro-clock:last-of-type { display: none; } }
+
+/* ── ML story pillars ─────────────────────────────────────────────── */
+.pillar-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 22px;
+  margin-top: 8px;
+}
+@media (max-width: 920px) { .pillar-grid { grid-template-columns: 1fr; } }
+
+.pillar {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px 26px 30px;
+  overflow: hidden;
+  min-height: 340px;
+}
+.pillar-tag {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--acc-2); margin-bottom: 12px;
+}
+.pillar h3 {
+  font-family: var(--font-display); font-size: 24px; font-weight: 700;
+  letter-spacing: -0.02em; margin-bottom: 10px; line-height: 1.15;
+}
+.pillar-lead {
+  font-size: 13.5px; line-height: 1.6; color: var(--text-2); margin-bottom: 22px;
+  max-width: 42ch;
+}
+
+/* transparency: black-box → glass → law */
+.glass-stack {
+  position: relative; height: 168px; perspective: 900px;
+}
+.glass-layer {
+  position: absolute; inset: 0;
+  border: 1px solid var(--border-hi);
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em;
+  transition: transform 0.9s var(--ease-out), opacity 0.9s var(--ease-out), filter 0.9s;
+  will-change: transform, opacity;
+}
+.glass-layer.box {
+  background: #0a0e18;
+  color: var(--text-3);
+  box-shadow: inset 0 0 40px rgba(0,0,0,0.65);
+}
+.glass-layer.glass {
+  background: rgba(120, 180, 255, 0.08);
+  backdrop-filter: blur(10px);
+  border-color: rgba(74, 168, 255, 0.45);
+  color: var(--acc-2);
+  opacity: 0;
+  transform: translateY(18px) scale(0.96);
+}
+.glass-layer.law {
+  background: rgba(180, 139, 255, 0.1);
+  border-color: rgba(180, 139, 255, 0.4);
+  color: var(--neural-2);
+  opacity: 0;
+  transform: translateY(28px) scale(0.94);
+  font-size: 13px;
+}
+.pillar.is-on .glass-layer.box {
+  opacity: 0.25;
+  transform: translateY(-10px) scale(0.92);
+  filter: blur(2px);
+}
+.pillar.is-on .glass-layer.glass {
+  opacity: 1;
+  transform: translateY(-4px) scale(1);
+}
+.pillar.is-on .glass-layer.law {
+  opacity: 1;
+  transform: translateY(10px) scale(1);
+}
+.glass-caption {
+  margin-top: 14px; font-size: 12px; color: var(--text-3); line-height: 1.45;
+}
+.glass-caption b { color: var(--text); }
+
+/* UIL cognition engine — anime.js Engine vibes */
+.cog-engine {
+  display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 16px;
+  align-items: stretch;
+}
+@media (max-width: 560px) { .cog-engine { grid-template-columns: 1fr; } }
+
+.engine-viz {
+  position: relative; height: 168px;
+  border: 1px solid var(--border-hi);
+  background: rgba(4, 8, 16, 0.55);
+  overflow: hidden;
+}
+.engine-dots {
+  position: absolute; inset: 0;
+}
+.engine-dot {
+  position: absolute; width: 5px; height: 5px; border-radius: 50%;
+  background: var(--acc-2);
+  box-shadow: 0 0 8px rgba(74,168,255,0.55);
+  left: 50%; top: 50%;
+  margin: -2.5px 0 0 -2.5px;
+  will-change: transform, opacity;
+}
+.engine-ring {
+  position: absolute; left: 50%; top: 50%;
+  width: 72px; height: 72px; margin: -36px 0 0 -36px;
+  border-radius: 50%;
+  border: 1px solid rgba(74,168,255,0.35);
+  border-top-color: var(--acc-2);
+  will-change: transform;
+}
+.engine-ring.r2 {
+  width: 108px; height: 108px; margin: -54px 0 0 -54px;
+  border-color: rgba(180,139,255,0.25);
+  border-bottom-color: var(--neural);
+}
+.engine-core-label {
+  position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em;
+  color: var(--text); text-align: center; line-height: 1.35;
+}
+.engine-core-label b { display: block; font-size: 14px; color: var(--acc-2); font-weight: 500; }
+
+.engine-panel {
+  display: flex; flex-direction: column; gap: 10px;
+  font-family: var(--mono); font-size: 11px;
+}
+.engine-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  background: rgba(8, 12, 22, 0.45);
+}
+.engine-row span { color: var(--text-3); letter-spacing: 0.08em; text-transform: uppercase; }
+.engine-row b { color: var(--acc-2); font-weight: 500; font-variant-numeric: tabular-nums; }
+.engine-meter {
+  height: 3px; flex: 1; max-width: 90px;
+  background: var(--surface-3); overflow: hidden;
+}
+.engine-meter i {
+  display: block; height: 100%; width: 0%;
+  background: linear-gradient(90deg, var(--acc), var(--neural));
+}
+.engine-controls {
+  display: flex; gap: 8px; margin-top: 4px;
+}
+.engine-controls button {
+  flex: 1; appearance: none; cursor: pointer;
+  border: 1px solid var(--border-hi);
+  background: transparent; color: var(--text-2);
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em;
+  text-transform: uppercase; padding: 8px 6px;
+  transition: border-color 0.25s, color 0.25s, background 0.25s;
+}
+.engine-controls button:hover,
+.engine-controls button[aria-pressed="true"] {
+  border-color: var(--acc-2); color: var(--acc-2);
+  background: color-mix(in srgb, var(--acc) 12%, transparent);
+}
+.engine-controls button:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
+
+html[data-view="wireframe"] .pillar,
+html[data-view="wireframe"] .engine-viz,
+html[data-view="wireframe"] .engine-row,
+html[data-view="wireframe"] .glass-layer {
+  border-radius: 0 !important;
+  backdrop-filter: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-scroll-hint .bar { animation: none; }
+  .intro-mark .orbit, .intro-mark .orbit2 { animation: none; }
+  .uil-logo .ul-stage { /* static when reduced — physics paused in JS */ }
+  /* Do NOT force --intro-p: 1 — that made the whole intro look blank */
+  .glass-layer { transition: none; }
+}

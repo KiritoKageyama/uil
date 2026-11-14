@@ -1,0 +1,63 @@
+<svg viewBox="0 0 360 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The cognitive loop — gyroscopic instrument">
+  <defs>
+    <radialGradient id="sl-disk" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#122b57" stop-opacity="0.9"/>
+      <stop offset="70%" stop-color="#081226" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#050810" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="sl-sweep" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#3b74ff" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#7aa6ff"/>
+    </linearGradient>
+    <filter id="sl-glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="1.8" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="sl-arrow" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+      <path d="M0 0 L6 3 L0 6 Z" fill="#4aa8ff"/>
+    </marker>
+  </defs>
+
+  <!-- HUD frame -->
+  <g stroke="#3a5a9e" stroke-width="1" fill="none" opacity="0.7">
+    <path d="M14 30 L14 14 L30 14"/><path d="M346 30 L346 14 L330 14"/>
+    <path d="M14 230 L14 246 L30 246"/><path d="M346 230 L346 246 L330 246"/>
+  </g>
+  <g font-family="'IBM Plex Mono',monospace" font-size="7" fill="#5570a8">
+    <text x="20" y="24">LOOP.GYRO</text><text x="286" y="24">PERIOD·5</text><text x="20" y="242">t → t+1</text>
+  </g>
+
+  <circle cx="180" cy="130" r="96" fill="url(#sl-disk)"/>
+
+  <!-- tick rings (clock / compass) -->
+  <circle cx="180" cy="130" r="104" fill="none" stroke="#33549e" stroke-width="4" stroke-dasharray="0.8 6.7" opacity="0.85"/>
+  <circle cx="180" cy="130" r="96" fill="none" stroke="#4a6cc0" stroke-width="7" stroke-dasharray="1.4 44.3" opacity="0.9"/>
+  <circle cx="180" cy="130" r="88" fill="none" stroke="#1a2c4e" stroke-width="1"/>
+
+  <!-- inner disk + rotating sweep -->
+  <circle cx="180" cy="130" r="46" fill="#081226" stroke="#1a2c4e" stroke-width="1"/>
+  <g>
+    <path d="M180 130 L180 86 A44 44 0 0 1 218 108 Z" fill="url(#sl-sweep)" opacity="0.35"/>
+    <line x1="180" y1="130" x2="180" y2="86" stroke="#7aa6ff" stroke-width="1.4"/>
+    <animateTransform attributeName="transform" type="rotate" from="0 180 130" to="360 180 130" dur="8s" repeatCount="indefinite"/>
+  </g>
+  <circle cx="180" cy="130" r="5" fill="#7aa6ff" filter="url(#sl-glow)"/>
+
+  <!-- directional flow along the orbit -->
+  <g fill="none" stroke="#4aa8ff" stroke-width="1.4" opacity="0.8" marker-end="url(#sl-arrow)">
+    <path d="M196 56 A78 78 0 0 1 250 96"/>
+    <path d="M256 118 A78 78 0 0 1 236 182"/>
+    <path d="M214 196 A78 78 0 0 1 150 196"/>
+    <path d="M128 182 A78 78 0 0 1 108 118"/>
+    <path d="M114 96 A78 78 0 0 1 164 56"/>
+  </g>
+
+  <!-- 5 stations -->
+  <g font-family="Inter,sans-serif" text-anchor="middle">
+    <g transform="translate(180 52)"><polygon points="0,-14 12,-7 12,7 0,14 -12,7 -12,-7" fill="#0a1830" stroke="#3b74ff" stroke-width="1.6"/><circle r="3" fill="#7aa6ff"/><text y="-19" font-size="8.5" font-weight="600" fill="#cfe0ff">PSO</text><text y="26" font-size="6.5" fill="#6b82b0">search</text></g>
+    <g transform="translate(254 106)"><polygon points="0,-14 12,-7 12,7 0,14 -12,7 -12,-7" fill="#0a1830" stroke="#4aa8ff" stroke-width="1.6"/><circle r="3" fill="#9cc4ff"/><text y="-19" font-size="8.5" font-weight="600" fill="#d5e2ff">Journal</text><text y="26" font-size="6.5" fill="#6b82b0">record</text></g>
+    <g transform="translate(226 193)"><polygon points="0,-14 12,-7 12,7 0,14 -12,7 -12,-7" fill="#0a1830" stroke="#2fe0a0" stroke-width="1.6"/><circle r="3" fill="#6ee7b7"/><text y="-19" font-size="8.5" font-weight="600" fill="#a7f3d0">Miner</text><text y="26" font-size="6.5" fill="#6b82b0">mine</text></g>
+    <g transform="translate(134 193)"><polygon points="0,-14 12,-7 12,7 0,14 -12,7 -12,-7" fill="#0a1830" stroke="#ffb43c" stroke-width="1.6"/><circle r="3" fill="#ffd23f"/><text y="-19" font-size="8.5" font-weight="600" fill="#fde68a">Library</text><text y="26" font-size="6.5" fill="#6b82b0">principle</text></g>
+    <g transform="translate(106 106)"><polygon points="0,-14 12,-7 12,7 0,14 -12,7 -12,-7" fill="#0a1830" stroke="#b48bff" stroke-width="1.6"/><circle r="3" fill="#d3beff"/><text y="-19" font-size="8.5" font-weight="600" fill="#ddd0ff">Executor</text><text y="26" font-size="6.5" fill="#6b82b0">apply</text></g>
+  </g>
+</svg>

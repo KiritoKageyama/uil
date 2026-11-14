@@ -1,0 +1,426 @@
+<title>FIGPSO UIL — Research Console</title>
+<link rel="stylesheet" href="app.css">
+</head>
+
+=====FRAG=====
+
+<title>FIGPSO UIL — Research Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css">
+</head>
+
+=====FRAG=====
+
+          <div class="hero-stats-panel">
+            <div class="ostat"><span class="ostat-v" id="ovStatFiles">—</span><span class="ostat-k">memory files on disk</span></div>
+            <div class="ostat"><span class="ostat-v" id="ovStatBytes">—</span><span class="ostat-k">persisted knowledge</span></div>
+            <div class="ostat"><span class="ostat-v" id="ovStatGraph">—</span><span class="ostat-k">KG nodes / edges</span></div>
+            <div class="ostat"><span class="ostat-v" id="ovStatSeq">—</span><span class="ostat-k">events in history</span></div>
+          </div>
+        </div>
+
+=====FRAG=====
+
+          <div class="hero-aside">
+            <div class="hero-mindmap card-inset">
+              <div class="card-title-row">
+                <div class="card-title">Live knowledge mindmap</div>
+                <button class="btn ghost sm" data-goto="kg">Open KG</button>
+              </div>
+              <div class="mini-kg-wrap">
+                <canvas id="ovMindmap"></canvas>
+              </div>
+              <p class="hint">Animated radial view of your Editable Network — same engine as the Knowledge Graph section.</p>
+            </div>
+            <div class="hero-stats-panel">
+              <div class="ostat"><span class="ostat-v" id="ovStatFiles">—</span><span class="ostat-k">memory files on disk</span></div>
+              <div class="ostat"><span class="ostat-v" id="ovStatBytes">—</span><span class="ostat-k">persisted knowledge</span></div>
+              <div class="ostat"><span class="ostat-v" id="ovStatGraph">—</span><span class="ostat-k">KG nodes / edges</span></div>
+              <div class="ostat"><span class="ostat-v" id="ovStatSeq">—</span><span class="ostat-k">events in history</span></div>
+            </div>
+          </div>
+        </div>
+
+=====FRAG=====
+
+        <span>Human in the Loop</span>
+      </button>
+      <button class="nav-item" data-view="goal">
+
+=====FRAG=====
+
+        <span>HITL &amp; Sneak Peek</span>
+      </button>
+      <button class="nav-item" data-view="goal">
+
+=====FRAG=====
+
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+=====FRAG=====
+
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+=====FRAG=====
+
+      <!-- ══════════ KNOWLEDGE GRAPH ══════════ -->
+      <section class="view" id="view-kg">
+        <div class="kg-toolbar card">
+          <div class="seg" id="kgModeSeg">
+            <button data-v="network" class="on">Network</button>
+            <button data-v="mindmap">Mindmap</button>
+          </div>
+          <div class="chips" id="kgEdgeChips">
+            <button class="chip on" data-t="">all edges</button>
+            <button class="chip" data-t="leads_to">leads_to</button>
+            <button class="chip" data-t="strengthens">strengthens</button>
+            <button class="chip" data-t="contradicts">contradicts</button>
+            <button class="chip" data-t="depends_on">depends_on</button>
+          </div>
+          <input class="kg-search" id="kgSearch" placeholder="search nodes…">
+          <label class="toggle"><input type="checkbox" id="kgLabels" checked><span>labels</span></label>
+          <label class="toggle"><input type="checkbox" id="kgPhysics" checked><span>physics</span></label>
+          <button class="btn ghost sm" id="kgRefresh">Refresh</button>
+        </div>
+
+        <div class="kg-layout">
+          <div class="card kg-canvas-card">
+            <canvas id="kgCanvas"></canvas>
+            <div class="kg-hovercard hidden" id="kgHover"></div>
+            <div class="kg-canvas-hint" id="kgHint">drag to pan · wheel to zoom · drag nodes · click to inspect</div>
+          </div>
+          <div class="kg-side">
+            <div class="card">
+              <div class="card-title">Graph vitals</div>
+              <div class="kv-rows" id="kgVitals"><div class="empty small"><p>Loading…</p></div></div>
+              <div class="kg-typebars" id="kgTypeBars"></div>
+            </div>
+            <div class="card">
+              <div class="card-title">Node inspector</div>
+              <div id="kgInspector"><div class="empty small"><p>Click a node in the graph to inspect and edit it.</p></div></div>
+            </div>
+            <div class="card">
+              <div class="card-title">Most activated</div>
+              <div id="kgTopNodes" class="top-nodes"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+=====FRAG=====
+
+      <!-- ══════════ KNOWLEDGE GRAPH — neural workspace ══════════ -->
+      <section class="view" id="view-kg">
+        <div class="kg-workspace">
+          <div class="kg-float-bar">
+            <div class="kg-title-block">
+              <span class="kg-eyebrow">Neural knowledge layer</span>
+              <h3>Editable Network · synapse map</h3>
+              <span class="muted" id="kgFocusLabel"></span>
+            </div>
+            <div class="seg glass" id="kgModeSeg">
+              <button data-v="network" class="on" title="Force-directed physics">Network</button>
+              <button data-v="brain" title="Radial mindmap — brain layout">Mindmap</button>
+              <button data-v="orbit" title="Orbital cluster view">Orbit</button>
+            </div>
+            <div class="chips compact" id="kgEdgeChips">
+              <button class="chip on" data-t="">all</button>
+              <button class="chip" data-t="leads_to">leads_to</button>
+              <button class="chip" data-t="strengthens">strengthens</button>
+              <button class="chip" data-t="contradicts">contradicts</button>
+              <button class="chip" data-t="depends_on">depends_on</button>
+            </div>
+            <input class="kg-search glass" id="kgSearch" placeholder="Search neurons…">
+            <div class="kg-toggles">
+              <label class="toggle"><input type="checkbox" id="kgLabels" checked><span>labels</span></label>
+              <label class="toggle"><input type="checkbox" id="kgPhysics" checked><span>physics</span></label>
+              <label class="toggle"><input type="checkbox" id="kgPulse" checked><span>pulse</span></label>
+            </div>
+            <div class="btn-row">
+              <button class="btn ghost sm hidden" id="kgClearFocus">Clear focus</button>
+              <button class="btn ghost sm" id="kgFit">Fit view</button>
+              <button class="btn primary sm" id="kgRefresh">Sync graph</button>
+            </div>
+          </div>
+
+          <div class="kg-stage glass">
+            <canvas id="kgCanvas"></canvas>
+            <canvas id="kgMinimap" class="kg-minimap" width="120" height="88"></canvas>
+            <div class="kg-hovercard glass hidden" id="kgHover"></div>
+            <div class="kg-canvas-hint">
+              <span>🧠 drag neurons</span><span>⚡ click synapses</span><span>🔍 scroll zoom</span><span>double-click fit</span>
+            </div>
+          </div>
+
+          <div class="kg-modules">
+            <div class="kg-mod glass" data-mod="vitals">
+              <button class="kg-mod-toggle" aria-expanded="true"><span>Graph vitals</span><i>−</i></button>
+              <div class="kg-mod-body">
+                <div class="kv-rows" id="kgVitals"><div class="empty small"><p>Loading…</p></div></div>
+                <div class="kg-typebars" id="kgTypeBars"></div>
+              </div>
+            </div>
+            <div class="kg-mod glass" data-mod="node">
+              <button class="kg-mod-toggle" aria-expanded="true"><span>Neuron editor</span><i>−</i></button>
+              <div class="kg-mod-body" id="kgNodeEditor">
+                <div class="empty small"><p>Select a neuron to edit confidence &amp; tier inline.</p></div>
+              </div>
+            </div>
+            <div class="kg-mod glass collapsed" data-mod="edge">
+              <button class="kg-mod-toggle" aria-expanded="false"><span>Synapse inspector</span><i>+</i></button>
+              <div class="kg-mod-body" id="kgEdgeEditor">
+                <div class="empty small"><p>Click a synapse between neurons.</p></div>
+              </div>
+            </div>
+            <div class="kg-mod glass collapsed" data-mod="hot">
+              <button class="kg-mod-toggle" aria-expanded="false"><span>Most activated</span><i>+</i></button>
+              <div class="kg-mod-body">
+                <div id="kgTopNodes" class="top-nodes"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+=====FRAG=====
+
+<script src="js/core.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/graph.js"></script>
+<script src="js/views-run.js"></script>
+<script src="js/views-kg.js"></script>
+<script src="js/views-formulas.js"></script>
+<script src="js/views-principles.js"></script>
+<script src="js/views-memory.js"></script>
+<script src="js/views-hitl.js"></script>
+<script src="js/views-goal.js"></script>
+<script src="js/views-timeline.js"></script>
+<script src="js/views-ops.js"></script>
+<script src="js/views-overview.js"></script>
+<script src="js/boot.js"></script>
+
+=====FRAG=====
+
+<script src="js/neural-bg.js"></script>
+<script src="js/core.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/graph.js"></script>
+<script src="js/views-run.js"></script>
+<script src="js/views-kg.js"></script>
+<script src="js/views-formulas.js"></script>
+<script src="js/views-principles.js"></script>
+<script src="js/views-memory.js"></script>
+<script src="js/views-hitl.js"></script>
+<script src="js/views-goal.js"></script>
+<script src="js/views-timeline.js"></script>
+<script src="js/views-ops.js"></script>
+<script src="js/views-overview.js"></script>
+<script src="js/motion.js"></script>
+<script src="js/boot.js"></script>
+
+=====FRAG=====
+
+            <div class="hero-kicker">Cognitive meta-learning · v19 → v22 “The Editable Scientist”</div>
+            <h1>A machine-learning system that <em>remembers, reasons, and can be corrected.</em></h1>
+            <p>FIGPSO UIL (Universal Intelligence Layer) wraps standard classifiers — XGBoost, RandomForest, KNN, SymbolicFormula — in a cognitive layer that watches every run, mines causal rules about why it succeeds or fails, stores them as editable knowledge, and applies them to future runs. No human labeling required — but human correction is always possible.</p>
+
+=====FRAG=====
+
+            <div class="hero-kicker">AI · neuroscience · symbolic science</div>
+            <h1>A cognitive layer that <em>thinks in graphs, learns in symbols, and yields to human correction.</em></h1>
+            <p>FIGPSO UIL wraps classifiers in a living knowledge network — neurons (principles), synapses (causal edges), episodic memory, and an event-sourced scientist loop. Every belief is inspectable, editable, and replayable.</p>
+
+=====FRAG=====
+
+<script src="js/neural-bg.js"></script>
+<script src="js/core.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/graph.js"></script>
+<script src="js/views-run.js"></script>
+<script src="js/views-kg.js"></script>
+<script src="js/views-formulas.js"></script>
+<script src="js/views-principles.js"></script>
+<script src="js/views-memory.js"></script>
+<script src="js/views-hitl.js"></script>
+<script src="js/views-goal.js"></script>
+<script src="js/views-timeline.js"></script>
+<script src="js/views-ops.js"></script>
+<script src="js/views-overview.js"></script>
+<script src="js/motion.js"></script>
+<script src="js/boot.js"></script>
+
+=====FRAG=====
+
+<script src="js/core.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/graph.js"></script>
+<script src="js/views-run.js"></script>
+<script src="js/views-kg.js"></script>
+<script src="js/views-formulas.js"></script>
+<script src="js/views-principles.js"></script>
+<script src="js/views-memory.js"></script>
+<script src="js/views-hitl.js"></script>
+<script src="js/views-goal.js"></script>
+<script src="js/views-timeline.js"></script>
+<script src="js/views-ops.js"></script>
+<script src="js/views-overview.js"></script>
+<script src="js/motion.js"></script>
+<script src="js/neural-bg.js"></script>
+<script src="js/boot.js"></script>
+
+=====FRAG=====
+
+            <div class="kg-canvas-hint">
+              <span>🧠 drag neurons</span><span>⚡ click synapses</span><span>🔍 scroll zoom</span><span>double-click fit</span>
+            </div>
+          </div>
+
+=====FRAG=====
+
+            <div class="kg-canvas-hint">
+              <span>drag neurons</span><span>click synapses</span><span>scroll zoom</span>
+              <span><kbd>F</kbd> fit</span><span><kbd>Esc</kbd> clear focus</span>
+            </div>
+            <div class="kg-legend glass" id="kgLegend">
+              <span class="lg-item" style="--c:#38bdf8">leads_to</span>
+              <span class="lg-item" style="--c:#34d399">strengthens</span>
+              <span class="lg-item" style="--c:#fb7185">contradicts</span>
+              <span class="lg-item" style="--c:#fbbf24">depends_on</span>
+            </div>
+          </div>
+
+=====FRAG=====
+
+              <label class="toggle"><input type="checkbox" id="kgPulse" checked><span>pulse</span></label>
+            </div>
+
+=====FRAG=====
+
+              <label class="toggle"><input type="checkbox" id="kgPulse" checked><span>pulse</span></label>
+              <label class="toggle"><input type="checkbox" id="kgDetail" checked><span>detail</span></label>
+            </div>
+
+=====FRAG=====
+
+        <a class="icon-btn" href="/" title="Back to the marketing site" aria-label="Marketing site">
+          <svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5M5.5 9.8V20h13V9.8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+
+=====FRAG=====
+
+        <a class="btn ghost sm" href="/" title="Pitch site">← Site</a>
+        <a class="icon-btn" href="/" title="Back to the marketing site" aria-label="Marketing site">
+          <svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5M5.5 9.8V20h13V9.8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+
+=====FRAG=====
+
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css">
+
+=====FRAG=====
+
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/shared/css/logo.css">
+<link rel="stylesheet" href="app.css">
+
+=====FRAG=====
+
+    <div class="brand">
+      <div class="brand-mark"><span class="orbit"></span><span class="core"></span></div>
+      <div class="brand-text">
+        <div class="brand-name">FIGPSO <b>UIL</b></div>
+        <div class="brand-sub">Universal Intelligence Layer</div>
+      </div>
+    </div>
+
+=====FRAG=====
+
+    <div class="brand">
+      <span data-uil-logo data-size="md"></span>
+      <div class="brand-text">
+        <div class="uil-wordmark brand-name"><b>FIGPSO</b> <em>UIL</em></div>
+        <div class="brand-sub">Universal Intelligence Layer</div>
+      </div>
+    </div>
+
+=====FRAG=====
+
+<script src="/shared/js/neural-field.js"></script>
+<script src="js/neural-bg.js"></script>
+<script src="/shared/js/cursor.js"></script>
+<script src="js/boot.js"></script>
+
+=====FRAG=====
+
+<script src="/shared/js/loader.js"></script>
+<script src="/shared/js/logo.js"></script>
+<script src="/shared/js/neural-field.js"></script>
+<script src="js/neural-bg.js"></script>
+<script src="/shared/js/cursor.js"></script>
+<script src="js/boot.js"></script>
+
+=====FRAG=====
+
+<script src="/shared/js/loader.js"></script>
+<script src="js/core.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/graph.js"></script>
+<script src="js/views-run.js"></script>
+<script src="js/views-kg.js"></script>
+<script src="js/views-formulas.js"></script>
+<script src="js/views-principles.js"></script>
+<script src="js/views-memory.js"></script>
+<script src="js/views-hitl.js"></script>
+<script src="js/views-goal.js"></script>
+<script src="js/views-timeline.js"></script>
+<script src="js/views-ops.js"></script>
+<script src="js/views-overview.js"></script>
+<script src="js/motion.js"></script>
+<script src="/shared/js/loader.js"></script>
+<script src="/shared/js/logo.js"></script>
+<script src="/shared/js/neural-field.js"></script>
+<script src="js/neural-bg.js"></script>
+<script src="/shared/js/cursor.js"></script>
+<script src="js/boot.js"></script>
+
+=====FRAG=====
+
+<script src="/shared/js/loader.js"></script>
+<script src="/shared/js/logo.js"></script>
+<script src="js/core.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/graph.js"></script>
+<script src="js/views-run.js"></script>
+<script src="js/views-kg.js"></script>
+<script src="js/views-formulas.js"></script>
+<script src="js/views-principles.js"></script>
+<script src="js/views-memory.js"></script>
+<script src="js/views-hitl.js"></script>
+<script src="js/views-goal.js"></script>
+<script src="js/views-timeline.js"></script>
+<script src="js/views-ops.js"></script>
+<script src="js/views-overview.js"></script>
+<script src="js/motion.js"></script>
+<script src="/shared/js/neural-field.js"></script>
+<script src="js/neural-bg.js"></script>
+<script src="/shared/js/cursor.js"></script>
+<script src="js/boot.js"></script>
+
+=====FRAG=====
+
+      <span data-uil-logo data-size="md"></span>
+
+=====FRAG=====
+
+      <span data-uil-logo data-size="sm"></span>
+
+=====FRAG=====
+
+      <span data-uil-logo data-size="sm"></span>
+
+=====FRAG=====
+
+      <span data-uil-logo data-size="md"></span>

@@ -1,0 +1,28 @@
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="FIGPSO UIL">
+  <defs>
+    <radialGradient id="well" cx="50%" cy="48%" r="55%">
+      <stop offset="0%" stop-color="#dce8ff" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="#050506" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glass" cx="34%" cy="28%" r="72%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.5"/>
+      <stop offset="45%" stop-color="#3b74ff" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#0a1838" stop-opacity="0.92"/>
+    </radialGradient>
+    <linearGradient id="bl" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#9eb8e8" stop-opacity="0.55"/><stop offset="100%" stop-color="#2a4a8a" stop-opacity="0.25"/>
+    </linearGradient>
+    <linearGradient id="br" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8fd4c0" stop-opacity="0.4"/><stop offset="100%" stop-color="#2a4a8a" stop-opacity="0.25"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="32" cy="33" rx="31" ry="28" fill="url(#well)"/>
+  <ellipse cx="32" cy="32" rx="25.5" ry="9" fill="none" stroke="#a8c8ff" stroke-width="1.1" transform="rotate(26 32 32)"/>
+  <ellipse cx="32" cy="32" rx="25.5" ry="9" fill="none" stroke="#21d99a" stroke-width="1.1" transform="rotate(-38 32 32)" opacity="0.9"/>
+  <path fill="url(#bl)" d="M17.2 30.5 C15.4 24.2, 18.8 17.8, 24.6 16.6 C27.8 15.9, 30.2 17.8, 30.8 20.8 C26.2 41.2, 18.2 34, 17.2 30.5 Z" opacity="0.75"/>
+  <path fill="url(#br)" d="M46.8 30.5 C48.6 24.2, 45.2 17.8, 39.4 16.6 C36.2 15.9, 33.8 17.8, 33.2 20.8 C37.8 41.2, 45.8 34, 46.8 30.5 Z" opacity="0.75"/>
+  <circle cx="32" cy="32" r="13.8" fill="#0d1730"/>
+  <circle cx="32" cy="32" r="13.8" fill="url(#glass)" opacity="0.55"/>
+  <path d="M32 21.4 L40.8 26.5 L40.8 36.5 L32 41.6 L23.2 36.5 L23.2 26.5 Z" fill="url(#glass)" fill-opacity="0.85" stroke="#eaf2ff" stroke-width="0.7"/>
+  <circle cx="32" cy="32" r="1.85" fill="#f4f8ff"/>
+</svg>

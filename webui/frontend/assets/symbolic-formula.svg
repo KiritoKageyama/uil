@@ -1,0 +1,69 @@
+<svg viewBox="0 0 360 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Symbolic formula — schematic tree">
+  <defs>
+    <pattern id="sf-grid" width="18" height="18" patternUnits="userSpaceOnUse">
+      <path d="M18 0 H0 V18" fill="none" stroke="#14284a" stroke-width="0.5"/>
+    </pattern>
+    <linearGradient id="sf-trace" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3b74ff"/><stop offset="100%" stop-color="#2fe0a0"/>
+    </linearGradient>
+    <radialGradient id="sf-root" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#cfe4ff"/><stop offset="60%" stop-color="#3b74ff"/><stop offset="100%" stop-color="#1f4fae"/>
+    </radialGradient>
+    <filter id="sf-glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="1.6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- blueprint grid backdrop (subject area) -->
+  <rect x="40" y="30" width="280" height="164" fill="url(#sf-grid)" opacity="0.6"/>
+
+  <!-- HUD frame -->
+  <g stroke="#3a5a9e" stroke-width="1" fill="none" opacity="0.7">
+    <path d="M14 30 L14 14 L30 14"/><path d="M346 30 L346 14 L330 14"/>
+    <path d="M14 230 L14 246 L30 246"/><path d="M346 230 L346 246 L330 246"/>
+  </g>
+  <g font-family="'IBM Plex Mono',monospace" font-size="7" fill="#5570a8">
+    <text x="20" y="24">SYMBOLIC.LAW</text><text x="286" y="24">DEPTH·3</text>
+  </g>
+
+  <!-- traces with junction dots -->
+  <g fill="none" stroke="url(#sf-trace)" stroke-width="1.4" opacity="0.85">
+    <path d="M180 66 L110 104"/><path d="M180 66 L250 104"/>
+    <path d="M110 116 L74 158"/><path d="M110 116 L146 158"/>
+    <path d="M250 116 L214 158"/><path d="M250 116 L286 158"/>
+  </g>
+  <g fill="#3b74ff">
+    <circle cx="110" cy="104" r="1.8"/><circle cx="250" cy="104" r="1.8"/>
+    <circle cx="74" cy="158" r="1.6"/><circle cx="146" cy="158" r="1.6"/>
+    <circle cx="214" cy="158" r="1.6"/><circle cx="286" cy="158" r="1.6"/>
+  </g>
+
+  <!-- signal pulse motes travelling down a trace -->
+  <circle r="1.8" fill="#eef4ff" filter="url(#sf-glow)">
+    <animateMotion path="M180 66 L110 104 L74 158" dur="2.4s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- nodes: root (chip), operators, leaves -->
+  <g font-family="'IBM Plex Mono',monospace" text-anchor="middle">
+    <!-- root: sigmoid(sum) -->
+    <g filter="url(#sf-glow)"><circle cx="180" cy="52" r="20" fill="url(#sf-root)" stroke="#e6efff" stroke-width="0.8"/></g>
+    <text x="180" y="49" font-size="10" fill="#041226">σ(</text><text x="180" y="60" font-size="9" fill="#041226">Σw·φ)</text>
+
+    <!-- operators -->
+    <g><rect x="90" y="92" width="40" height="26" rx="6" fill="#0b1a30" stroke="#4aa8ff" stroke-width="1.4"/><text x="110" y="109" font-size="11" fill="#9cc4ff">w·x</text></g>
+    <g><rect x="230" y="92" width="40" height="26" rx="6" fill="#0b1a30" stroke="#b48bff" stroke-width="1.4"/><text x="250" y="109" font-size="12" fill="#d3beff">×</text></g>
+
+    <!-- leaves -->
+    <g><circle cx="74" cy="170" r="15" fill="#0b1a30" stroke="#2fe0a0" stroke-width="1.3"/><text x="74" y="174" font-size="11" fill="#6ee7b7">x₃</text></g>
+    <g><circle cx="146" cy="170" r="15" fill="#0b1a30" stroke="#2fe0a0" stroke-width="1.3"/><text x="146" y="174" font-size="11" fill="#6ee7b7">x₇</text></g>
+    <g><circle cx="214" cy="170" r="15" fill="#0b1a30" stroke="#ffb43c" stroke-width="1.3"/><text x="214" y="174" font-size="9.5" fill="#ffd23f">1[·]</text></g>
+    <g><circle cx="286" cy="170" r="15" fill="#0b1a30" stroke="#ffb43c" stroke-width="1.3"/><text x="286" y="174" font-size="11" fill="#ffd23f">θ</text></g>
+  </g>
+
+  <!-- readout bar -->
+  <rect x="46" y="206" width="268" height="34" rx="7" fill="#0a1424" stroke="#1c3050" stroke-width="1"/>
+  <circle cx="60" cy="223" r="3" fill="#4ade80" filter="url(#sf-glow)"/>
+  <text x="180" y="221" font-family="'IBM Plex Mono',monospace" font-size="10.5" fill="#cfe0ff" text-anchor="middle">sigmoid(0.59·x₃ − 0.88·1[x₇&gt;θ])</text>
+  <text x="180" y="233" font-family="Inter" font-size="7.5" fill="#4d6f7d" text-anchor="middle">readable · editable · back-transformable to real units</text>
+</svg>

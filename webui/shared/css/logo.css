@@ -1,0 +1,172 @@
+/* ════════════════════════════════════════════════════════════════════
+   logo.css — glass gravity brain (no cartoon face)
+   Heavy well · particle layer · glass facets · anatomical lobes
+   ════════════════════════════════════════════════════════════════════ */
+
+.uil-logo {
+  --uil-logo-size: 26px;
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: var(--uil-logo-size);
+  height: var(--uil-logo-size);
+  flex-shrink: 0;
+  line-height: 0;
+  isolation: isolate;
+  filter:
+    drop-shadow(0 2px 4px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 0 14px rgba(59, 116, 255, 0.45));
+}
+.uil-logo[data-size="sm"] { --uil-logo-size: 24px; }
+.uil-logo[data-size="md"] { --uil-logo-size: 30px; }
+.uil-logo[data-size="lg"] { --uil-logo-size: 44px; }
+.uil-logo[data-size="xl"] { --uil-logo-size: 72px; }
+.uil-logo[data-size="hero"] {
+  --uil-logo-size: min(30vmin, 180px);
+  filter:
+    drop-shadow(0 4px 12px rgba(0, 0, 0, 0.6))
+    drop-shadow(0 0 28px rgba(59, 116, 255, 0.55));
+}
+
+.uil-logo .ul-svg {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+  shape-rendering: geometricPrecision;
+}
+
+/* particle physics canvas — sits under the SVG, spills slightly outside */
+.uil-logo .ul-phys {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 160%;
+  height: 160%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.uil-logo .ul-well {
+  transform-origin: 32px 32px;
+  animation: ulWell 4.8s ease-in-out infinite;
+}
+.uil-logo .ul-field {
+  transform-origin: 32px 32px;
+  animation: ulField 6.5s ease-in-out infinite;
+}
+.uil-logo .ul-orbit-a {
+  transform-origin: 32px 32px;
+  animation: ulSpin 24s linear infinite;
+}
+.uil-logo .ul-orbit-b {
+  transform-origin: 32px 32px;
+  animation: ulSpinRev 30s linear infinite;
+}
+.uil-logo .ul-orbit-c {
+  transform-origin: 32px 32px;
+  animation: ulSpin 36s linear infinite;
+}
+.uil-logo .ul-sats {
+  transform-origin: 32px 32px;
+  animation: ulSpin 16s linear infinite;
+}
+.uil-logo .ul-brain {
+  transform-origin: 32px 32px;
+  animation: ulBrain 5s ease-in-out infinite;
+}
+.uil-logo .ul-mesh {
+  transform-origin: 32px 32px;
+  animation: ulSpinRev 55s linear infinite;
+}
+.uil-logo .ul-hex {
+  transform-origin: 32px 32px;
+  animation: ulGlass 4s ease-in-out infinite;
+}
+.uil-logo .ul-spark,
+.uil-logo .ul-core {
+  transform-origin: 32px 32px;
+  animation: ulMass 3.2s ease-in-out infinite;
+}
+
+@keyframes ulSpin { to { transform: rotate(360deg); } }
+@keyframes ulSpinRev { to { transform: rotate(-360deg); } }
+@keyframes ulWell {
+  0%, 100% { opacity: 0.8; transform: scale(0.98); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+@keyframes ulField {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 0.95; }
+}
+@keyframes ulBrain {
+  0%, 100% { opacity: 0.9; }
+  50% { opacity: 1; }
+}
+@keyframes ulGlass {
+  0%, 100% { filter: brightness(1) saturate(1); }
+  50% { filter: brightness(1.12) saturate(1.08); }
+}
+@keyframes ulMass {
+  0%, 100% { opacity: 0.85; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .uil-logo .ul-well,
+  .uil-logo .ul-field,
+  .uil-logo .ul-orbit-a,
+  .uil-logo .ul-orbit-b,
+  .uil-logo .ul-orbit-c,
+  .uil-logo .ul-sats,
+  .uil-logo .ul-brain,
+  .uil-logo .ul-mesh,
+  .uil-logo .ul-hex,
+  .uil-logo .ul-spark,
+  .uil-logo .ul-core {
+    animation: none !important;
+  }
+  .uil-logo .ul-phys { display: none; }
+}
+
+.uil-wordmark {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35em;
+  font-family: var(--font-display, var(--font));
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  line-height: 1;
+}
+.uil-wordmark b { font-weight: 800; }
+.uil-wordmark em {
+  font-style: normal;
+  color: var(--acc-2);
+  font-weight: 700;
+}
+.uil-wordmark .uil-sub {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--mono);
+  font-size: 0.55em;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.brand .uil-logo { flex-shrink: 0; }
+
+html[data-view="wireframe"] .uil-logo {
+  filter: drop-shadow(0 0 6px rgba(74, 168, 255, 0.45));
+}
+html[data-view="wireframe"] .uil-logo .ul-phys { opacity: 0.5; }
